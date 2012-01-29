@@ -50,6 +50,7 @@ end
 " ****************
 " Bundle Section *
 " ****************
+Bundle 'gmarik/vundle.git'
 Bundle 'vim-scripts/AutoComplPop.git'
 Bundle 'tpope/vim-rails.git'
 Bundle 'msanders/snipmate.vim.git'

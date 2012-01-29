@@ -1,16 +1,33 @@
-LeoLuz environment configuration files
+LeoLuz Vim configuration files
 ======================================
 
 About
 -----
 
-This is a project to maintain my configuration files.
-Fill free to hack around and use these files as you wish.
+This is a project to maintain my Vim configuration files.
+It uses [Vundle](https://github.com/gmarik/vundle) to manage Vim plugins.
+
+Fill free to hack around and use these files as you wish but IMHO the best
+way to learn is doing it by yourself.
+
+Good luck!
 
 Instalation
 -----------
 
-**TODO**
+In your favorite shell type:
+
+    git clone https://leoluz@github.com/leoluz/vimfiles.git
+    cd vimfiles
+    git submodule init
+    git submodule update
+
+Start Vim and type:
+
+    :BundleInstall
+
+That's it! You are ready to go! 
+Enjoy!
 
 Details
 -------

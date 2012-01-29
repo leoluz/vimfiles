@@ -19,6 +19,7 @@ if has("gui_gtk2")
     let cfgfile = ".vimrc"
     let mapleader = ";"
     set rtp+=~/.vim/bundle/vundle/
+
 elseif has("mac")
     set macmeta
     set guifont=Menlo:h18
@@ -26,16 +27,19 @@ elseif has("mac")
     let cfgfile = ".vimrc"
     let mapleader = ";"
     set rtp+=~/.vim/bundle/vundle/
+
 elseif has("gui_win32")
     set guifont=Dejavu\ Sans\ Mono:h13,Consolas:h12
     let vimhome = "~/vimfiles"
     let cfgfile = "_vimrc"
     let mapleader = "ç"
     set rtp+=~/_vimfiles/bundle/vundle/
+
 else
     let vimhome = "~/.vim"
     let cfgfile = ".vimrc"
     let mapleader = ";"
+
 end
 
 if has("gui_running")
@@ -50,20 +54,23 @@ end
 " ****************
 " Bundle Section *
 " ****************
-Bundle 'gmarik/vundle.git'
-Bundle 'vim-scripts/AutoComplPop.git'
-Bundle 'tpope/vim-rails.git'
-Bundle 'msanders/snipmate.vim.git'
-Bundle 'scrooloose/nerdtree.git'
-Bundle 'scrooloose/nerdcommenter.git'
-Bundle 'tpope/vim-markdown.git'
-Bundle 'tpope/vim-surround.git'
-Bundle 'tpope/vim-repeat.git'
-Bundle 'wincent/Command-T.git'
-Bundle 'vim-ruby/vim-ruby.git'
-Bundle 'tpope/vim-cucumber.git'
-Bundle 'leoluz/xmledit.git'
-Bundle 'leoluz/snipmate-snippets.git'
+
+if has("gui_running")
+    Bundle 'gmarik/vundle.git'
+    Bundle 'vim-scripts/AutoComplPop.git'
+    Bundle 'tpope/vim-rails.git'
+    Bundle 'msanders/snipmate.vim.git'
+    Bundle 'scrooloose/nerdtree.git'
+    Bundle 'scrooloose/nerdcommenter.git'
+    Bundle 'tpope/vim-markdown.git'
+    Bundle 'tpope/vim-surround.git'
+    Bundle 'tpope/vim-repeat.git'
+    Bundle 'vim-ruby/vim-ruby.git'
+    Bundle 'tpope/vim-cucumber.git'
+    Bundle 'leoluz/xmledit.git'
+    Bundle 'leoluz/snipmate-snippets.git'
+    Bundle 'LustyExplorer'
+end
 
 " ****************
 " script section *
@@ -151,14 +158,10 @@ let g:acp_completeoptPreview = 1
 " NERDTree configuration
 let g:NERDTreeShowBookmarks=1
 
-" Command-T configuration
-let g:CommandTMatchWindowAtTop=1
-
 " Snipmate configuration
 let g:snippets_dir=vimhome."/bundle/snipmate-snippets"
 let g:snips_author="Leonardo Luz"
 
-syntax on
 set wildignore+=*.bak,*.pyc,*.py~,*.pdf,*.so,*.gif,*.jpg,*.flv,*.class,*.jar,*.png,*/tools/*,*/docs/*,*.swp
 set wildmode=list:longest
 set wildmenu
@@ -213,7 +216,8 @@ nnoremap k gk
 nnoremap <space> za
 inoremap <C-a> <ESC>ggvG$
 nnoremap <silent><leader>e ggvG$
-nnoremap <silent><leader>f :CommandT<CR>
+nnoremap <silent><leader>f :LustyFilesystemExplorerFromHere<CR>
+nnoremap <silent><leader>b :LustyBufferExplorer<CR>
 
 " Maps for tab specific funcionalities
 nnoremap L :tabnext<CR>
@@ -234,7 +238,7 @@ nnoremap ga  :A<CR>
 nnoremap gat :AT<CR>
 
 " Automatically surround brackets, quotes, double quotes, etc..
-inoremap '<space> ''<ESC>i
+noremap '<space> ''<ESC>i
 inoremap "<space> ""<ESC>i
 inoremap [ []<ESC>i
 inoremap { {}<ESC>i

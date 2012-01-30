@@ -8,6 +8,7 @@
 " *****************************************
 
 set nocompatible
+syntax on
 
 " *********************
 " OS specific section *
@@ -18,7 +19,6 @@ if has("gui_gtk2")
     let vimhome = "~/.vim"
     let cfgfile = ".vimrc"
     let mapleader = ";"
-    set rtp+=~/.vim/bundle/vundle/
 
 elseif has("mac")
     set macmeta
@@ -26,14 +26,12 @@ elseif has("mac")
     let vimhome = "~/.vim"
     let cfgfile = ".vimrc"
     let mapleader = ";"
-    set rtp+=~/.vim/bundle/vundle/
 
 elseif has("gui_win32")
     set guifont=Dejavu\ Sans\ Mono:h13,Consolas:h12
     let vimhome = "~/vimfiles"
     let cfgfile = "_vimrc"
     let mapleader = "ç"
-    set rtp+=~/_vimfiles/bundle/vundle/
 
 else
     let vimhome = "~/.vim"
@@ -46,6 +44,7 @@ if has("gui_running")
     colorscheme candycode       " other nice colorschemes to try: molokai, fruity
     set cursorline              " highlight current line
     set cm=blowfish             " crypt method
+    let &rtp = &rtp . "," . vimhome . "/bundle/vundle"
     call vundle#rc()
 else
     syntax off
@@ -239,10 +238,10 @@ nnoremap ga  :A<CR>
 nnoremap gat :AT<CR>
 
 " Automatically surround brackets, quotes, double quotes, etc..
-noremap '<space> ''<ESC>i
-inoremap "<space> ""<ESC>i
-inoremap [ []<ESC>i
-inoremap { {}<ESC>i
+" noremap '<space> ''<ESC>i
+" inoremap "<space> ""<ESC>i
+" inoremap [ []<ESC>i
+" inoremap { {}<ESC>i
 
 nnoremap <silent><leader>q :NERDTreeToggle<CR>
 nnoremap <silent><leader>s :set spell spelllang=pt<CR>

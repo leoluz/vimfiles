@@ -5,7 +5,7 @@ About
 -----
 
 This is a project to maintain my Vim configuration files.
-It uses [Vundle](https://github.com/gmarik/vundle) to manage Vim plugins.
+It uses [Vundle](https://github.com/gmarik/vundle) approach to manage Vim plugins.
 
 Fill free to hack around and use these files as you wish but IMHO the best
 way to learn is doing it by yourself.

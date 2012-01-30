@@ -70,6 +70,7 @@ if has("gui_running")
     Bundle 'leoluz/xmledit.git'
     Bundle 'leoluz/snipmate-snippets.git'
     Bundle 'LustyExplorer'
+    Bundle 'kien/ctrlp.vim.git'
 end
 
 " ****************
@@ -162,7 +163,7 @@ let g:NERDTreeShowBookmarks=1
 let g:snippets_dir=vimhome."/bundle/snipmate-snippets"
 let g:snips_author="Leonardo Luz"
 
-set wildignore+=*.bak,*.pyc,*.py~,*.pdf,*.so,*.gif,*.jpg,*.flv,*.class,*.jar,*.png,*/tools/*,*/docs/*,*.swp
+set wildignore+=*.bak,*.pyc,*.py~,*.pdf,*.so,*.gif,*.jpg,*.flv,*.class,*.jar,*.png,*/tools/*,*/docs/*,*.swp,*/.svn/*,*/.git/*
 set wildmode=list:longest
 set wildmenu
 set anti

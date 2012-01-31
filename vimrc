@@ -68,7 +68,6 @@ if has("gui_running")
     Bundle 'tpope/vim-cucumber.git'
     Bundle 'leoluz/xmledit.git'
     Bundle 'leoluz/snipmate-snippets.git'
-    Bundle 'LustyExplorer'
     Bundle 'kien/ctrlp.vim.git'
 end
 

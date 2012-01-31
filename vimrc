@@ -242,11 +242,11 @@ nnoremap grt :RT<CR>
 nnoremap ga  :A<CR>
 nnoremap gat :AT<CR>
 
-" Automatically surround brackets, quotes, double quotes, etc..
-" noremap '<space> ''<ESC>i
-" inoremap "<space> ""<ESC>i
-" inoremap [ []<ESC>i
-" inoremap { {}<ESC>i
+" Automatically surround brackets, parentheses, etc..
+inoremap [ []<ESC>i
+inoremap { {}<ESC>i
+inoremap ( ()<ESC>i
+inoremap <C-l> <ESC>A
 
 nnoremap <silent><leader>q :NERDTreeToggle<CR>
 nnoremap <silent><leader>s :set spell spelllang=pt<CR>

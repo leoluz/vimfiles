@@ -18,25 +18,21 @@ if has("gui_gtk2")
     set guifont=Monospace\ 11
     let vimhome = "~/.vim"
     let cfgfile = ".vimrc"
-    let mapleader = ";"
 
 elseif has("mac")
     set macmeta
     set guifont=Menlo:h18
     let vimhome = "~/.vim"
     let cfgfile = ".vimrc"
-    let mapleader = ";"
 
 elseif has("gui_win32")
     set guifont=Dejavu\ Sans\ Mono:h13,Consolas:h12
     let vimhome = "~/vimfiles"
     let cfgfile = "_vimrc"
-    let mapleader = "ç"
 
 else
     let vimhome = "~/.vim"
     let cfgfile = ".vimrc"
-    let mapleader = ";"
 
 end
 
@@ -166,6 +162,7 @@ let g:ctrlp_arg_map = 1
 let g:snippets_dir=vimhome."/bundle/snipmate-snippets"
 let g:snips_author="Leonardo Luz"
 
+let mapleader=";"
 set wildignore+=*.bak,*.pyc,*.py~,*.pdf,*.so,*.gif,*.jpg,*.flv,*.class,*.jar,*.png,*/tools/*,*/docs/*,*.swp,*/.svn/*,*/.git/*
 set wildmode=list:longest
 set wildmenu

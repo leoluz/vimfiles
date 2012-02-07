@@ -201,14 +201,15 @@ compiler ruby
 " Mapping section *                    
 " *****************
 
+nnoremap y "+y
+nnoremap p "+p
 map <C-J> <C-W>j<C-W>_
 map <C-K> <C-W>k<C-W>_
 map <silent><C-Left> <C-T>
 map <silent><C-Right> <C-]>
 imap <C-s> <ESC>:w<CR>
 nmap <C-s> :w<CR>
-vmap <silent><leader>y "+y
-nmap <silent><leader>v "+p
+vnoremap y "+y
 vmap <silent><C-s> :sort<CR>
 imap <silent><C-Del> <ESC>dea
 inoremap <C-k> <ESC>
@@ -217,8 +218,6 @@ nnoremap k gk
 nnoremap <space> za
 inoremap <C-a> <ESC>ggvG$
 nnoremap <silent><leader>e ggvG$
-nnoremap <silent><leader>f :LustyFilesystemExplorerFromHere<CR>
-nnoremap <silent><leader>b :LustyBufferExplorer<CR>
 
 " Maps for tab specific funcionalities
 nnoremap L :tabnext<CR>

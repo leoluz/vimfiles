@@ -162,7 +162,7 @@ let g:ctrlp_arg_map = 1
 let g:snippets_dir=vimhome."/bundle/snipmate-snippets"
 let g:snips_author="Leonardo Luz"
 
-let mapleader=";"
+let mapleader=" "
 set wildignore+=*.bak,*.pyc,*.py~,*.pdf,*.so,*.gif,*.jpg,*.flv,*.class,*.jar,*.png,*/tools/*,*/docs/*,*.swp,*/.svn/*,*/.git/*
 set wildmode=list:longest
 set wildmenu
@@ -215,7 +215,6 @@ imap <silent><C-Del> <ESC>dea
 inoremap <C-k> <ESC>
 nnoremap j gj
 nnoremap k gk
-nnoremap <space> za
 inoremap <C-a> <ESC>ggvG$
 nnoremap <silent><leader>e ggvG$
 

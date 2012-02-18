@@ -198,9 +198,10 @@ set autoread
 compiler ruby
 
 " *****************
-" Mapping section *                    
+" Mapping section *
 " *****************
 
+map Y y$
 nnoremap y "+y
 nnoremap p "+p
 map <C-J> <C-W>j<C-W>_

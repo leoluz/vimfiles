@@ -21,7 +21,7 @@ if has("gui_gtk2")
 
 elseif has("mac")
     set macmeta
-    set guifont=Menlo:h18
+    set guifont=Menlo:h15
     let vimhome = "~/.vim"
     let cfgfile = ".vimrc"
 

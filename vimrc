@@ -42,8 +42,6 @@ if has("gui_running")
     set cm=blowfish             " crypt method
     let &rtp = &rtp . "," . vimhome . "/bundle/vundle"
     call vundle#rc()
-else
-    syntax off
 end
 
 " ****************

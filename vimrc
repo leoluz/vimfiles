@@ -152,7 +152,8 @@ let g:acp_completeoptPreview = 1
 let g:NERDTreeShowBookmarks=1
 
 " CtrlP configuration
-let g:ctrlp_root_markers = ['pom.xml', 'src']
+"let g:ctrlp_root_markers = ['pom.xml', 'src']
+let g:ctrlp_working_path_mode = 'ra'
 let g:ctrlp_open_multi = '1'
 let g:ctrlp_arg_map = 1
 

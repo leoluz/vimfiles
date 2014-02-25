@@ -205,6 +205,7 @@ map Y y$
 nnoremap y "+y
 nnoremap p "+p
 nnoremap dd "+dd
+vnoremap d "+d
 map <C-J> <C-W>j<C-W>_
 map <C-K> <C-W>k<C-W>_
 map <silent><C-Left> <C-T>

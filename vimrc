@@ -63,6 +63,7 @@ if has("gui_running")
     Bundle 'leoluz/xmledit.git'
     Bundle 'leoluz/snipmate-snippets.git'
     Bundle 'kien/ctrlp.vim.git'
+    Bundle 'vim-scripts/taglist.vim.git'
 end
 
 " ****************
@@ -162,6 +163,12 @@ let g:ctrlp_arg_map = 1
 let g:snippets_dir=vimhome."/bundle/snipmate-snippets"
 let g:snips_author="Leonardo Luz"
 
+" Taglist configuration
+let Tlist_Compact_Format = 1
+let Tlist_Use_Right_Window = 1
+let Tlist_Use_SingleClick = 1
+
+
 let mapleader=" "
 set wildignore+=*.bak,*.pyc,*.py~,*.pdf,*.so,*.gif,*.jpg,*.flv,*.class,*.jar,*.png,*/tools/*,*/docs/*,*.swp,*/.svn/*,*/.git/*
 set wildmode=list:longest
@@ -246,6 +253,7 @@ inoremap { {}<ESC>i
 inoremap ( ()<ESC>i
 inoremap <C-l> <ESC>A
 
+nnoremap <silent> <F8> :TlistToggle<CR>
 nnoremap <silent><leader>q :NERDTreeToggle<CR>
 nnoremap <silent><leader>s :set spell spelllang=pt<CR>
 exec "nmap <leader>r :source ~/".cfgfile." <CR>:echo 'Refresh!' <CR>"

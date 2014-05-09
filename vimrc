@@ -52,6 +52,7 @@ if has("gui_running")
     Bundle 'gmarik/vundle.git'
     Bundle 'vim-scripts/AutoComplPop.git'
     Bundle 'tpope/vim-rails.git'
+    Bundle 'tpope/vim-fugitive'
     Bundle 'msanders/snipmate.vim.git'
     Bundle 'scrooloose/nerdtree.git'
     Bundle 'scrooloose/nerdcommenter.git'
@@ -65,13 +66,14 @@ if has("gui_running")
     Bundle 'kien/ctrlp.vim.git'
     Bundle 'vim-scripts/taglist.vim.git'
     Bundle 'jistr/vim-nerdtree-tabs'
+    Bundle 'bling/vim-airline'
 end
 
 " ****************
 " script section *
 " ****************
 
-" Add source navigation on python core livraries 
+" Add source navigation on python core livraries
 if has("python")
 python << EOF
 import os
@@ -168,7 +170,7 @@ let g:snips_author="Leonardo Luz"
 let Tlist_Compact_Format = 1
 let Tlist_Use_Right_Window = 1
 let Tlist_Use_SingleClick = 1
-let Tlist_Show_One_File = 1 
+let Tlist_Show_One_File = 1
 
 let mapleader=" "
 set wildignore+=*.bak,*.pyc,*.py~,*.pdf,*.so,*.gif,*.jpg,*.flv,*.class,*.jar,*.png,*/tools/*,*/docs/*,*.swp,*/.svn/*,*/.git/*
@@ -199,7 +201,7 @@ set guioptions-=r   " remove right-hand scroll bar
 set virtualedit=all
 set smartcase       " Do smart case matching
 set mousemodel=popup
-set foldmethod=indent 
+set foldmethod=indent
 set foldlevel=999
 set guitablabel=%N\ %t\ %M
 set autoread

@@ -212,14 +212,15 @@ map Y y$
 nnoremap y "+y
 nnoremap p "+p
 nnoremap dd "+dd
+vnoremap y "+y
 vnoremap d "+d
+nnoremap <CR> o<ESC>
 map <C-J> <C-W>j<C-W>_
 map <C-K> <C-W>k<C-W>_
 map <silent><C-Left> <C-T>
 map <silent><C-Right> <C-]>
 imap <C-s> <ESC>:w<CR>
 nmap <C-s> :w<CR>
-vnoremap y "+y
 vmap <silent><C-s> :sort<CR>
 imap <silent><C-Del> <ESC>dea
 inoremap <C-k> <ESC>

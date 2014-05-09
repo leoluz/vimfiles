@@ -64,6 +64,7 @@ if has("gui_running")
     Bundle 'leoluz/snipmate-snippets.git'
     Bundle 'kien/ctrlp.vim.git'
     Bundle 'vim-scripts/taglist.vim.git'
+    Bundle 'jistr/vim-nerdtree-tabs'
 end
 
 " ****************
@@ -254,7 +255,7 @@ inoremap ( ()<ESC>i
 inoremap <C-l> <ESC>A
 
 nnoremap <silent> <F8> :TlistToggle<CR>
-nnoremap <silent><leader>q :NERDTreeToggle<CR>
+nnoremap <silent><leader>q :NERDTreeTabsToggle<CR>
 nnoremap <silent><leader>s :set spell spelllang=pt<CR>
 exec "nmap <leader>r :source ~/".cfgfile." <CR>:echo 'Refresh!' <CR>"
 

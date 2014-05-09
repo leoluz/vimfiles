@@ -167,7 +167,7 @@ let g:snips_author="Leonardo Luz"
 let Tlist_Compact_Format = 1
 let Tlist_Use_Right_Window = 1
 let Tlist_Use_SingleClick = 1
-
+let Tlist_Show_One_File = 1 
 
 let mapleader=" "
 set wildignore+=*.bak,*.pyc,*.py~,*.pdf,*.so,*.gif,*.jpg,*.flv,*.class,*.jar,*.png,*/tools/*,*/docs/*,*.swp,*/.svn/*,*/.git/*

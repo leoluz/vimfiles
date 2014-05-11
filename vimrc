@@ -33,40 +33,45 @@ elseif has("gui_win32")
 else
     let vimhome = "~/.vim"
     let cfgfile = ".vimrc"
+end
 
+" ****************
+" Vundle Section *
+" ****************
+if has("gui_running")
+
+    filetype off
+    let &rtp.=",".vimhome."/bundle/Vundle.vim"
+    call vundle#begin()
+
+    Plugin 'gmarik/Vundle.vim'
+    Plugin 'vim-scripts/AutoComplPop.git'
+    Plugin 'tpope/vim-rails'
+    Plugin 'tpope/vim-fugitive'
+    Plugin 'msanders/snipmate.vim.git'
+    Plugin 'scrooloose/nerdtree.git'
+    Plugin 'scrooloose/nerdcommenter.git'
+    Plugin 'tpope/vim-markdown.git'
+    Plugin 'tpope/vim-surround.git'
+    Plugin 'tpope/vim-repeat.git'
+    Plugin 'vim-ruby/vim-ruby.git'
+    Plugin 'tpope/vim-cucumber.git'
+    Plugin 'leoluz/xmledit.git'
+    Plugin 'leoluz/snipmate-snippets.git'
+    Plugin 'kien/ctrlp.vim.git'
+    Plugin 'vim-scripts/taglist.vim.git'
+    Plugin 'jistr/vim-nerdtree-tabs'
+    Plugin 'bling/vim-airline'
+    Plugin 'fatih/vim-go'
+
+    call vundle#end()
+    filetype plugin indent on
 end
 
 if has("gui_running")
     colorscheme candycode       " other nice colorschemes to try: molokai, fruity
     set cursorline              " highlight current line
     set cm=blowfish             " crypt method
-    let &rtp = &rtp . "," . vimhome . "/bundle/vundle"
-    call vundle#rc()
-end
-
-" ****************
-" Bundle Section *
-" ****************
-
-if has("gui_running")
-    Bundle 'gmarik/vundle.git'
-    Bundle 'vim-scripts/AutoComplPop.git'
-    Bundle 'tpope/vim-rails.git'
-    Bundle 'tpope/vim-fugitive'
-    Bundle 'msanders/snipmate.vim.git'
-    Bundle 'scrooloose/nerdtree.git'
-    Bundle 'scrooloose/nerdcommenter.git'
-    Bundle 'tpope/vim-markdown.git'
-    Bundle 'tpope/vim-surround.git'
-    Bundle 'tpope/vim-repeat.git'
-    Bundle 'vim-ruby/vim-ruby.git'
-    Bundle 'tpope/vim-cucumber.git'
-    Bundle 'leoluz/xmledit.git'
-    Bundle 'leoluz/snipmate-snippets.git'
-    Bundle 'kien/ctrlp.vim.git'
-    Bundle 'vim-scripts/taglist.vim.git'
-    Bundle 'jistr/vim-nerdtree-tabs'
-    Bundle 'bling/vim-airline'
 end
 
 " ****************
@@ -85,67 +90,9 @@ for p in sys.path:
 EOF
 endif
 
-" *********************
-" Status line section *
-" *********************
-
-set statusline=%t\              "tail of the filename
-set statusline+=%y              "filetype
-
-"display a warning if file encoding isn't utf-8
-set statusline+=%{(&fenc!='utf-8'&&&fenc!='')?'['.&fenc.']':''}
-set statusline+=%*
-
-"display a warning if &et is wrong, or we have mixed-indenting
-set statusline+=%{StatuslineTabWarning()}
-set statusline+=%*
-
-set statusline+=%r              "read only flag
-set statusline+=%m              "modified flag
-
-set statusline+=%=              "left/right separator
-set statusline+=col:%c\         "cursor column
-set statusline+=line:%l/%L\     "cursor line
-set statusline+=%P              "percent through file
-set laststatus=2
-
-"return '[&et]' if &et is set wrong
-"return '[mixed-indenting]' if spaces and tabs are used to indent
-"return an empty string if everything is fine
-function! StatuslineTabWarning()
-    if !exists("b:statusline_tab_warning")
-        let tabs = search('^\t', 'nw') != 0
-        let spaces = search('^ ', 'nw') != 0
-
-        if tabs && spaces
-            let b:statusline_tab_warning = '[mixed-indenting]'
-        elseif (spaces && !&et) || (tabs && &et)
-            let b:statusline_tab_warning = '[&et]'
-        else
-            let b:statusline_tab_warning = ''
-        endif
-    endif
-    return b:statusline_tab_warning
-endfunction
-
 " ****************
 " Config section *
 " ****************
-
-if has("autocmd")
-    au BufRead,BufNewFile *.js set ft=javascript.jquery
-    autocmd User Rails.view.* set ft+=.html
-    autocmd FileType python set omnifunc=pythoncomplete#Complete
-    autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
-    autocmd FileType java set omnifunc=javacomplete#Complete
-    autocmd FileType ruby set omnifunc=rubycomplete#Complete
-    autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
-    autocmd FileType css set omnifunc=csscomplete#CompleteCSS
-    autocmd FileType xml set omnifunc=xmlcomplete#CompleteTags
-    autocmd FileType php set omnifunc=phpcomplete#CompletePHP
-    autocmd FileType c set omnifunc=ccomplete#Complete
-    autocmd GUIEnter * set lines=40 columns=150
-endif
 
 " AutoComplPop configuration
 let g:acp_behaviorKeywordLength = 4
@@ -154,6 +101,7 @@ let g:acp_completeoptPreview = 1
 
 " NERDTree configuration
 let g:NERDTreeShowBookmarks=1
+let g:nerdtree_tabs_open_on_gui_startup = 0
 
 " CtrlP configuration
 "let g:ctrlp_root_markers = ['pom.xml', 'src']
@@ -173,6 +121,7 @@ let Tlist_Use_SingleClick = 1
 let Tlist_Show_One_File = 1
 
 let mapleader=" "
+set laststatus=2
 set wildignore+=*.bak,*.pyc,*.py~,*.pdf,*.so,*.gif,*.jpg,*.flv,*.class,*.jar,*.png,*/tools/*,*/docs/*,*.swp,*/.svn/*,*/.git/*
 set wildmode=list:longest
 set wildmenu

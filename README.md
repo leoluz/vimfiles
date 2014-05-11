@@ -17,14 +17,16 @@ Instalation
 
 In your favorite shell type:
 
-    git clone https://leoluz@github.com/leoluz/vimfiles.git
-    cd vimfiles
+    cd ~
+    git clone https://leoluz@github.com/leoluz/vimfiles.git .vim
+    ln -s ~/.vim/vimrc .vimrc
+    cd .vim
     git submodule init
     git submodule update
 
 Start Vim and type:
 
-    :BundleInstall
+    :PluginInstall
 
 That's it! You are ready to go! 
 Enjoy!

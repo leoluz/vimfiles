@@ -104,7 +104,6 @@ let g:NERDTreeShowBookmarks=1
 let g:nerdtree_tabs_open_on_gui_startup = 0
 
 " CtrlP configuration
-"let g:ctrlp_root_markers = ['pom.xml', 'src']
 let g:ctrlp_working_path_mode = 'ra'
 let g:ctrlp_by_filename = 1
 let g:ctrlp_open_multi = '1'
@@ -160,36 +159,31 @@ compiler ruby
 " Mapping section *
 " *****************
 
+" Maps for yanks
 map Y y$
 nnoremap y "+y
 nnoremap p "+p
 nnoremap dd "+dd
 vnoremap y "+y
 vnoremap d "+d
-nnoremap <CR> o<ESC>
-map <C-J> <C-W>j<C-W>_
-map <C-K> <C-W>k<C-W>_
-map <silent><C-Left> <C-T>
-map <silent><C-Right> <C-]>
-imap <C-s> <ESC>:w<CR>
-nmap <C-s> :w<CR>
-vmap <silent><C-s> :sort<CR>
-imap <silent><C-Del> <ESC>dea
-inoremap <C-k> <ESC>
-nnoremap j gj
-nnoremap k gk
-inoremap <C-a> <ESC>ggvG$
-nnoremap <silent><leader>e ggvG$
 
-" Maps for tab specific funcionalities
+" Maps for buffer navigation
+nnoremap <leader>j <C-W>j
+nnoremap <leader>k <C-W>k
+nnoremap <leader>h <C-W>h
+nnoremap <leader>l <C-W>l
+nnoremap <leader>m <C-W>_
+nnoremap <leader>n <C-W>=
+
+" Maps for tabs specific funcionalities
 nnoremap L :tabnext<CR>
 nnoremap H :tabprevious<CR>
 map <M-t> :tabnew<CR>
-nmap <silent><leader>n :tabnew<CR>
 
-" Remap code completion to Ctrl-Space
-inoremap <C-Space> <C-x><C-u>
+" Omni completion maps
+inoremap <C-Space> <C-x><C-o>
 inoremap <C-j> <C-n>
+inoremap <C-k> <C-p>
 
 " Rails specific mappings
 inoremap <M-=> <%=  %><ESC>hhi
@@ -205,14 +199,28 @@ inoremap { {}<ESC>i
 inoremap ( ()<ESC>i
 inoremap <C-l> <ESC>A
 
+" NerdCommenter maps
+nmap <silent><leader>/ <plug>NERDCommenterToggle
+vmap <leader>/ <plug>NERDCommenterToggle
+vmap <leader>c <plug>NERDCommenterSexy
+
+" Plugin maps
 nnoremap <silent> <F8> :TlistToggle<CR>
 nnoremap <silent><leader>q :NERDTreeTabsToggle<CR>
 nnoremap <silent><leader>s :set spell spelllang=pt<CR>
-exec "nmap <leader>r :source ~/".cfgfile." <CR>:echo 'Refresh!' <CR>"
 
+" Misc maps
+map <silent><C-Left> <C-T>
+map <silent><C-Right> <C-]>
+inoremap <C-s> <ESC>:w<CR>
+nnoremap <C-s> :w<CR>
 nnoremap - :q<CR>
 nnoremap <C-_> :q!<CR>
-
-map <silent><leader>c <plug>NERDCommenterToggle
-map <silent><leader>x <plug>NERDCommenterSexy
-map <silent><leader>z <plug>NERDCommenterMinimal
+vmap <silent><C-s> :sort<CR>
+imap <silent><C-Del> <ESC>dea
+nnoremap <CR> o<ESC>
+nnoremap j gj
+nnoremap k gk
+inoremap <C-a> <ESC>ggvG$
+nnoremap <silent><leader>a ggvG$
+exec "nmap <leader>r :source ~/".cfgfile." <CR>:echo 'Vim configs reloaded!' <CR>"

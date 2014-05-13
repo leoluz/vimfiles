@@ -36,37 +36,42 @@ else
 end
 
 " ****************
-" Vundle Section *
+" Plugin Section *
 " ****************
-if has("gui_running")
+"
+if has('vim_starting')
+    set nocompatible
+    let &rtp.=",".vimhome."/bundle/neobundle.vim"
+endif
 
-    filetype off
-    let &rtp.=",".vimhome."/bundle/Vundle.vim"
-    call vundle#begin()
+call neobundle#begin(expand(vimhome."/bundle/"))
 
-    Plugin 'gmarik/Vundle.vim'
-    Plugin 'vim-scripts/AutoComplPop.git'
-    Plugin 'tpope/vim-rails'
-    Plugin 'tpope/vim-fugitive'
-    Plugin 'msanders/snipmate.vim.git'
-    Plugin 'scrooloose/nerdtree.git'
-    Plugin 'scrooloose/nerdcommenter.git'
-    Plugin 'tpope/vim-markdown.git'
-    Plugin 'tpope/vim-surround.git'
-    Plugin 'tpope/vim-repeat.git'
-    Plugin 'vim-ruby/vim-ruby.git'
-    Plugin 'tpope/vim-cucumber.git'
-    Plugin 'leoluz/xmledit.git'
-    Plugin 'leoluz/snipmate-snippets.git'
-    Plugin 'kien/ctrlp.vim.git'
-    Plugin 'vim-scripts/taglist.vim.git'
-    Plugin 'jistr/vim-nerdtree-tabs'
-    Plugin 'bling/vim-airline'
-    Plugin 'fatih/vim-go'
+" Let NeoBundle manage NeoBundle
+NeoBundleFetch 'Shougo/neobundle.vim'
 
-    call vundle#end()
-    filetype plugin indent on
-end
+" My bundles
+NeoBundle 'tpope/vim-rails'
+NeoBundle 'tpope/vim-fugitive'
+NeoBundle 'msanders/snipmate.vim.git'
+NeoBundle 'scrooloose/nerdtree.git'
+NeoBundle 'scrooloose/nerdcommenter.git'
+NeoBundle 'tpope/vim-markdown.git'
+NeoBundle 'tpope/vim-surround.git'
+NeoBundle 'tpope/vim-repeat.git'
+NeoBundle 'vim-ruby/vim-ruby.git'
+NeoBundle 'tpope/vim-cucumber.git'
+NeoBundle 'leoluz/xmledit.git'
+NeoBundle 'leoluz/snipmate-snippets.git'
+NeoBundle 'kien/ctrlp.vim.git'
+NeoBundle 'vim-scripts/taglist.vim.git'
+NeoBundle 'jistr/vim-nerdtree-tabs'
+NeoBundle 'bling/vim-airline'
+NeoBundle 'fatih/vim-go'
+NeoBundle 'Shougo/neocomplete.vim'
+
+call neobundle#end()
+filetype plugin indent on
+NeoBundleCheck
 
 if has("gui_running")
     colorscheme candycode       " other nice colorschemes to try: molokai, fruity
@@ -94,11 +99,6 @@ endif
 " Config section *
 " ****************
 
-" AutoComplPop configuration
-let g:acp_behaviorKeywordLength = 4
-let g:acp_enableAtStartup = 1
-let g:acp_completeoptPreview = 1
-
 " NERDTree configuration
 let g:NERDTreeShowBookmarks=1
 let g:nerdtree_tabs_open_on_gui_startup = 0
@@ -118,6 +118,12 @@ let Tlist_Compact_Format = 1
 let Tlist_Use_Right_Window = 1
 let Tlist_Use_SingleClick = 1
 let Tlist_Show_One_File = 1
+
+" NeoComplete configuration
+let g:neocomplete#enable_at_startup = 1
+inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+inoremap <expr><S-TAB>  pumvisible() ? "\<C-p>" : "\<S-TAB>"
+inoremap <expr><Space> pumvisible() ? neocomplete#close_popup() : "\<Space>"
 
 let mapleader=" "
 set laststatus=2

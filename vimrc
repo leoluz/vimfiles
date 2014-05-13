@@ -44,34 +44,37 @@ if has('vim_starting')
     let &rtp.=",".vimhome."/bundle/neobundle.vim"
 endif
 
-call neobundle#begin(expand(vimhome."/bundle/"))
+if has('gui_running')
 
-" Let NeoBundle manage NeoBundle
-NeoBundleFetch 'Shougo/neobundle.vim'
+    call neobundle#begin(expand(vimhome."/bundle/"))
 
-" My bundles
-NeoBundle 'tpope/vim-rails'
-NeoBundle 'tpope/vim-fugitive'
-NeoBundle 'msanders/snipmate.vim.git'
-NeoBundle 'scrooloose/nerdtree.git'
-NeoBundle 'scrooloose/nerdcommenter.git'
-NeoBundle 'tpope/vim-markdown.git'
-NeoBundle 'tpope/vim-surround.git'
-NeoBundle 'tpope/vim-repeat.git'
-NeoBundle 'vim-ruby/vim-ruby.git'
-NeoBundle 'tpope/vim-cucumber.git'
-NeoBundle 'leoluz/xmledit.git'
-NeoBundle 'leoluz/snipmate-snippets.git'
-NeoBundle 'kien/ctrlp.vim.git'
-NeoBundle 'vim-scripts/taglist.vim.git'
-NeoBundle 'jistr/vim-nerdtree-tabs'
-NeoBundle 'bling/vim-airline'
-NeoBundle 'fatih/vim-go'
-NeoBundle 'Shougo/neocomplete.vim'
+    " Let NeoBundle manage NeoBundle
+    NeoBundleFetch 'Shougo/neobundle.vim'
 
-call neobundle#end()
-filetype plugin indent on
-NeoBundleCheck
+    " My bundles
+    NeoBundle 'tpope/vim-rails'
+    NeoBundle 'tpope/vim-fugitive'
+    NeoBundle 'msanders/snipmate.vim.git'
+    NeoBundle 'scrooloose/nerdtree.git'
+    NeoBundle 'scrooloose/nerdcommenter.git'
+    NeoBundle 'tpope/vim-markdown.git'
+    NeoBundle 'tpope/vim-surround.git'
+    NeoBundle 'tpope/vim-repeat.git'
+    NeoBundle 'vim-ruby/vim-ruby.git'
+    NeoBundle 'tpope/vim-cucumber.git'
+    NeoBundle 'leoluz/xmledit.git'
+    NeoBundle 'leoluz/snipmate-snippets.git'
+    NeoBundle 'kien/ctrlp.vim.git'
+    NeoBundle 'vim-scripts/taglist.vim.git'
+    NeoBundle 'jistr/vim-nerdtree-tabs'
+    NeoBundle 'bling/vim-airline'
+    NeoBundle 'fatih/vim-go'
+    NeoBundle 'Shougo/neocomplete.vim'
+
+    call neobundle#end()
+    filetype plugin indent on
+    NeoBundleCheck
+end
 
 if has("gui_running")
     colorscheme candycode       " other nice colorschemes to try: molokai, fruity

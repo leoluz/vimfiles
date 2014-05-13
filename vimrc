@@ -126,7 +126,7 @@ let Tlist_Show_One_File = 1
 let g:neocomplete#enable_at_startup = 1
 inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
 inoremap <expr><S-TAB>  pumvisible() ? "\<C-p>" : "\<S-TAB>"
-inoremap <expr><Space> pumvisible() ? neocomplete#close_popup() : "\<Space>"
+inoremap <expr><Esc> pumvisible() ? neocomplete#close_popup() : "\<Esc>"
 
 let mapleader=" "
 set laststatus=2

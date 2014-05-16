@@ -70,6 +70,7 @@ if has('gui_running')
     NeoBundle 'bling/vim-airline'
     NeoBundle 'fatih/vim-go'
     NeoBundle 'Shougo/neocomplete.vim'
+    NeoBundle 'tfnico/vim-gradle'
 
     call neobundle#end()
     filetype plugin indent on

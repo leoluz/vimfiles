@@ -71,6 +71,7 @@ if has('gui_running')
     NeoBundle 'fatih/vim-go'
     NeoBundle 'Shougo/neocomplete.vim'
     NeoBundle 'tfnico/vim-gradle'
+    NeoBundle 'Raimondi/delimitMate'
 
     call neobundle#end()
     filetype plugin indent on
@@ -127,6 +128,9 @@ let Tlist_Show_One_File = 1
 let g:neocomplete#enable_at_startup = 1
 inoremap <expr><TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
 inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<S-TAB>"
+
+" DelimitMate configuration
+let delimitMate_expand_cr = 1
 
 let mapleader=" "
 set laststatus=2
@@ -201,12 +205,6 @@ nnoremap gr  :R<CR>
 nnoremap grt :RT<CR>
 nnoremap ga  :A<CR>
 nnoremap gat :AT<CR>
-
-" Automatically surround brackets, parentheses, etc..
-inoremap [ []<ESC>i
-inoremap { {}<ESC>i
-inoremap ( ()<ESC>i
-inoremap <C-l> <ESC>A
 
 " NerdCommenter maps
 nmap <silent><leader>/ <plug>NERDCommenterToggle

@@ -172,6 +172,7 @@ map Y y$
 nnoremap y "+y
 nnoremap p "+p
 nnoremap dd "+dd
+nnoremap D "+D
 vnoremap y "+y
 vnoremap d "+d
 

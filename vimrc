@@ -215,11 +215,11 @@ vmap <leader>c <plug>NERDCommenterSexy
 " Plugin maps
 nnoremap <silent> <F8> :TlistToggle<CR>
 nnoremap <silent><leader>q :NERDTreeTabsToggle<CR>
-nnoremap <silent><leader>s :set spell spelllang=pt<CR>
 
 " Misc maps
 map <silent><C-Left> <C-T>
 map <silent><C-Right> <C-]>
+map <F5> :setlocal spell! spelllang=en_us<CR>
 inoremap <C-s> <ESC>:w<CR>
 nnoremap <C-s> :w<CR>
 nnoremap - :q<CR>

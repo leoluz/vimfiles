@@ -217,8 +217,7 @@ nnoremap <silent> <F8> :TlistToggle<CR>
 nnoremap <silent><leader>q :NERDTreeTabsToggle<CR>
 
 " Misc maps
-map <silent><C-Left> <C-T>
-map <silent><C-Right> <C-]>
+map <silent><C-[> <C-T>
 map <F5> :setlocal spell! spelllang=en_us<CR>
 inoremap <C-s> <ESC>:w<CR>
 nnoremap <C-s> :w<CR>

@@ -5,12 +5,17 @@ About
 -----
 
 This is a project to maintain my Vim configuration files.
-It uses [Vundle](https://github.com/gmarik/vundle) approach to manage Vim plugins.
+It uses [NeoBundle](https://github.com/Shougo/neobundle.vim) approach to manage Vim plugins.
 
 Fill free to hack around and use these files as you wish but IMHO the best
 way to learn is doing it by yourself.
 
 Good luck!
+
+Pre-reqs
+--------
+
+This vim setup depends on having `lua` support. To check just type :version and you should see `+lua` instead of `-lua` listed.
 
 Instalation
 -----------
@@ -24,9 +29,7 @@ In your favorite shell type:
     git submodule init
     git submodule update
 
-Start Vim and type:
-
-    :PluginInstall
+For the first time you start Vim it will automatically install all the needed plugins.
 
 That's it! You are ready to go! 
 Enjoy!

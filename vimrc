@@ -224,7 +224,6 @@ nnoremap <C-s> :w<CR>
 nnoremap - :q<CR>
 nnoremap <C-_> :q!<CR>
 vmap <silent><C-s> :sort<CR>
-imap <silent><C-Del> <ESC>dea
 nnoremap <CR> o<ESC>
 nnoremap j gj
 nnoremap k gk

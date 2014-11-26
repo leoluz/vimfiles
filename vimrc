@@ -172,16 +172,7 @@ compiler ruby
 " Mapping section *
 " *****************
 
-" Maps for yanks
-map Y y$
-nnoremap y "+y
-nnoremap p "+p
-nnoremap dd "+dd
-nnoremap D "+D
-vnoremap y "+y
-vnoremap d "+d
-
-" Maps for buffer navigation
+"" Maps for buffer navigation
 nnoremap <leader>j <C-W>j
 nnoremap <leader>k <C-W>k
 nnoremap <leader>h <C-W>h
@@ -189,17 +180,17 @@ nnoremap <leader>l <C-W>l
 nnoremap <leader>m <C-W>_
 nnoremap <leader>n <C-W>=
 
-" Maps for tabs specific funcionalities
+"" Maps for tabs specific funcionalities
 nnoremap L :tabnext<CR>
 nnoremap H :tabprevious<CR>
 map <M-t> :tabnew<CR>
 
-" Omni completion maps
+"" Omni completion maps
 inoremap <C-Space> <C-x><C-o>
 inoremap <C-j> <C-n>
 inoremap <C-k> <C-p>
 
-" Rails specific mappings
+"" Rails specific mappings
 inoremap <M-=> <%=  %><ESC>hhi
 inoremap <M--> <%  -%><ESC>hhhi
 nnoremap gr  :R<CR>
@@ -207,25 +198,25 @@ nnoremap grt :RT<CR>
 nnoremap ga  :A<CR>
 nnoremap gat :AT<CR>
 
-" NerdCommenter maps
+"" NerdCommenter maps
 nmap <silent><leader>/ <plug>NERDCommenterToggle
 vmap <leader>/ <plug>NERDCommenterToggle
-vmap <leader>c <plug>NERDCommenterSexy
+"vmap <leader>c <plug>NERDCommenterSexy
 
-" Plugin maps
-nnoremap <silent> <F8> :TlistToggle<CR>
+"" Plugin maps
+snoremap <silent> <F8> :TlistToggle<CR>
 nnoremap <silent><leader>q :NERDTreeTabsToggle<CR>
 
-" Misc maps
-map <silent><C-[> <C-T>
-map <F5> :setlocal spell! spelllang=en_us<CR>
+"" Misc maps
 inoremap <C-s> <ESC>:w<CR>
 nnoremap <C-s> :w<CR>
+vmap <silent><C-s> :sort<CR>
+nnoremap <CR> o<ESC>
+map <F5> :setlocal spell! spelllang=en_us<CR>
+nnoremap <leader>s z=
 nnoremap - :q<CR>
 nnoremap <C-_> :q!<CR>
-vmap <silent><C-s> :sort<CR>
 imap <silent><C-Del> <ESC>dea
-nnoremap <CR> o<ESC>
 nnoremap j gj
 nnoremap k gk
 inoremap <C-a> <ESC>ggvG$

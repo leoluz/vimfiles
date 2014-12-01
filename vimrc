@@ -124,13 +124,11 @@ let Tlist_Use_Right_Window = 1
 let Tlist_Use_SingleClick = 1
 let Tlist_Show_One_File = 1
 
-" NeoComplete configuration
-let g:neocomplete#enable_at_startup = 1
-inoremap <expr><TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<S-TAB>"
-
 " DelimitMate configuration
 let delimitMate_expand_cr = 1
+
+" NeoComplete configuration
+let g:neocomplete#enable_at_startup = 1
 
 let mapleader=" "
 set laststatus=2
@@ -201,7 +199,6 @@ nnoremap gat :AT<CR>
 "" NerdCommenter maps
 nmap <silent><leader>/ <plug>NERDCommenterToggle
 vmap <leader>/ <plug>NERDCommenterToggle
-"vmap <leader>c <plug>NERDCommenterSexy
 
 "" Plugin maps
 snoremap <silent> <F8> :TlistToggle<CR>
@@ -209,6 +206,7 @@ nnoremap <silent><leader>q :NERDTreeTabsToggle<CR>
 
 "" Misc maps
 inoremap <C-s> <ESC>:w<CR>
+inoremap <C-l> <ESC>A
 nnoremap <C-s> :w<CR>
 vmap <silent><C-s> :sort<CR>
 nnoremap <CR> o<ESC>

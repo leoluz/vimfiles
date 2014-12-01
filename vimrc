@@ -219,4 +219,5 @@ nnoremap j gj
 nnoremap k gk
 inoremap <C-a> <ESC>ggvG$
 nnoremap <silent><leader>a ggvG$
+imap <silent><C-Del> <ESC>dea
 exec "nmap <leader>r :source ~/".cfgfile." <CR>:echo 'Vim configs reloaded!' <CR>"

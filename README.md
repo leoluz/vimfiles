@@ -39,5 +39,5 @@ Details
 
 * author: Leonardo Luz
 * email: leonardo.la at gmail dot com
-* blog: [LeoLuz](http://leo.classluz.net)
+* blog: [LeoLuz](http://blog.leoluz.me)
 * twitter: @leo_luz

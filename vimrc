@@ -54,7 +54,6 @@ if has('gui_running')
     " My bundles
     NeoBundle 'tpope/vim-rails'
     NeoBundle 'tpope/vim-fugitive'
-    NeoBundle 'msanders/snipmate.vim.git'
     NeoBundle 'scrooloose/nerdtree.git'
     NeoBundle 'scrooloose/nerdcommenter.git'
     NeoBundle 'tpope/vim-markdown.git'
@@ -63,15 +62,17 @@ if has('gui_running')
     NeoBundle 'vim-ruby/vim-ruby.git'
     NeoBundle 'tpope/vim-cucumber.git'
     NeoBundle 'leoluz/xmledit.git'
-    NeoBundle 'leoluz/snipmate-snippets.git'
     NeoBundle 'kien/ctrlp.vim.git'
     NeoBundle 'vim-scripts/taglist.vim.git'
     NeoBundle 'jistr/vim-nerdtree-tabs'
     NeoBundle 'bling/vim-airline'
-    NeoBundle 'fatih/vim-go'
+    "NeoBundle 'fatih/vim-go'
+    NeoBundle 'leoluz/vim-go'
     NeoBundle 'Shougo/neocomplete.vim'
     NeoBundle 'tfnico/vim-gradle'
     NeoBundle 'Raimondi/delimitMate'
+    NeoBundle 'SirVer/ultisnips'
+    NeoBundle 'honza/vim-snippets'
 
     call neobundle#end()
     filetype plugin indent on
@@ -114,9 +115,10 @@ let g:ctrlp_by_filename = 1
 let g:ctrlp_open_multi = '1'
 let g:ctrlp_arg_map = 1
 
-" Snipmate configuration
-let g:snippets_dir=vimhome."/bundle/snipmate-snippets"
-let g:snips_author="Leonardo Luz"
+" Ultisnips configuration
+let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsJumpForwardTrigger="<tab>"
+let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
 
 " Taglist configuration
 let Tlist_Compact_Format = 1
@@ -137,7 +139,7 @@ let g:go_highlight_structs = 1
 au FileType go nmap <Leader>gd <Plug>(go-doc)
 au FileType go nmap <Leader>gv <Plug>(go-doc-vertical)
 au FileType go nmap <Leader>i <Plug>(go-info)
-au FileType go nmap <leader>r <Plug>(go-run)
+au FileType go nmap <leader>x <Plug>(go-run)
 au FileType go nmap <leader>b <Plug>(go-build)
 au FileType go nmap <leader>t <Plug>(go-test)
 au FileType go nmap <leader>c <Plug>(go-coverage)

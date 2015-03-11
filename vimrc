@@ -66,13 +66,13 @@ if has('gui_running')
     NeoBundle 'vim-scripts/taglist.vim.git'
     NeoBundle 'jistr/vim-nerdtree-tabs'
     NeoBundle 'bling/vim-airline'
-    "NeoBundle 'fatih/vim-go'
-    NeoBundle 'leoluz/vim-go'
     NeoBundle 'Shougo/neocomplete.vim'
     NeoBundle 'tfnico/vim-gradle'
     NeoBundle 'Raimondi/delimitMate'
     NeoBundle 'SirVer/ultisnips'
     NeoBundle 'honza/vim-snippets'
+    NeoBundle 'fatih/vim-go'
+    "NeoBundle 'leoluz/vim-go'
 
     call neobundle#end()
     filetype plugin indent on

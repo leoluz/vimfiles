@@ -17,22 +17,17 @@ syntax on
 if has("gui_gtk2")
     set guifont=Monospace\ 11
     let vimhome = "~/.vim"
-    let cfgfile = ".vimrc"
 
 elseif has("mac")
     set macmeta
     set guifont=Menlo:h15
     let vimhome = "~/.vim"
-    let cfgfile = ".vimrc"
 
 elseif has("gui_win32")
     set guifont=Dejavu\ Sans\ Mono:h13,Consolas:h12
     let vimhome = "~/vimfiles"
-    let cfgfile = "_vimrc"
-
 else
     let vimhome = "~/.vim"
-    let cfgfile = ".vimrc"
 end
 
 " ****************
@@ -72,7 +67,6 @@ if has('gui_running')
     NeoBundle 'SirVer/ultisnips'
     NeoBundle 'honza/vim-snippets'
     NeoBundle 'fatih/vim-go'
-    "NeoBundle 'leoluz/vim-go'
 
     call neobundle#end()
     filetype plugin indent on
@@ -224,11 +218,13 @@ nnoremap <silent><leader>q :NERDTreeTabsToggle<CR>
 inoremap <C-s> <ESC>:w<CR>
 inoremap <C-l> <ESC>A
 nnoremap <C-s> :w<CR>
+nnoremap <C-l> :bnext<CR>
+nnoremap <C-h> :bprevious<CR>
 vmap <silent><C-s> :sort<CR>
 nnoremap <CR> o<ESC>
 map <F5> :setlocal spell! spelllang=en_us<CR>
 nnoremap <leader>s z=
-nnoremap - :q<CR>
+nnoremap - :bdelete<CR>
 nnoremap <C-_> :q!<CR>
 imap <silent><C-Del> <ESC>dea
 nnoremap j gj
@@ -236,4 +232,5 @@ nnoremap k gk
 inoremap <C-a> <ESC>ggvG$
 nnoremap <silent><leader>a ggvG$
 imap <silent><C-Del> <ESC>dea
-exec "nmap <leader>r :source ~/".cfgfile." <CR>:echo 'Vim configs reloaded!' <CR>"
+nnoremap <silent> <leader>ev :e $MYVIMRC<CR>
+nnoremap <silent> <leader>r :source $MYVIMRC<CR>:echo 'Vim configs reloaded!' <CR>

@@ -58,7 +58,6 @@ if has('gui_running')
     NeoBundle 'tpope/vim-cucumber.git'
     NeoBundle 'leoluz/xmledit.git'
     NeoBundle 'kien/ctrlp.vim.git'
-    NeoBundle 'vim-scripts/taglist.vim.git'
     NeoBundle 'jistr/vim-nerdtree-tabs'
     NeoBundle 'bling/vim-airline'
     NeoBundle 'Shougo/neocomplete.vim'
@@ -67,6 +66,8 @@ if has('gui_running')
     NeoBundle 'SirVer/ultisnips'
     NeoBundle 'honza/vim-snippets'
     NeoBundle 'fatih/vim-go'
+    NeoBundle 'majutsushi/tagbar'
+    "NeoBundle 'vim-scripts/taglist.vim.git'
 
     call neobundle#end()
     filetype plugin indent on
@@ -139,6 +140,7 @@ au FileType go nmap <leader>t <Plug>(go-test)
 au FileType go nmap <leader>c <Plug>(go-coverage)
 au FileType go nmap <Leader>ds <Plug>(go-def-split)
 au FileType go nmap <Leader>dt <Plug>(go-def-tab)
+au FileType go nmap <Leader>gi :GoImports<CR>
 
 let mapleader=" "
 set laststatus=2
@@ -210,8 +212,10 @@ nnoremap gat :AT<CR>
 nmap <silent><leader>/ <plug>NERDCommenterToggle
 vmap <leader>/ <plug>NERDCommenterToggle
 
-"" Plugin maps
-snoremap <silent> <F8> :TlistToggle<CR>
+"" Tagbar maps
+nnoremap <leader>w :TagbarToggle<CR>
+
+"" NERDTree maps
 nnoremap <silent><leader>q :NERDTreeTabsToggle<CR>
 
 "" Misc maps

@@ -140,7 +140,7 @@ au FileType go nmap <leader>t <Plug>(go-test)
 au FileType go nmap <leader>c <Plug>(go-coverage)
 au FileType go nmap <Leader>ds <Plug>(go-def-split)
 au FileType go nmap <Leader>dt <Plug>(go-def-tab)
-au FileType go nmap <Leader>gi :GoImports<CR>
+au FileType go nmap <Leader>i :GoImports<CR>
 
 let mapleader=" "
 set laststatus=2

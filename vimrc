@@ -75,7 +75,6 @@ if has('gui_running')
 end
 
 if has("gui_running")
-    colorscheme candycode       " other nice colorschemes to try: molokai, fruity
     set cursorline              " highlight current line
     set cm=blowfish             " crypt method
 end
@@ -144,6 +143,7 @@ au FileType go nmap <Leader>gr :GoRename<CR>
 au FileType go nmap <Leader>gc :GoCallers<CR>
 au FileType go nmap <Leader>gd :GoDocBrowser<CR>
 
+colorscheme molokai " Other nice colorschemes to try: candycode, molokai, fruity
 let mapleader=" "
 set laststatus=2
 set wildignore+=*.bak,*.pyc,*.py~,*.pdf,*.so,*.gif,*.jpg,*.flv,*.class,*.jar,*.png,*/tools/*,*/docs/*,*.swp,*/.svn/*,*/.git/*
@@ -219,6 +219,13 @@ nnoremap <leader>w :TagbarToggle<CR>
 
 "" NERDTree maps
 nnoremap <silent><leader>q :NERDTreeTabsToggle<CR>
+
+"" Auto center
+nmap G Gzz
+nmap n nzz
+nmap N Nzz
+nmap } }zz
+nmap { {zz
 
 "" Misc maps
 inoremap <C-s> <ESC>:w<CR>

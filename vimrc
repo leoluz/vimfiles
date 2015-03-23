@@ -39,7 +39,7 @@ if has('vim_starting')
     let &rtp.=",".vimhome."/bundle/neobundle.vim"
 endif
 
-if has('gui_running')
+"if has('gui_running')
 
     call neobundle#begin(expand(vimhome."/bundle/"))
 
@@ -60,19 +60,20 @@ if has('gui_running')
     NeoBundle 'kien/ctrlp.vim.git'
     NeoBundle 'jistr/vim-nerdtree-tabs'
     NeoBundle 'bling/vim-airline'
-    NeoBundle 'Shougo/neocomplete.vim'
     NeoBundle 'tfnico/vim-gradle'
     NeoBundle 'Raimondi/delimitMate'
     NeoBundle 'SirVer/ultisnips'
     NeoBundle 'honza/vim-snippets'
     NeoBundle 'fatih/vim-go'
     NeoBundle 'majutsushi/tagbar'
-    "NeoBundle 'vim-scripts/taglist.vim.git'
+    if has("lua")
+        NeoBundle 'Shougo/neocomplete.vim'
+    end
 
     call neobundle#end()
     filetype plugin indent on
     NeoBundleCheck
-end
+"end
 
 if has("gui_running")
     set cursorline              " highlight current line
@@ -132,16 +133,18 @@ let g:go_highlight_methods = 1
 let g:go_highlight_structs = 1
 au FileType go nmap <Leader>gv <Plug>(go-doc-vertical)
 au FileType go nmap <Leader>gi <Plug>(go-info)
+au FileType go nmap <Leader>gs <Plug>(go-implements)
+au FileType go nmap <Leader>gd <Plug>(go-doc-browser)
+au FileType go nmap <Leader>gr <Plug>(go-rename)
+au FileType go nmap <Leader>gc <Plug>(go-callers)
+au FileType go nmap <Leader>gs <Plug>(go-implements)
+au FileType go nmap <Leader>ds <Plug>(go-def-split)
+au FileType go nmap <Leader>dt <Plug>(go-def-tab)
 au FileType go nmap <leader>x <Plug>(go-run)
 au FileType go nmap <leader>b <Plug>(go-build)
 au FileType go nmap <leader>t <Plug>(go-test)
 au FileType go nmap <leader>c <Plug>(go-coverage)
-au FileType go nmap <Leader>ds <Plug>(go-def-split)
-au FileType go nmap <Leader>dt <Plug>(go-def-tab)
 au FileType go nmap <Leader>i :GoImports<CR>
-au FileType go nmap <Leader>gr :GoRename<CR>
-au FileType go nmap <Leader>gc :GoCallers<CR>
-au FileType go nmap <Leader>gd :GoDocBrowser<CR>
 
 colorscheme molokai " Other nice colorschemes to try: candycode, molokai, fruity
 let mapleader=" "
@@ -229,10 +232,14 @@ nmap { {zz
 
 "" Misc maps
 inoremap <C-s> <ESC>:w<CR>
+inoremap <C-Space> <C-x><C-o>
+inoremap <C-@> <C-x><C-o>
 inoremap <C-l> <ESC>A
 nnoremap <C-s> :w<CR>
 nnoremap <C-l> :bnext<CR>
 nnoremap <C-h> :bprevious<CR>
+nnoremap <UP> ddkP
+nnoremap <Down> ddp
 vmap <silent><C-s> :sort<CR>
 nnoremap <CR> o<ESC>
 map <F5> :setlocal spell! spelllang=en_us<CR>

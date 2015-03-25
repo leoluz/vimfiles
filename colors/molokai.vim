@@ -127,8 +127,8 @@ else
    hi CursorColumn                  guibg=#293739
    hi ColorColumn                   guibg=#232526
    hi LineNr          guifg=#465457 guibg=#232526
-   hi NonText         guifg=#465457
-   hi SpecialKey      guifg=#465457
+   hi NonText         guifg=#2a3133
+   hi SpecialKey      guifg=#2a3133
 end
 
 "
@@ -228,9 +228,8 @@ if &t_Co > 255
    hi CursorColumn                ctermbg=236
    hi ColorColumn                 ctermbg=236
    hi LineNr          ctermfg=250 ctermbg=236
-   hi NonText         ctermfg=59
-
-   hi SpecialKey      ctermfg=59
+   hi NonText         ctermfg=237
+   hi SpecialKey      ctermfg=237
 
    if exists("g:rehash256") && g:rehash256 == 1
        hi Normal       ctermfg=252 ctermbg=234
@@ -266,8 +265,8 @@ if &t_Co > 255
 
        hi Comment         ctermfg=244
        hi LineNr          ctermfg=239 ctermbg=235
-       hi NonText         ctermfg=239
-       hi SpecialKey      ctermfg=239
+       hi NonText         ctermfg=237
+       hi SpecialKey      ctermfg=237
    endif
 end
 

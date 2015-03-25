@@ -181,6 +181,8 @@ set foldmethod=indent
 set foldlevel=999
 set guitablabel=%N\ %t\ %M
 set autoread
+set listchars=tab:→\ ,trail:~
+set list
 compiler ruby
 
 " *****************

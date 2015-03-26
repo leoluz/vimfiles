@@ -146,6 +146,23 @@ au FileType go nmap <leader>t <Plug>(go-test)
 au FileType go nmap <leader>c <Plug>(go-coverage)
 au FileType go nmap <Leader>i :GoImports<CR>
 
+" air-line configuration
+if !exists('g:airline_symbols')
+    let g:airline_symbols = {}
+endif
+let g:airline_theme = 'tomorrow'
+let g:airline_section_warning = ''
+let g:airline_inactive_collapse = 0
+let g:airline_left_sep = '▄'
+let g:airline_right_sep = '▄'
+let g:airline_left_alt_sep = '→'
+let g:airline_right_alt_sep = '←'
+let g:airline_symbols.linenr = '│'
+let g:airline_symbols.branch = '±'
+let g:airline_symbols.branch = '⎇'
+let g:airline_symbols.paste = 'P'
+let g:airline_symbols.readonly = '!'
+
 colorscheme molokai " Other nice colorschemes to try: candycode, molokai, fruity
 let mapleader=" "
 set laststatus=2
@@ -181,7 +198,7 @@ set foldmethod=indent
 set foldlevel=999
 set guitablabel=%N\ %t\ %M
 set autoread
-set listchars=tab:→\ ,trail:~
+set listchars=tab:→\ ,trail:·,eol:↩
 set list
 compiler ruby
 

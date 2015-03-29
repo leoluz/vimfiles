@@ -39,46 +39,38 @@ if has('vim_starting')
     let &rtp.=",".vimhome."/bundle/neobundle.vim"
 endif
 
-"if has('gui_running')
+call neobundle#begin(expand(vimhome."/bundle/"))
 
-    call neobundle#begin(expand(vimhome."/bundle/"))
+" Let NeoBundle manage NeoBundle
+NeoBundleFetch 'Shougo/neobundle.vim'
 
-    " Let NeoBundle manage NeoBundle
-    NeoBundleFetch 'Shougo/neobundle.vim'
-
-    " My bundles
-    NeoBundle 'tpope/vim-rails'
-    NeoBundle 'tpope/vim-fugitive'
-    NeoBundle 'scrooloose/nerdtree.git'
-    NeoBundle 'scrooloose/nerdcommenter.git'
-    NeoBundle 'tpope/vim-markdown.git'
-    NeoBundle 'tpope/vim-surround.git'
-    NeoBundle 'tpope/vim-repeat.git'
-    NeoBundle 'vim-ruby/vim-ruby.git'
-    NeoBundle 'tpope/vim-cucumber.git'
-    NeoBundle 'leoluz/xmledit.git'
-    NeoBundle 'kien/ctrlp.vim.git'
-    NeoBundle 'jistr/vim-nerdtree-tabs'
-    NeoBundle 'bling/vim-airline'
-    NeoBundle 'tfnico/vim-gradle'
-    NeoBundle 'Raimondi/delimitMate'
-    NeoBundle 'SirVer/ultisnips'
-    NeoBundle 'honza/vim-snippets'
-    NeoBundle 'fatih/vim-go'
-    NeoBundle 'majutsushi/tagbar'
-    if has("lua")
-        NeoBundle 'Shougo/neocomplete.vim'
-    end
-
-    call neobundle#end()
-    filetype plugin indent on
-    NeoBundleCheck
-"end
-
-if has("gui_running")
-    set cursorline              " highlight current line
-    set cm=blowfish             " crypt method
+" My bundles
+NeoBundle 'tpope/vim-rails'
+NeoBundle 'tpope/vim-fugitive'
+NeoBundle 'scrooloose/nerdtree.git'
+NeoBundle 'scrooloose/nerdcommenter.git'
+NeoBundle 'tpope/vim-markdown.git'
+NeoBundle 'tpope/vim-surround.git'
+NeoBundle 'tpope/vim-repeat.git'
+NeoBundle 'vim-ruby/vim-ruby.git'
+NeoBundle 'tpope/vim-cucumber.git'
+NeoBundle 'leoluz/xmledit.git'
+NeoBundle 'kien/ctrlp.vim.git'
+NeoBundle 'jistr/vim-nerdtree-tabs'
+NeoBundle 'bling/vim-airline'
+NeoBundle 'tfnico/vim-gradle'
+NeoBundle 'Raimondi/delimitMate'
+NeoBundle 'SirVer/ultisnips'
+NeoBundle 'honza/vim-snippets'
+NeoBundle 'fatih/vim-go'
+NeoBundle 'majutsushi/tagbar'
+if has("lua")
+    NeoBundle 'Shougo/neocomplete.vim'
 end
+
+call neobundle#end()
+filetype plugin indent on
+NeoBundleCheck
 
 " ****************
 " script section *
@@ -99,6 +91,58 @@ endif
 " ****************
 " Config section *
 " ****************
+
+" Vim configs
+
+if has("gui_running")
+    set cursorline              " highlight current line
+    set relativenumber
+    set cm=blowfish             " crypt method
+    colorscheme molokai " Other nice colorschemes to try: candycode, molokai, fruity
+else
+    colorscheme jellybeans
+end
+
+let mapleader=" "
+set laststatus=2
+set wildignore+=*.bak,*.pyc,*.py~,*.pdf,*.so,*.gif,*.jpg,*.flv,*.class,*.jar,*.png,*/tools/*,*/docs/*,*.swp,*/.svn/*,*/.git/*
+set wildmode=list:longest
+set wildmenu
+set anti
+set textwidth=0
+set tabstop=4
+set softtabstop=4
+set shiftwidth=4
+set encoding=utf-8
+set expandtab
+set backspace=indent,eol,start
+set smarttab
+set smartindent
+set showmode
+set fileformats=unix,dos
+set showmatch       " show matching brackets.
+set autowrite       " Automatically save before commands like :next and :make
+set ignorecase      " Do case insensitive matching
+set incsearch       " Incremental search
+set wmh=0           " set winminheight to 0
+set ruler
+set linebreak
+set guioptions-=T   " Turn toolbar off
+set guioptions-=m   " Turn menubar off
+set guioptions-=r   " remove right-hand scroll bar
+set virtualedit=all
+set smartcase       " Do smart case matching
+set mousemodel=popup
+set foldmethod=indent
+set foldlevel=999
+set guitablabel=%N\ %t\ %M
+set autoread
+set listchars=tab:→\ ,trail:·,eol:↩
+set list
+set hidden          " Don't autosave buffers
+compiler ruby
+
+" Plugin configs
 
 " NERDTree configuration
 let g:NERDTreeShowBookmarks=1
@@ -163,45 +207,6 @@ let g:airline_symbols.branch = '⎇'
 let g:airline_symbols.paste = 'P'
 let g:airline_symbols.readonly = '!'
 
-colorscheme molokai " Other nice colorschemes to try: candycode, molokai, fruity
-let mapleader=" "
-set laststatus=2
-set wildignore+=*.bak,*.pyc,*.py~,*.pdf,*.so,*.gif,*.jpg,*.flv,*.class,*.jar,*.png,*/tools/*,*/docs/*,*.swp,*/.svn/*,*/.git/*
-set wildmode=list:longest
-set wildmenu
-set anti
-set textwidth=0
-set tabstop=4
-set softtabstop=4
-set shiftwidth=4
-set encoding=utf-8
-set expandtab
-set backspace=indent,eol,start
-set smarttab
-set smartindent
-set showmode
-set fileformats=unix,dos
-set showmatch       " Show matching brackets.
-set autowrite       " Automatically save before commands like :next and :make
-set ignorecase      " Do case insensitive matching
-set incsearch       " Incremental search
-set wmh=0           " set winminheight to 0
-set ruler
-set linebreak
-set guioptions-=T   " Turn toolbar off
-set guioptions-=m   " Turn menubar off
-set guioptions-=r   " remove right-hand scroll bar
-set virtualedit=all
-set smartcase       " Do smart case matching
-set mousemodel=popup
-set foldmethod=indent
-set foldlevel=999
-set guitablabel=%N\ %t\ %M
-set autoread
-set listchars=tab:→\ ,trail:·,eol:↩
-set list
-compiler ruby
-
 " *****************
 " Mapping section *
 " *****************
@@ -250,26 +255,32 @@ nmap } }zz
 nmap { {zz
 
 "" Misc maps
+map <F5> :setlocal spell! spelllang=en_us<CR>
+
 inoremap <C-s> <ESC>:w<CR>
 inoremap <C-Space> <C-x><C-o>
 inoremap <C-@> <C-x><C-o>
 inoremap <C-l> <ESC>A
+
+nnoremap j gj
+nnoremap k gk
+nnoremap <leader>m '
+nnoremap gb `.
 nnoremap <C-s> :w<CR>
 nnoremap <C-l> :bnext<CR>
 nnoremap <C-h> :bprevious<CR>
 nnoremap <UP> ddkP
 nnoremap <Down> ddp
-vmap <silent><C-s> :sort<CR>
 nnoremap <CR> o<ESC>
-map <F5> :setlocal spell! spelllang=en_us<CR>
 nnoremap <leader>s z=
 nnoremap - :bdelete<CR>
 nnoremap <C-_> :q!<CR>
-imap <silent><C-Del> <ESC>dea
-nnoremap j gj
-nnoremap k gk
-inoremap <C-a> <ESC>ggvG$
-nnoremap <silent><leader>a ggvG$
-imap <silent><C-Del> <ESC>dea
 nnoremap <silent> <leader>ev :e $MYVIMRC<CR>
 nnoremap <silent> <leader>r :source $MYVIMRC<CR>:echo 'Vim configs reloaded!' <CR>
+nnoremap <silent><leader>a ggvG$
+
+inoremap <silent><C-Del> <ESC>dea
+inoremap <C-a> <ESC>ggvG$
+inoremap <silent><C-Del> <ESC>dea
+
+vmap <silent><C-s> :sort<CR>

@@ -64,6 +64,7 @@ NeoBundle 'SirVer/ultisnips'
 NeoBundle 'honza/vim-snippets'
 NeoBundle 'fatih/vim-go'
 NeoBundle 'majutsushi/tagbar'
+NeoBundle 'vim-scripts/RedirCommands'
 if has("lua")
     NeoBundle 'Shougo/neocomplete.vim'
 end
@@ -184,11 +185,11 @@ au FileType go nmap <Leader>gc <Plug>(go-callers)
 au FileType go nmap <Leader>gs <Plug>(go-implements)
 au FileType go nmap <Leader>ds <Plug>(go-def-split)
 au FileType go nmap <Leader>dt <Plug>(go-def-tab)
-au FileType go nmap <leader>x <Plug>(go-run)
 au FileType go nmap <leader>b <Plug>(go-build)
 au FileType go nmap <leader>t <Plug>(go-test)
 au FileType go nmap <leader>c <Plug>(go-coverage)
 au FileType go nmap <Leader>i :GoImports<CR>
+au FileType go nmap <leader>x :R GoRun<CR>
 
 " air-line configuration
 if !exists('g:airline_symbols')
@@ -264,7 +265,6 @@ inoremap <C-l> <ESC>A
 
 nnoremap j gj
 nnoremap k gk
-nnoremap <leader>m '
 nnoremap gb `.
 nnoremap <C-s> :w<CR>
 nnoremap <C-l> :bnext<CR>

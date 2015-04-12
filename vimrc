@@ -188,8 +188,8 @@ au FileType go nmap <Leader>dt <Plug>(go-def-tab)
 au FileType go nmap <leader>b <Plug>(go-build)
 au FileType go nmap <leader>t <Plug>(go-test)
 au FileType go nmap <leader>c <Plug>(go-coverage)
+au FileType go nmap <leader>x <Plug>(go-run)
 au FileType go nmap <Leader>i :GoImports<CR>
-au FileType go nmap <leader>x :R GoRun<CR>
 
 " air-line configuration
 if !exists('g:airline_symbols')

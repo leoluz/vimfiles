@@ -263,6 +263,7 @@ inoremap <C-Space> <C-x><C-o>
 inoremap <C-@> <C-x><C-o>
 inoremap <C-l> <ESC>A
 
+nnoremap Y y$
 nnoremap j gj
 nnoremap k gk
 nnoremap gb `.

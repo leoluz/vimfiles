@@ -15,7 +15,7 @@ syntax on
 " *********************
 
 if has("gui_gtk2")
-    set guifont=Monospace\ 11
+    set guifont=Ubuntu\ Mono\ 15,Monospace\ 13
     let vimhome = "~/.vim"
 
 elseif has("mac")

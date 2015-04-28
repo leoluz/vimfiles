@@ -15,7 +15,7 @@ syntax on
 " *********************
 
 if has("gui_gtk2")
-    set guifont=Monospace\ 11
+    set guifont=Ubuntu\ Mono\ 15,Monospace\ 13
     let vimhome = "~/.vim"
 
 elseif has("mac")
@@ -184,10 +184,10 @@ au FileType go nmap <Leader>gc <Plug>(go-callers)
 au FileType go nmap <Leader>gs <Plug>(go-implements)
 au FileType go nmap <Leader>ds <Plug>(go-def-split)
 au FileType go nmap <Leader>dt <Plug>(go-def-tab)
-au FileType go nmap <leader>x <Plug>(go-run)
 au FileType go nmap <leader>b <Plug>(go-build)
 au FileType go nmap <leader>t <Plug>(go-test)
 au FileType go nmap <leader>c <Plug>(go-coverage)
+au FileType go nmap <leader>x <Plug>(go-run)
 au FileType go nmap <Leader>i :GoImports<CR>
 
 " air-line configuration
@@ -259,9 +259,9 @@ inoremap <C-Space> <C-x><C-o>
 inoremap <C-@> <C-x><C-o>
 inoremap <C-l> <ESC>A
 
+nnoremap Y y$
 nnoremap j gj
 nnoremap k gk
-nnoremap <leader>m '
 nnoremap gb `.
 nnoremap <C-s> :w<CR>
 nnoremap <C-l> :bnext<CR>

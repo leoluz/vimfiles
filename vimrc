@@ -248,11 +248,8 @@ nnoremap <leader>w :TagbarToggle<CR>
 nnoremap <silent><leader>q :NERDTreeTabsToggle<CR>
 
 "" Auto center
-nmap G Gzz
 nmap n nzz
 nmap N Nzz
-nmap } }zz
-nmap { {zz
 
 "" Misc maps
 map <F5> :setlocal spell! spelllang=en_us<CR>

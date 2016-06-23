@@ -248,9 +248,8 @@ nnoremap <leader>w :TagbarToggle<CR>
 "" NERDTree maps
 nnoremap <silent><leader>q :NERDTreeTabsToggle<CR>
 
-"" Auto center
-nmap n nzz
-nmap N Nzz
+"" Format JSON
+nnoremap <silent><leader>j :%!python -m json.tool<CR>
 
 "" Misc maps
 map <F5> :setlocal spell! spelllang=en_us<CR>

@@ -98,7 +98,7 @@ endif
 if has("gui_running")
     set cursorline              " highlight current line
     set relativenumber
-    set cm=blowfish             " crypt method
+    set cm=blowfish2            " crypt method
     colorscheme molokai " Other nice colorschemes to try: candycode, molokai, fruity
 else
     colorscheme jellybeans

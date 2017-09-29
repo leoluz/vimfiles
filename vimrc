@@ -154,6 +154,7 @@ let g:ctrlp_working_path_mode = 'ra'
 let g:ctrlp_by_filename = 1
 let g:ctrlp_open_multi = '1'
 let g:ctrlp_arg_map = 1
+let g:ctrlp_max_depth = 50
 
 " Ultisnips configuration
 let g:UltiSnipsExpandTrigger="<tab>"
@@ -249,7 +250,7 @@ nnoremap <leader>w :TagbarToggle<CR>
 nnoremap <silent><leader>q :NERDTreeTabsToggle<CR>
 
 "" Format JSON
-nnoremap <silent><leader>j :%!python -m json.tool<CR>
+nnoremap <silent><leader>fj :%!python -m json.tool<CR>
 
 "" Misc maps
 map <F5> :setlocal spell! spelllang=en_us<CR>

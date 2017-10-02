@@ -65,6 +65,8 @@ NeoBundle 'SirVer/ultisnips'
 NeoBundle 'honza/vim-snippets'
 NeoBundle 'fatih/vim-go'
 NeoBundle 'majutsushi/tagbar'
+NeoBundle 'martinda/Jenkinsfile-vim-syntax'
+NeoBundle 'qpkorr/vim-bufkill'
 if has("lua")
     NeoBundle 'Shougo/neocomplete.vim'
 end
@@ -143,7 +145,16 @@ set list
 set hidden          " Don't autosave buffers
 compiler ruby
 
-" Plugin configs
+" ****************
+" Plugin configs *
+" ****************
+
+" Netrw (:Explore) configuration
+let g:netrw_banner = 0
+let g:netrw_liststyle = 3
+let g:netrw_browse_split = 4
+let g:netrw_altv = 1
+let g:netrw_winsize = 25
 
 " NERDTree configuration
 let g:NERDTreeShowBookmarks=1
@@ -203,8 +214,6 @@ let g:airline_left_sep = '▄'
 let g:airline_right_sep = '▄'
 let g:airline_left_alt_sep = '→'
 let g:airline_right_alt_sep = '←'
-let g:airline_symbols.linenr = '│'
-let g:airline_symbols.branch = '±'
 let g:airline_symbols.branch = '⎇'
 let g:airline_symbols.paste = 'P'
 let g:airline_symbols.readonly = '!'
@@ -255,6 +264,9 @@ nnoremap <silent><leader>fj :%!python -m json.tool<CR>
 "" Misc maps
 map <F5> :setlocal spell! spelllang=en_us<CR>
 
+"" CtrlP buffer
+nnoremap <C-i> :CtrlPBuffer<CR>
+
 inoremap <C-s> <ESC>:w<CR>
 inoremap <C-Space> <C-x><C-o>
 inoremap <C-@> <C-x><C-o>
@@ -271,7 +283,7 @@ nnoremap <UP> ddkP
 nnoremap <Down> ddp
 nnoremap <CR> o<ESC>
 nnoremap <leader>s z=
-nnoremap - :bdelete<CR>
+nnoremap - :BD<CR>
 nnoremap <C-_> :q!<CR>
 nnoremap <silent> <leader>ev :e $MYVIMRC<CR>
 nnoremap <silent> <leader>r :source $MYVIMRC<CR>:echo 'Vim configs reloaded!' <CR>

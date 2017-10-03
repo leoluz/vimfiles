@@ -227,7 +227,7 @@ let g:airline_symbols.readonly = '!'
 
 "" Maps for window management
 nnoremap <leader>. <C-W>j
-nnoremap <leader>k 1C-W>k
+nnoremap <leader>k <C-W>k
 nnoremap <leader>h <C-W>h
 nnoremap <leader>l <C-W>l
 nnoremap <leader>m <C-W>_

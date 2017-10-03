@@ -203,6 +203,9 @@ au FileType go nmap <leader>c <Plug>(go-coverage)
 au FileType go nmap <leader>x <Plug>(go-run)
 au FileType go nmap <Leader>i :GoImports<CR>
 
+" Set working directory to the current file
+autocmd BufEnter * silent! lcd %:p:h
+
 " air-line configuration
 if !exists('g:airline_symbols')
     let g:airline_symbols = {}
@@ -222,13 +225,15 @@ let g:airline_symbols.readonly = '!'
 " Mapping section *
 " *****************
 
-"" Maps for buffer navigation
-nnoremap <leader>j <C-W>j
-nnoremap <leader>k <C-W>k
+"" Maps for window management
+nnoremap <leader>. <C-W>j
+nnoremap <leader>k 1C-W>k
 nnoremap <leader>h <C-W>h
 nnoremap <leader>l <C-W>l
 nnoremap <leader>m <C-W>_
 nnoremap <leader>n <C-W>=
+nnoremap <leader>. 10<C-W>>
+nnoremap <leader>, 10<C-W><
 
 "" Maps for tabs specific funcionalities
 nnoremap L :tabnext<CR>

@@ -143,6 +143,8 @@ set autoread
 set listchars=tab:→\ ,trail:·,eol:↩
 set list
 set hidden          " Don't autosave buffers
+set splitbelow
+set splitright
 compiler ruby
 
 " ****************
@@ -197,6 +199,7 @@ au FileType go nmap <Leader>gc <Plug>(go-callers)
 au FileType go nmap <Leader>gs <Plug>(go-implements)
 au FileType go nmap <Leader>ds <Plug>(go-def-split)
 au FileType go nmap <Leader>dt <Plug>(go-def-tab)
+au FileType go nmap <Leader>e <Plug>(go-def-pop)
 au FileType go nmap <leader>b <Plug>(go-build)
 au FileType go nmap <leader>t <Plug>(go-test)
 au FileType go nmap <leader>c <Plug>(go-coverage)

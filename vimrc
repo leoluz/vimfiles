@@ -65,6 +65,8 @@ NeoBundle 'SirVer/ultisnips'
 NeoBundle 'honza/vim-snippets'
 NeoBundle 'fatih/vim-go'
 NeoBundle 'majutsushi/tagbar'
+NeoBundle 'martinda/Jenkinsfile-vim-syntax'
+NeoBundle 'qpkorr/vim-bufkill'
 if has("lua")
     NeoBundle 'Shougo/neocomplete.vim'
 end
@@ -98,7 +100,7 @@ endif
 if has("gui_running")
     set cursorline              " highlight current line
     set relativenumber
-    set cm=blowfish             " crypt method
+    set cm=blowfish2            " crypt method
     colorscheme molokai " Other nice colorschemes to try: candycode, molokai, fruity
 else
     colorscheme jellybeans
@@ -143,7 +145,16 @@ set list
 set hidden          " Don't autosave buffers
 compiler ruby
 
-" Plugin configs
+" ****************
+" Plugin configs *
+" ****************
+
+" Netrw (:Explore) configuration
+let g:netrw_banner = 0
+let g:netrw_liststyle = 3
+let g:netrw_browse_split = 4
+let g:netrw_altv = 1
+let g:netrw_winsize = 25
 
 " NERDTree configuration
 let g:NERDTreeShowBookmarks=1
@@ -154,6 +165,7 @@ let g:ctrlp_working_path_mode = 'ra'
 let g:ctrlp_by_filename = 1
 let g:ctrlp_open_multi = '1'
 let g:ctrlp_arg_map = 1
+let g:ctrlp_max_depth = 50
 
 " Ultisnips configuration
 let g:UltiSnipsExpandTrigger="<tab>"
@@ -191,6 +203,9 @@ au FileType go nmap <leader>c <Plug>(go-coverage)
 au FileType go nmap <leader>x <Plug>(go-run)
 au FileType go nmap <Leader>i :GoImports<CR>
 
+" Set working directory to the current file
+autocmd BufEnter * silent! lcd %:p:h
+
 " air-line configuration
 if !exists('g:airline_symbols')
     let g:airline_symbols = {}
@@ -202,8 +217,6 @@ let g:airline_left_sep = '▄'
 let g:airline_right_sep = '▄'
 let g:airline_left_alt_sep = '→'
 let g:airline_right_alt_sep = '←'
-let g:airline_symbols.linenr = '│'
-let g:airline_symbols.branch = '±'
 let g:airline_symbols.branch = '⎇'
 let g:airline_symbols.paste = 'P'
 let g:airline_symbols.readonly = '!'
@@ -212,13 +225,15 @@ let g:airline_symbols.readonly = '!'
 " Mapping section *
 " *****************
 
-"" Maps for buffer navigation
-nnoremap <leader>j <C-W>j
+"" Maps for window management
+nnoremap <leader>. <C-W>j
 nnoremap <leader>k <C-W>k
 nnoremap <leader>h <C-W>h
 nnoremap <leader>l <C-W>l
 nnoremap <leader>m <C-W>_
 nnoremap <leader>n <C-W>=
+nnoremap <leader>. 10<C-W>>
+nnoremap <leader>, 10<C-W><
 
 "" Maps for tabs specific funcionalities
 nnoremap L :tabnext<CR>
@@ -249,10 +264,13 @@ nnoremap <leader>w :TagbarToggle<CR>
 nnoremap <silent><leader>q :NERDTreeTabsToggle<CR>
 
 "" Format JSON
-nnoremap <silent><leader>j :%!python -m json.tool<CR>
+nnoremap <silent><leader>fj :%!python -m json.tool<CR>
 
 "" Misc maps
 map <F5> :setlocal spell! spelllang=en_us<CR>
+
+"" CtrlP buffer
+nnoremap <C-i> :CtrlPBuffer<CR>
 
 inoremap <C-s> <ESC>:w<CR>
 inoremap <C-Space> <C-x><C-o>
@@ -270,7 +288,7 @@ nnoremap <UP> ddkP
 nnoremap <Down> ddp
 nnoremap <CR> o<ESC>
 nnoremap <leader>s z=
-nnoremap - :bdelete<CR>
+nnoremap - :BD<CR>
 nnoremap <C-_> :q!<CR>
 nnoremap <silent> <leader>ev :e $MYVIMRC<CR>
 nnoremap <silent> <leader>r :source $MYVIMRC<CR>:echo 'Vim configs reloaded!' <CR>

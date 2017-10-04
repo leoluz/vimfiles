@@ -191,7 +191,7 @@ let g:go_highlight_structs = 1
 au FileType go nmap <Leader>gv <Plug>(go-doc-vertical)
 au FileType go nmap <Leader>gi <Plug>(go-info)
 au FileType go nmap <Leader>gs <Plug>(go-implements)
-au FileType go nmap <Leader>gd <Plug>(go-doc-browser)
+au FileType go nmap <Leader>gd <Plug>(go-doc)
 au FileType go nmap <Leader>gr <Plug>(go-rename)
 au FileType go nmap <Leader>gc <Plug>(go-callers)
 au FileType go nmap <Leader>gs <Plug>(go-implements)
@@ -226,12 +226,12 @@ let g:airline_symbols.readonly = '!'
 " *****************
 
 "" Maps for window management
-nnoremap <leader>. <C-W>j
+nnoremap <leader>j <C-W>j
 nnoremap <leader>k <C-W>k
 nnoremap <leader>h <C-W>h
 nnoremap <leader>l <C-W>l
 nnoremap <leader>m <C-W>_
-nnoremap <leader>n <C-W>=
+nnoremap <leader>= <C-W>=
 nnoremap <leader>. 10<C-W>>
 nnoremap <leader>, 10<C-W><
 

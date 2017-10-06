@@ -117,6 +117,7 @@ end
 colorscheme molokai " Other nice colorschemes to try: candycode, molokai, fruity
 set fillchars+=vert:\ 
 let mapleader=" "
+set nohlsearch
 set laststatus=2
 set wildignore+=*.bak,*.pyc,*.py~,*.pdf,*.so,*.gif,*.jpg,*.flv,*.class,*.jar,*.png,*/tools/*,*/docs/*,*.swp,*/.svn/*,*/.git/*
 set wildmode=list:longest
@@ -286,7 +287,7 @@ nnoremap <CR> o<ESC>
 nnoremap <leader>s z=
 nnoremap - :BD<CR>
 nnoremap <C-_> :q!<CR>
-nnoremap <silent> <leader>ev :e $MYVIMRC<CR>
+nnoremap <silent> <leader>v :e $MYVIMRC<CR>
 nnoremap <silent> <leader>r :source $MYVIMRC<CR>:echo 'Vim configs reloaded!' <CR>
 nnoremap <silent><leader>a ggvG$
 

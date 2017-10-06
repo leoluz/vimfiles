@@ -115,6 +115,7 @@ if has("gui_running")
 end
 
 colorscheme molokai " Other nice colorschemes to try: candycode, molokai, fruity
+set fillchars+=vert:\ 
 let mapleader=" "
 set laststatus=2
 set wildignore+=*.bak,*.pyc,*.py~,*.pdf,*.so,*.gif,*.jpg,*.flv,*.class,*.jar,*.png,*/tools/*,*/docs/*,*.swp,*/.svn/*,*/.git/*

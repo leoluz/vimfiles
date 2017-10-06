@@ -184,6 +184,10 @@ let Tlist_Use_Right_Window = 1
 let Tlist_Use_SingleClick = 1
 let Tlist_Show_One_File = 1
 
+" Tagbar configuration
+let g:tagbar_autofocus = 1
+let g:tagbar_autoclose = 1
+
 " DelimitMate configuration
 let delimitMate_expand_cr = 1
 

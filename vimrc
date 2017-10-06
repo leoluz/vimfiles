@@ -17,12 +17,13 @@ syntax on
 if has("gui_gtk2")
     set guifont=Ubuntu\ Mono\ 15,Monospace\ 13
     let vimhome = "~/.vim"
-
-elseif has("mac")
+elseif has("gui_vimr")
+    let vimhome = "~/.vim"
+elseif has("gui_macvim")
     set macmeta
+    set anti
     set guifont=Menlo:h15
     let vimhome = "~/.vim"
-
 elseif has("gui_win32")
     set guifont=Dejavu\ Sans\ Mono:h13,Consolas:h12
     let vimhome = "~/vimfiles"
@@ -34,46 +35,56 @@ end
 " Plugin Section *
 " ****************
 "
-if has('vim_starting')
-    set nocompatible
-    let &rtp.=",".vimhome."/bundle/neobundle.vim"
+let deinhome = vimhome."/vendor/"
+let deinrepo = deinhome."/repos/github.com/Shougo/dein.vim"
+let &rtp.=",".deinrepo
+
+if dein#load_state(deinhome)
+  call dein#begin(deinhome)
+  call dein#add(deinrepo)
+
+  " Add or remove your plugins here:
+  call dein#add('Shougo/neosnippet.vim')
+  call dein#add('Shougo/neosnippet-snippets')
+  call dein#add('tpope/vim-fugitive')
+
+  call dein#add('scrooloose/nerdtree.git')
+  call dein#add('scrooloose/nerdcommenter.git')
+  call dein#add('tpope/vim-markdown.git')
+  call dein#add('tpope/vim-surround.git')
+  call dein#add('tpope/vim-repeat.git')
+  call dein#add('vim-ruby/vim-ruby.git')
+  call dein#add('tpope/vim-cucumber.git')
+  call dein#add('leoluz/xmledit.git')
+  call dein#add('kien/ctrlp.vim.git')
+  call dein#add('jistr/vim-nerdtree-tabs')
+  call dein#add('vim-airline/vim-airline')
+  call dein#add('vim-airline/vim-airline-themes')
+  call dein#add('tfnico/vim-gradle')
+  call dein#add('Raimondi/delimitMate')
+  call dein#add('fatih/vim-go')
+  call dein#add('majutsushi/tagbar')
+  call dein#add('martinda/Jenkinsfile-vim-syntax')
+  call dein#add('qpkorr/vim-bufkill')
+  call dein#add('tomasr/molokai')
+  call dein#add('Shougo/deoplete.nvim')
+
+  " You can specify revision/branch/tag.
+  call dein#add('Shougo/vimshell', { 'rev': '3787e5' })
+
+  " Required:
+  call dein#end()
+  call dein#save_state()
 endif
 
-call neobundle#begin(expand(vimhome."/bundle/"))
-
-" Let NeoBundle manage NeoBundle
-NeoBundleFetch 'Shougo/neobundle.vim'
-
-" My bundles
-NeoBundle 'tpope/vim-rails'
-NeoBundle 'tpope/vim-fugitive'
-NeoBundle 'scrooloose/nerdtree.git'
-NeoBundle 'scrooloose/nerdcommenter.git'
-NeoBundle 'tpope/vim-markdown.git'
-NeoBundle 'tpope/vim-surround.git'
-NeoBundle 'tpope/vim-repeat.git'
-NeoBundle 'vim-ruby/vim-ruby.git'
-NeoBundle 'tpope/vim-cucumber.git'
-NeoBundle 'leoluz/xmledit.git'
-NeoBundle 'kien/ctrlp.vim.git'
-NeoBundle 'jistr/vim-nerdtree-tabs'
-NeoBundle 'vim-airline/vim-airline'
-NeoBundle 'vim-airline/vim-airline-themes'
-NeoBundle 'tfnico/vim-gradle'
-NeoBundle 'Raimondi/delimitMate'
-NeoBundle 'SirVer/ultisnips'
-NeoBundle 'honza/vim-snippets'
-NeoBundle 'fatih/vim-go'
-NeoBundle 'majutsushi/tagbar'
-NeoBundle 'martinda/Jenkinsfile-vim-syntax'
-NeoBundle 'qpkorr/vim-bufkill'
-if has("lua")
-    NeoBundle 'Shougo/neocomplete.vim'
-end
-
-call neobundle#end()
+" Required:
 filetype plugin indent on
-NeoBundleCheck
+syntax enable
+
+" If you want to install not installed plugins on startup.
+if dein#check_install()
+  call dein#install()
+endif
 
 " ****************
 " script section *
@@ -101,17 +112,14 @@ if has("gui_running")
     set cursorline              " highlight current line
     set relativenumber
     set cm=blowfish2            " crypt method
-    colorscheme molokai " Other nice colorschemes to try: candycode, molokai, fruity
-else
-    colorscheme jellybeans
 end
 
+colorscheme molokai " Other nice colorschemes to try: candycode, molokai, fruity
 let mapleader=" "
 set laststatus=2
 set wildignore+=*.bak,*.pyc,*.py~,*.pdf,*.so,*.gif,*.jpg,*.flv,*.class,*.jar,*.png,*/tools/*,*/docs/*,*.swp,*/.svn/*,*/.git/*
 set wildmode=list:longest
 set wildmenu
-set anti
 set textwidth=0
 set tabstop=4
 set softtabstop=4
@@ -169,11 +177,6 @@ let g:ctrlp_open_multi = '1'
 let g:ctrlp_arg_map = 1
 let g:ctrlp_max_depth = 50
 
-" Ultisnips configuration
-let g:UltiSnipsExpandTrigger="<tab>"
-let g:UltiSnipsJumpForwardTrigger="<tab>"
-let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
-
 " Taglist configuration
 let Tlist_Compact_Format = 1
 let Tlist_Use_Right_Window = 1
@@ -183,8 +186,8 @@ let Tlist_Show_One_File = 1
 " DelimitMate configuration
 let delimitMate_expand_cr = 1
 
-" NeoComplete configuration
-let g:neocomplete#enable_at_startup = 1
+" DeoComplete configuration
+let g:deoplete#enable_at_startup = 1
 
 " go-vim configuration
 let g:go_highlight_functions = 1
@@ -208,21 +211,6 @@ au FileType go nmap <Leader>i :GoImports<CR>
 
 " Set working directory to the current file
 autocmd BufEnter * silent! lcd %:p:h
-
-" air-line configuration
-if !exists('g:airline_symbols')
-    let g:airline_symbols = {}
-endif
-let g:airline_theme = 'tomorrow'
-let g:airline_section_warning = ''
-let g:airline_inactive_collapse = 0
-let g:airline_left_sep = '▄'
-let g:airline_right_sep = '▄'
-let g:airline_left_alt_sep = '→'
-let g:airline_right_alt_sep = '←'
-let g:airline_symbols.branch = '⎇'
-let g:airline_symbols.paste = 'P'
-let g:airline_symbols.readonly = '!'
 
 " *****************
 " Mapping section *

@@ -4,3 +4,4 @@ gitconfig
 tags*
 .DS_Store
 bundle/*
+vendor

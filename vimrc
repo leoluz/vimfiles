@@ -68,6 +68,8 @@ if dein#load_state(deinhome)
   call dein#add('qpkorr/vim-bufkill')
   call dein#add('tomasr/molokai')
   call dein#add('Shougo/deoplete.nvim')
+  call dein#add('zeis/vim-kolor')
+  call dein#add('nightsense/wonka')
 
   " You can specify revision/branch/tag.
   call dein#add('Shougo/vimshell', { 'rev': '3787e5' })
@@ -112,9 +114,16 @@ if has("gui_running")
     set cursorline              " highlight current line
     set relativenumber
     set cm=blowfish2            " crypt method
-end
+endif
 
-colorscheme molokai " Other nice colorschemes to try: candycode, molokai, fruity
+"colorscheme molokai " Other nice colorschemes to try: molokai, fruity 
+let g:kolor_italic=1
+let g:kolor_bold=1
+let g:kolor_underlined=0
+let g:kolor_alternative_matchparen=0
+let g:kolor_inverted_matchparen=0
+colorscheme kolor
+
 set fillchars+=vert:\ 
 let mapleader=" "
 set nohlsearch
@@ -161,6 +170,9 @@ compiler ruby
 " Plugin configs *
 " ****************
 
+" Airline configuration
+let g:airline_theme='molokai'
+
 " Netrw (:Explore) configuration
 let g:netrw_banner = 0
 let g:netrw_liststyle = 3
@@ -194,11 +206,22 @@ let delimitMate_expand_cr = 1
 
 " DeoComplete configuration
 let g:deoplete#enable_at_startup = 1
+set completeopt+=noinsert
+autocmd CompleteDone * silent! pclose!
+inoremap <silent><CR> <C-R>=<SID>my_cr_function()<CR>
+function! s:my_cr_function()
+    if (pumvisible())
+        return deoplete#close_popup()
+    else
+        return "\<CR>"
+    endif
+endfunction
 
 " go-vim configuration
 let g:go_highlight_functions = 1
 let g:go_highlight_methods = 1
 let g:go_highlight_structs = 1
+let g:go_auto_sameids = 1
 au FileType go nmap <Leader>gv <Plug>(go-doc-vertical)
 au FileType go nmap <Leader>gi <Plug>(go-info)
 au FileType go nmap <Leader>gs <Plug>(go-implements)

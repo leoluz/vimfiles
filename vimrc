@@ -61,7 +61,6 @@ if dein#load_state(deinhome)
   call dein#add('vim-airline/vim-airline')
   call dein#add('vim-airline/vim-airline-themes')
   call dein#add('tfnico/vim-gradle')
-  call dein#add('Raimondi/delimitMate')
   call dein#add('fatih/vim-go')
   call dein#add('majutsushi/tagbar')
   call dein#add('martinda/Jenkinsfile-vim-syntax')
@@ -70,6 +69,8 @@ if dein#load_state(deinhome)
   call dein#add('Shougo/deoplete.nvim')
   call dein#add('zeis/vim-kolor')
   call dein#add('nightsense/wonka')
+  call dein#add('jiangmiao/auto-pairs.git')
+  
 
   " You can specify revision/branch/tag.
   call dein#add('Shougo/vimshell', { 'rev': '3787e5' })
@@ -201,9 +202,6 @@ let Tlist_Show_One_File = 1
 let g:tagbar_autofocus = 1
 let g:tagbar_autoclose = 1
 
-" DelimitMate configuration
-let delimitMate_expand_cr = 1
-
 " DeoComplete configuration
 let g:deoplete#enable_at_startup = 1
 set completeopt+=noinsert
@@ -216,6 +214,11 @@ function! s:my_cr_function()
         return "\<CR>"
     endif
 endfunction
+
+" Neosnippet configuration
+imap <C-;>     <Plug>(neosnippet_expand_or_jump)
+smap <C-;>     <Plug>(neosnippet_expand_or_jump)
+xmap <C-;>     <Plug>(neosnippet_expand_target)
 
 " go-vim configuration
 let g:go_highlight_functions = 1
@@ -319,3 +322,6 @@ inoremap <C-a> <ESC>ggvG$
 inoremap <silent><C-Del> <ESC>dea
 
 vmap <silent><C-s> :sort<CR>
+
+"" Set color almost invisible color for Special Characters
+highlight NonText         guifg=#383838    guibg=#2e2d2b    gui=none

@@ -225,8 +225,13 @@ let g:go_highlight_functions = 1
 let g:go_highlight_methods = 1
 let g:go_highlight_structs = 1
 let g:go_auto_sameids = 1
+"let g:go_guru_scope = ["github.com/AppDirect/rms/..."]
+let g:go_fmt_command = "goimports"
+autocmd Filetype go command! -bang A call go#alternate#Switch(<bang>0, 'edit')
+autocmd Filetype go command! -bang AV call go#alternate#Switch(<bang>0, 'vsplit')
+autocmd Filetype go command! -bang AS call go#alternate#Switch(<bang>0, 'split')
 au FileType go nmap <Leader>gv <Plug>(go-doc-vertical)
-au FileType go nmap <Leader>gi <Plug>(go-info)
+au FileType go nmap <Leader>gi <Plug>(go-import)
 au FileType go nmap <Leader>gs <Plug>(go-implements)
 au FileType go nmap <Leader>gd <Plug>(go-doc)
 au FileType go nmap <Leader>gr <Plug>(go-rename)
@@ -239,7 +244,7 @@ au FileType go nmap <leader>b <Plug>(go-build)
 au FileType go nmap <leader>t <Plug>(go-test)
 au FileType go nmap <leader>c <Plug>(go-coverage)
 au FileType go nmap <leader>x <Plug>(go-run)
-au FileType go nmap <Leader>i :GoImports<CR>
+au FileType go nmap <Leader>i <Plug>(go-info) 
 
 " Set working directory to the current file
 autocmd BufEnter * silent! lcd %:p:h
@@ -261,7 +266,7 @@ nnoremap <leader>, 10<C-W><
 "" Maps for tabs specific funcionalities
 nnoremap L :tabnext<CR>
 nnoremap H :tabprevious<CR>
-map <M-t> :tabnew<CR>
+noremap <M-t> :tabnew<CR>
 
 "" Omni completion maps
 inoremap <C-Space> <C-x><C-o>
@@ -277,8 +282,8 @@ nnoremap ga  :A<CR>
 nnoremap gat :AT<CR>
 
 "" NerdCommenter maps
-nmap <silent><leader>/ <plug>NERDCommenterToggle
-vmap <leader>/ <plug>NERDCommenterToggle
+nnoremap <silent><leader>/ <plug>NERDCommenterToggle
+vnoremap <leader>/ <plug>NERDCommenterToggle
 
 "" Tagbar maps
 nnoremap <leader>w :TagbarToggle<CR>
@@ -290,7 +295,7 @@ nnoremap <silent><leader>q :NERDTreeTabsToggle<CR>
 nnoremap <silent><leader>fj :%!python -m json.tool<CR>
 
 "" Misc maps
-map <F5> :setlocal spell! spelllang=en_us<CR>
+noremap <F5> :setlocal spell! spelllang=en_us<CR>
 
 "" CtrlP buffer
 nnoremap <C-i> :CtrlPBuffer<CR>
@@ -309,7 +314,6 @@ nnoremap <C-l> :bnext<CR>
 nnoremap <C-h> :bprevious<CR>
 nnoremap <UP> ddkP
 nnoremap <Down> ddp
-nnoremap <CR> o<ESC>
 nnoremap <leader>s z=
 nnoremap - :BD<CR>
 nnoremap <C-_> :q!<CR>
@@ -321,7 +325,7 @@ inoremap <silent><C-Del> <ESC>dea
 inoremap <C-a> <ESC>ggvG$
 inoremap <silent><C-Del> <ESC>dea
 
-vmap <silent><C-s> :sort<CR>
+vnoremap <silent><C-s> :sort<CR>
 
 "" Set color almost invisible color for Special Characters
 highlight NonText         guifg=#383838    guibg=#2e2d2b    gui=none

@@ -289,9 +289,6 @@ nnoremap <silent><leader>q :NERDTreeTabsToggle<CR>
 "" Format JSON
 nnoremap <silent><leader>fj :%!python -m json.tool<CR>
 
-"" Misc maps
-map <F5> :setlocal spell! spelllang=en_us<CR>
-
 "" CtrlP buffer
 nnoremap <C-i> :CtrlPBuffer<CR>
 
@@ -300,6 +297,8 @@ inoremap <C-Space> <C-x><C-o>
 inoremap <C-@> <C-x><C-o>
 inoremap <C-l> <ESC>A
 
+"" Misc maps
+map <F5> :setlocal spell! spelllang=en_us<CR>
 nnoremap Y y$
 nnoremap j gj
 nnoremap k gk
@@ -322,6 +321,8 @@ inoremap <C-a> <ESC>ggvG$
 inoremap <silent><C-Del> <ESC>dea
 
 vmap <silent><C-s> :sort<CR>
+
+onoremap p i(
 
 "" Set color almost invisible color for Special Characters
 highlight NonText         guifg=#383838    guibg=#2e2d2b    gui=none

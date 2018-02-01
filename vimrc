@@ -282,8 +282,8 @@ nnoremap ga  :A<CR>
 nnoremap gat :AT<CR>
 
 "" NerdCommenter maps
-nnoremap <silent><leader>/ <plug>NERDCommenterToggle
-vnoremap <leader>/ <plug>NERDCommenterToggle
+nmap <silent><leader>/ <plug>NERDCommenterToggle
+vmap <leader>/ <plug>NERDCommenterToggle
 
 "" Tagbar maps
 nnoremap <leader>w :TagbarToggle<CR>

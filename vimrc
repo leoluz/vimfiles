@@ -70,10 +70,6 @@ if dein#load_state(deinhome)
   call dein#add('zeis/vim-kolor')
   call dein#add('nightsense/wonka')
   call dein#add('jiangmiao/auto-pairs.git')
-  
-
-  " You can specify revision/branch/tag.
-  call dein#add('Shougo/vimshell', { 'rev': '3787e5' })
 
   " Required:
   call dein#end()

@@ -70,6 +70,7 @@ if dein#load_state(deinhome)
   call dein#add('zeis/vim-kolor')
   call dein#add('nightsense/wonka')
   call dein#add('jiangmiao/auto-pairs.git')
+  call dein#add('sebdah/vim-delve')
 
   " Required:
   call dein#end()
@@ -154,7 +155,6 @@ set smartcase       " Do smart case matching
 set mousemodel=popup
 set foldmethod=indent
 set foldlevel=999
-set guitablabel=%N\ %t\ %M
 set autoread
 set listchars=tab:→\ ,trail:·,eol:↩
 set list
@@ -169,6 +169,9 @@ compiler ruby
 
 " Airline configuration
 let g:airline_theme='molokai'
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#tab_nr_type = 1 " show tab number
+let g:airline#extensions#tabline#fnamemod = ':t'
 
 " Netrw (:Explore) configuration
 let g:netrw_banner = 0

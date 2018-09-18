@@ -17,12 +17,13 @@ syntax on
 if has("gui_gtk2")
     set guifont=Ubuntu\ Mono\ 15,Monospace\ 13
     let vimhome = "~/.vim"
-
-elseif has("mac")
+elseif has("gui_vimr")
+    let vimhome = "~/.vim"
+elseif has("gui_macvim")
     set macmeta
+    set anti
     set guifont=Menlo:h15
     let vimhome = "~/.vim"
-
 elseif has("gui_win32")
     set guifont=Dejavu\ Sans\ Mono:h13,Consolas:h12
     let vimhome = "~/vimfiles"
@@ -34,46 +35,61 @@ end
 " Plugin Section *
 " ****************
 "
-if has('vim_starting')
-    set nocompatible
-    let &rtp.=",".vimhome."/bundle/neobundle.vim"
+let deinhome = vimhome."/vendor/"
+let deinrepo = deinhome."/repos/github.com/Shougo/dein.vim"
+let &rtp.=",".deinrepo
+
+if dein#load_state(deinhome)
+  call dein#begin(deinhome)
+  call dein#add(deinrepo)
+
+  " Add or remove your plugins here:
+  call dein#add('Shougo/neosnippet.vim')
+  call dein#add('Shougo/neosnippet-snippets')
+  call dein#add('tpope/vim-fugitive')
+
+  call dein#add('scrooloose/nerdtree.git')
+  call dein#add('scrooloose/nerdcommenter.git')
+  call dein#add('tpope/vim-markdown.git')
+  call dein#add('tpope/vim-surround.git')
+  call dein#add('tpope/vim-repeat.git')
+  call dein#add('vim-ruby/vim-ruby.git')
+  call dein#add('tpope/vim-cucumber.git')
+  call dein#add('leoluz/xmledit.git')
+  call dein#add('kien/ctrlp.vim.git')
+  call dein#add('jistr/vim-nerdtree-tabs')
+  call dein#add('vim-airline/vim-airline')
+  call dein#add('vim-airline/vim-airline-themes')
+  call dein#add('tfnico/vim-gradle')
+  call dein#add('fatih/vim-go')
+  call dein#add('majutsushi/tagbar')
+  call dein#add('martinda/Jenkinsfile-vim-syntax')
+  call dein#add('qpkorr/vim-bufkill')
+  call dein#add('tomasr/molokai')
+  call dein#add('Shougo/deoplete.nvim')
+  call dein#add('zchee/deoplete-go', {'build': 'make'})
+  call dein#add('zeis/vim-kolor')
+  call dein#add('nightsense/wonka')
+  call dein#add('jiangmiao/auto-pairs.git')
+  call dein#add('sebdah/vim-delve')
+
+  " Typescript plugins
+  call dein#add('HerringtonDarkholme/yats.vim')
+  call dein#add('mhartington/nvim-typescript', {'build': './install.sh'})
+
+  " Required:
+  call dein#end()
+  call dein#save_state()
 endif
 
-call neobundle#begin(expand(vimhome."/bundle/"))
-
-" Let NeoBundle manage NeoBundle
-NeoBundleFetch 'Shougo/neobundle.vim'
-
-" My bundles
-NeoBundle 'tpope/vim-rails'
-NeoBundle 'tpope/vim-fugitive'
-NeoBundle 'scrooloose/nerdtree.git'
-NeoBundle 'scrooloose/nerdcommenter.git'
-NeoBundle 'tpope/vim-markdown.git'
-NeoBundle 'tpope/vim-surround.git'
-NeoBundle 'tpope/vim-repeat.git'
-NeoBundle 'vim-ruby/vim-ruby.git'
-NeoBundle 'tpope/vim-cucumber.git'
-NeoBundle 'leoluz/xmledit.git'
-NeoBundle 'kien/ctrlp.vim.git'
-NeoBundle 'jistr/vim-nerdtree-tabs'
-NeoBundle 'vim-airline/vim-airline'
-NeoBundle 'vim-airline/vim-airline-themes'
-NeoBundle 'tfnico/vim-gradle'
-NeoBundle 'Raimondi/delimitMate'
-NeoBundle 'SirVer/ultisnips'
-NeoBundle 'honza/vim-snippets'
-NeoBundle 'fatih/vim-go'
-NeoBundle 'majutsushi/tagbar'
-NeoBundle 'martinda/Jenkinsfile-vim-syntax'
-NeoBundle 'qpkorr/vim-bufkill'
-if has("lua")
-    NeoBundle 'Shougo/neocomplete.vim'
-end
-
-call neobundle#end()
+" Required:
 filetype plugin indent on
-NeoBundleCheck
+syntax enable
+
+" If you want to install not installed plugins on startup.
+if dein#check_install()
+  call dein#install()
+endif
 
 " ****************
 " script section *
@@ -101,17 +117,23 @@ if has("gui_running")
     set cursorline              " highlight current line
     set relativenumber
     set cm=blowfish2            " crypt method
-    colorscheme molokai " Other nice colorschemes to try: candycode, molokai, fruity
-else
-    colorscheme jellybeans
-end
+endif
 
+"colorscheme molokai " Other nice colorschemes to try: molokai, fruity 
+let g:kolor_italic=1
+let g:kolor_bold=1
+let g:kolor_underlined=0
+let g:kolor_alternative_matchparen=0
+let g:kolor_inverted_matchparen=0
+colorscheme kolor
+
+set fillchars+=vert:\ 
 let mapleader=" "
+set nohlsearch
 set laststatus=2
 set wildignore+=*.bak,*.pyc,*.py~,*.pdf,*.so,*.gif,*.jpg,*.flv,*.class,*.jar,*.png,*/tools/*,*/docs/*,*.swp,*/.svn/*,*/.git/*
 set wildmode=list:longest
 set wildmenu
-set anti
 set textwidth=0
 set tabstop=4
 set softtabstop=4
@@ -138,7 +160,6 @@ set smartcase       " Do smart case matching
 set mousemodel=popup
 set foldmethod=indent
 set foldlevel=999
-set guitablabel=%N\ %t\ %M
 set autoread
 set listchars=tab:→\ ,trail:·,eol:↩
 set list
@@ -150,6 +171,13 @@ compiler ruby
 " ****************
 " Plugin configs *
 " ****************
+
+" Airline configuration
+let g:airline_theme='deus'
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#tab_nr_type = 1 " show tab number
+let g:airline#extensions#tabline#fnamemod = ':t'
+"let g:airline_powerline_fonts = 1
 
 " Netrw (:Explore) configuration
 let g:netrw_banner = 0
@@ -169,11 +197,6 @@ let g:ctrlp_open_multi = '1'
 let g:ctrlp_arg_map = 1
 let g:ctrlp_max_depth = 50
 
-" Ultisnips configuration
-let g:UltiSnipsExpandTrigger="<tab>"
-let g:UltiSnipsJumpForwardTrigger="<tab>"
-let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
-
 " Taglist configuration
 let Tlist_Compact_Format = 1
 let Tlist_Use_Right_Window = 1
@@ -184,18 +207,39 @@ let Tlist_Show_One_File = 1
 let g:tagbar_autofocus = 1
 let g:tagbar_autoclose = 1
 
-" DelimitMate configuration
-let delimitMate_expand_cr = 1
+" DeoComplete configuration
+let g:deoplete#enable_at_startup = 1
+set completeopt+=noinsert
+autocmd CompleteDone * silent! pclose!
+inoremap <silent><CR> <C-R>=<SID>my_cr_function()<CR>
+function! s:my_cr_function()
+    if (pumvisible())
+        return deoplete#close_popup()
+    else
+        return "\<CR>"
+    endif
+endfunction
 
-" NeoComplete configuration
-let g:neocomplete#enable_at_startup = 1
+" Nvim-typescript configuration
+let g:nvim_typescript#default_mappings = 1
+
+" Neosnippet configuration
+imap <C-;>     <Plug>(neosnippet_expand_or_jump)
+smap <C-;>     <Plug>(neosnippet_expand_or_jump)
+xmap <C-;>     <Plug>(neosnippet_expand_target)
 
 " go-vim configuration
 let g:go_highlight_functions = 1
 let g:go_highlight_methods = 1
 let g:go_highlight_structs = 1
+let g:go_auto_sameids = 1
+"let g:go_guru_scope = ["github.com/AppDirect/rms/..."]
+let g:go_fmt_command = "goimports"
+autocmd Filetype go command! -bang A call go#alternate#Switch(<bang>0, 'edit')
+autocmd Filetype go command! -bang AV call go#alternate#Switch(<bang>0, 'vsplit')
+autocmd Filetype go command! -bang AS call go#alternate#Switch(<bang>0, 'split')
 au FileType go nmap <Leader>gv <Plug>(go-doc-vertical)
-au FileType go nmap <Leader>gi <Plug>(go-info)
+au FileType go nmap <Leader>gi <Plug>(go-import)
 au FileType go nmap <Leader>gs <Plug>(go-implements)
 au FileType go nmap <Leader>gd <Plug>(go-doc)
 au FileType go nmap <Leader>gr <Plug>(go-rename)
@@ -208,25 +252,10 @@ au FileType go nmap <leader>b <Plug>(go-build)
 au FileType go nmap <leader>t <Plug>(go-test)
 au FileType go nmap <leader>c <Plug>(go-coverage)
 au FileType go nmap <leader>x <Plug>(go-run)
-au FileType go nmap <Leader>i :GoImports<CR>
+au FileType go nmap <Leader>i <Plug>(go-info) 
 
 " Set working directory to the current file
 autocmd BufEnter * silent! lcd %:p:h
-
-" air-line configuration
-if !exists('g:airline_symbols')
-    let g:airline_symbols = {}
-endif
-let g:airline_theme = 'tomorrow'
-let g:airline_section_warning = ''
-let g:airline_inactive_collapse = 0
-let g:airline_left_sep = '▄'
-let g:airline_right_sep = '▄'
-let g:airline_left_alt_sep = '→'
-let g:airline_right_alt_sep = '←'
-let g:airline_symbols.branch = '⎇'
-let g:airline_symbols.paste = 'P'
-let g:airline_symbols.readonly = '!'
 
 " *****************
 " Mapping section *
@@ -245,7 +274,7 @@ nnoremap <leader>, 10<C-W><
 "" Maps for tabs specific funcionalities
 nnoremap L :tabnext<CR>
 nnoremap H :tabprevious<CR>
-map <M-t> :tabnew<CR>
+noremap <M-t> :tabnew<CR>
 
 "" Omni completion maps
 inoremap <C-Space> <C-x><C-o>
@@ -274,7 +303,7 @@ nnoremap <silent><leader>q :NERDTreeTabsToggle<CR>
 nnoremap <silent><leader>fj :%!python -m json.tool<CR>
 
 "" Misc maps
-map <F5> :setlocal spell! spelllang=en_us<CR>
+noremap <F5> :setlocal spell! spelllang=en_us<CR>
 
 "" CtrlP buffer
 nnoremap <C-i> :CtrlPBuffer<CR>
@@ -284,6 +313,8 @@ inoremap <C-Space> <C-x><C-o>
 inoremap <C-@> <C-x><C-o>
 inoremap <C-l> <ESC>A
 
+"" Misc maps
+map <F5> :setlocal spell! spelllang=en_us<CR>
 nnoremap Y y$
 nnoremap j gj
 nnoremap k gk
@@ -293,11 +324,10 @@ nnoremap <C-l> :bnext<CR>
 nnoremap <C-h> :bprevious<CR>
 nnoremap <UP> ddkP
 nnoremap <Down> ddp
-nnoremap <CR> o<ESC>
 nnoremap <leader>s z=
 nnoremap - :BD<CR>
 nnoremap <C-_> :q!<CR>
-nnoremap <silent> <leader>ev :e $MYVIMRC<CR>
+nnoremap <silent> <leader>v :e $MYVIMRC<CR>
 nnoremap <silent> <leader>r :source $MYVIMRC<CR>:echo 'Vim configs reloaded!' <CR>
 nnoremap <silent><leader>a ggvG$
 
@@ -305,4 +335,9 @@ inoremap <silent><C-Del> <ESC>dea
 inoremap <C-a> <ESC>ggvG$
 inoremap <silent><C-Del> <ESC>dea
 
-vmap <silent><C-s> :sort<CR>
+vnoremap <silent><C-s> :sort<CR>
+
+onoremap p i(
+
+"" Set color almost invisible color for Special Characters
+highlight NonText         guifg=#383838    guibg=#2e2d2b    gui=none

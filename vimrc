@@ -67,10 +67,15 @@ if dein#load_state(deinhome)
   call dein#add('qpkorr/vim-bufkill')
   call dein#add('tomasr/molokai')
   call dein#add('Shougo/deoplete.nvim')
+  call dein#add('zchee/deoplete-go', {'build': 'make'})
   call dein#add('zeis/vim-kolor')
   call dein#add('nightsense/wonka')
   call dein#add('jiangmiao/auto-pairs.git')
   call dein#add('sebdah/vim-delve')
+
+  " Typescript plugins
+  call dein#add('HerringtonDarkholme/yats.vim')
+  call dein#add('mhartington/nvim-typescript', {'build': './install.sh'})
 
   " Required:
   call dein#end()
@@ -168,10 +173,11 @@ compiler ruby
 " ****************
 
 " Airline configuration
-let g:airline_theme='molokai'
+let g:airline_theme='deus'
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#tab_nr_type = 1 " show tab number
 let g:airline#extensions#tabline#fnamemod = ':t'
+"let g:airline_powerline_fonts = 1
 
 " Netrw (:Explore) configuration
 let g:netrw_banner = 0
@@ -213,6 +219,9 @@ function! s:my_cr_function()
         return "\<CR>"
     endif
 endfunction
+
+" Nvim-typescript configuration
+let g:nvim_typescript#default_mappings = 1
 
 " Neosnippet configuration
 imap <C-;>     <Plug>(neosnippet_expand_or_jump)

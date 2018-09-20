@@ -61,7 +61,7 @@ if dein#load_state(deinhome)
   call dein#add('vim-airline/vim-airline')
   call dein#add('vim-airline/vim-airline-themes')
   call dein#add('tfnico/vim-gradle')
-  call dein#add('fatih/vim-go', {'hook_add': 'GoInstallBinaries', 'hook_post_update': 'GoUpdateBinaries'})
+  call dein#add('fatih/vim-go', {'hook_add': ':GoInstallBinaries', 'hook_post_update': 'GoUpdateBinaries'})
   call dein#add('majutsushi/tagbar')
   call dein#add('martinda/Jenkinsfile-vim-syntax')
   call dein#add('qpkorr/vim-bufkill')
@@ -177,6 +177,16 @@ let g:airline_theme='deus'
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#tab_nr_type = 1 " show tab number
 let g:airline#extensions#tabline#fnamemod = ':t'
+let g:airline#extensions#tabline#buffer_idx_mode = 1
+nmap <leader>1 <Plug>AirlineSelectTab1
+nmap <leader>2 <Plug>AirlineSelectTab2
+nmap <leader>3 <Plug>AirlineSelectTab3
+nmap <leader>4 <Plug>AirlineSelectTab4
+nmap <leader>5 <Plug>AirlineSelectTab5
+nmap <leader>6 <Plug>AirlineSelectTab6
+nmap <leader>7 <Plug>AirlineSelectTab7
+nmap <leader>8 <Plug>AirlineSelectTab8
+nmap <leader>9 <Plug>AirlineSelectTab9
 "let g:airline_powerline_fonts = 1
 
 " Netrw (:Explore) configuration

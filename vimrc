@@ -35,7 +35,7 @@ end
 " Plugin Section *
 " ****************
 "
-let deinhome = vimhome."/vendor/"
+let deinhome = vimhome."/vendor"
 let deinrepo = deinhome."/repos/github.com/Shougo/dein.vim"
 let &rtp.=",".deinrepo
 
@@ -61,7 +61,7 @@ if dein#load_state(deinhome)
   call dein#add('vim-airline/vim-airline')
   call dein#add('vim-airline/vim-airline-themes')
   call dein#add('tfnico/vim-gradle')
-  call dein#add('fatih/vim-go', {'hook_add': ':GoInstallBinaries', 'hook_post_update': 'GoUpdateBinaries'})
+  call dein#add('fatih/vim-go')
   call dein#add('majutsushi/tagbar')
   call dein#add('martinda/Jenkinsfile-vim-syntax')
   call dein#add('qpkorr/vim-bufkill')

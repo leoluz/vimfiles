@@ -202,7 +202,6 @@ let g:nerdtree_tabs_open_on_gui_startup = 0
 
 " CtrlP configuration
 let g:ctrlp_working_path_mode = 'ra'
-let g:ctrlp_by_filename = 1
 let g:ctrlp_open_multi = '1'
 let g:ctrlp_arg_map = 1
 let g:ctrlp_max_depth = 50

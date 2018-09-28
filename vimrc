@@ -113,12 +113,6 @@ endif
 
 " Vim configs
 
-if has("gui_running")
-    set cursorline              " highlight current line
-    set relativenumber
-    set cm=blowfish2            " crypt method
-endif
-
 "colorscheme molokai " Other nice colorschemes to try: molokai, fruity 
 let g:kolor_italic=1
 let g:kolor_bold=1
@@ -127,6 +121,9 @@ let g:kolor_alternative_matchparen=0
 let g:kolor_inverted_matchparen=0
 colorscheme kolor
 
+set cursorline              " highlight current line
+set relativenumber
+set cm=blowfish2            " crypt method
 set fillchars+=vert:\ 
 let mapleader=" "
 set nohlsearch

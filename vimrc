@@ -123,7 +123,6 @@ colorscheme kolor
 
 set cursorline              " highlight current line
 set relativenumber
-set cm=blowfish2            " crypt method
 set fillchars+=vert:\ 
 let mapleader=" "
 set nohlsearch

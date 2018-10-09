@@ -114,12 +114,12 @@ endif
 " Vim configs
 
 "colorscheme molokai " Other nice colorschemes to try: molokai, fruity 
+colorscheme kolor
 let g:kolor_italic=1
 let g:kolor_bold=1
 let g:kolor_underlined=0
 let g:kolor_alternative_matchparen=0
 let g:kolor_inverted_matchparen=0
-colorscheme kolor
 
 set cursorline              " highlight current line
 set relativenumber
@@ -215,6 +215,7 @@ let g:tagbar_autoclose = 1
 " DeoComplete configuration
 let g:deoplete#enable_at_startup = 1
 set completeopt+=noinsert
+set completeopt-=preview
 autocmd CompleteDone * silent! pclose!
 inoremap <silent><CR> <C-R>=<SID>my_cr_function()<CR>
 function! s:my_cr_function()

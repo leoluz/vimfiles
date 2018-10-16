@@ -346,3 +346,4 @@ onoremap p i(
 
 "" Set color almost invisible color for Special Characters
 highlight NonText         guifg=#383838    guibg=#2e2d2b    gui=none
+highlight NonText         ctermfg=237      ctermbg=235      cterm=none

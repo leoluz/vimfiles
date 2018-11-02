@@ -72,6 +72,8 @@ if dein#load_state(deinhome)
   call dein#add('nightsense/wonka')
   call dein#add('jiangmiao/auto-pairs.git')
   call dein#add('sebdah/vim-delve')
+  call dein#add('hashivim/vim-terraform')
+  call dein#add('stephpy/vim-yaml')
 
   " Typescript plugins
   call dein#add('HerringtonDarkholme/yats.vim')
@@ -121,6 +123,7 @@ let g:kolor_underlined=0
 let g:kolor_alternative_matchparen=0
 let g:kolor_inverted_matchparen=0
 
+set clipboard=unnamed       " y yy d works with system clipboard
 set cursorline              " highlight current line
 set relativenumber
 set fillchars+=vert:\ 
@@ -258,6 +261,10 @@ au FileType go nmap <leader>t <Plug>(go-test)
 au FileType go nmap <leader>c <Plug>(go-coverage)
 au FileType go nmap <leader>x <Plug>(go-run)
 au FileType go nmap <Leader>i <Plug>(go-info) 
+
+" Terraform configuration
+let g:terraform_fmt_on_save=1
+let g:terraform_align=1
 
 " Set working directory to the current file
 autocmd BufEnter * silent! lcd %:p:h

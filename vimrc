@@ -66,6 +66,7 @@ if dein#load_state(deinhome)
   call dein#add('martinda/Jenkinsfile-vim-syntax')
   call dein#add('qpkorr/vim-bufkill')
   call dein#add('tomasr/molokai')
+  call dein#add('Shougo/echodoc.vim')
   call dein#add('Shougo/deoplete.nvim')
   call dein#add('zchee/deoplete-go', {'build': 'make'})
   call dein#add('zeis/vim-kolor')
@@ -215,8 +216,13 @@ let Tlist_Show_One_File = 1
 let g:tagbar_autofocus = 1
 let g:tagbar_autoclose = 1
 
+" Echodoc configuration
+set noshowmode
+
 " DeoComplete configuration
 let g:deoplete#enable_at_startup = 1
+let g:deoplete#async_timeout = 2000
+let g:deoplete#auto_complete_delay = 50
 set completeopt+=noinsert
 set completeopt-=preview
 autocmd CompleteDone * silent! pclose!
@@ -228,6 +234,8 @@ function! s:my_cr_function()
         return "\<CR>"
     endif
 endfunction
+
+let g:deoplete#sources#go#gocode_binary = $GOPATH.'/bin/gocode'
 
 " Nvim-typescript configuration
 let g:nvim_typescript#default_mappings = 1

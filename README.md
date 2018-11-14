@@ -17,6 +17,14 @@ Instalation
 
 For the first time you start Vim it will automatically install all the needed plugins.
 
+### Powerline symbols support
+
+Its necessary to install the preferred powerline and symbols fonts:
+
+    $ brew cask install font-powerline-symbols font-menlo-for-powerline
+
+After installing just select the powerline version of your font in the terminal or nvim gui of choice.
+
 ### Golang support
 
 To enable go auto-completion please refer to the [vim-go](https://github.com/fatih/vim-go/blob/master/doc/vim-go.txt) documentation.
@@ -33,5 +41,4 @@ Details
 
 * author: Leonardo Luz
 * email: leonardo.la at gmail dot com
-* blog: [LeoLuz](http://blog.leoluz.me)
 * twitter: @leo_luz

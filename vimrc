@@ -75,6 +75,12 @@ if dein#load_state(deinhome)
   call dein#add('sebdah/vim-delve')
   call dein#add('hashivim/vim-terraform')
   call dein#add('stephpy/vim-yaml')
+  call dein#add('w0rp/ale')
+
+  "call dein#add('autozimu/LanguageClient-neovim', {
+    "\ 'rev': 'next',
+    "\ 'build': 'bash install.sh',
+    "\ })
 
   " Typescript plugins
   call dein#add('HerringtonDarkholme/yats.vim')
@@ -155,8 +161,6 @@ set linebreak
 set guioptions-=T   " Turn toolbar off
 set guioptions-=m   " Turn menubar off
 set guioptions-=r   " remove right-hand scroll bar
-set virtualedit=all
-set smartcase       " Do smart case matching
 set mousemodel=popup
 set foldmethod=indent
 set foldlevel=999
@@ -166,6 +170,8 @@ set list
 set hidden          " Don't autosave buffers
 set splitbelow
 set splitright
+set smartcase       " Do smart case matching
+"set virtualedit=all
 compiler ruby
 
 " ****************
@@ -187,7 +193,7 @@ nmap <leader>6 <Plug>AirlineSelectTab6
 nmap <leader>7 <Plug>AirlineSelectTab7
 nmap <leader>8 <Plug>AirlineSelectTab8
 nmap <leader>9 <Plug>AirlineSelectTab9
-"let g:airline_powerline_fonts = 1
+let g:airline_powerline_fonts = 1
 
 " Netrw (:Explore) configuration
 let g:netrw_banner = 0
@@ -221,7 +227,7 @@ set noshowmode
 
 " DeoComplete configuration
 let g:deoplete#enable_at_startup = 1
-let g:deoplete#async_timeout = 2000
+"let g:deoplete#async_timeout = 2000
 let g:deoplete#auto_complete_delay = 50
 set completeopt+=noinsert
 set completeopt-=preview
@@ -241,16 +247,33 @@ let g:deoplete#sources#go#gocode_binary = $GOPATH.'/bin/gocode'
 let g:nvim_typescript#default_mappings = 1
 
 " Neosnippet configuration
-imap <C-;>     <Plug>(neosnippet_expand_or_jump)
-smap <C-;>     <Plug>(neosnippet_expand_or_jump)
-xmap <C-;>     <Plug>(neosnippet_expand_target)
+imap <expr><TAB> neosnippet#expandable_or_jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+smap <expr><TAB> neosnippet#expandable_or_jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+let g:neosnippet#snippets_directory = vimhome.'/snippets'
 
-" go-vim configuration
+" Ale configuration
+let g:ale_set_highlights = 0
+let g:ale_sign_warning = '⚠️⚠'
+let g:ale_sign_error = '❌'
+let g:airline#extensions#ale#enabled = 1
+let g:ale_echo_msg_format = '[%linter%] %s'
+
+" vim-go configuration
+au FileType go set noexpandtab
+au FileType go set nowrap
+let g:go_highlight_build_constraints = 1
+let g:go_highlight_extra_types = 1
+let g:go_highlight_fields = 1
+let g:go_highlight_operators = 1
+let g:go_highlight_types = 1
 let g:go_highlight_functions = 1
 let g:go_highlight_methods = 1
 let g:go_highlight_structs = 1
 let g:go_auto_sameids = 1
+let g:go_info_mode = 'gocode'
+let g:go_snippet_engine = "neosnippet"
 let g:go_fmt_command = "goimports"
+"let g:go_auto_type_info = 1
 autocmd Filetype go command! -bang A call go#alternate#Switch(<bang>0, 'edit')
 autocmd Filetype go command! -bang AV call go#alternate#Switch(<bang>0, 'vsplit')
 autocmd Filetype go command! -bang AS call go#alternate#Switch(<bang>0, 'split')

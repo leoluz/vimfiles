@@ -19,9 +19,9 @@ For the first time you start Vim it will automatically install all the needed pl
 
 ### Powerline symbols support
 
-Its necessary to install the preferred powerline and symbols fonts:
+Its necessary to install the preferred powerline fonts:
 
-    $ brew cask install font-powerline-symbols font-menlo-for-powerline
+    $ brew cask install homebrew/cask-fonts/font-menlo-for-powerline
 
 After installing just select the powerline version of your font in the terminal or nvim gui of choice.
 

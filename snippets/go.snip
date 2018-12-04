@@ -112,9 +112,12 @@ alias       ft
 abbr        func Test... (t *testing.T) { ... }
 options     head
   func Test${1} (${2:t *testing.T}) {
-    for i := 0; i < ${3:t.N}; i++ {
-      ${4}
-    }
+    // Given
+    ${3:TARGET}
+
+    // When
+
+    // Then
   }
 
 snippet     funcbench

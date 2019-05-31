@@ -35,73 +35,116 @@ end
 " Plugin Section *
 " ****************
 "
-let deinhome = vimhome."/vendor"
-let deinrepo = deinhome."/repos/github.com/Shougo/dein.vim"
-let &rtp.=",".deinrepo
+"let deinhome = vimhome."/vendor"
+"let deinrepo = deinhome."/repos/github.com/Shougo/dein.vim"
+"let &rtp.=",".deinrepo
 
-if dein#load_state(deinhome)
-  call dein#begin(deinhome)
-  call dein#add(deinrepo)
+"if dein#load_state(deinhome)
+  "call dein#begin(deinhome)
+  "call dein#add(deinrepo)
 
-  " Add or remove your plugins here:
-  call dein#add('Shougo/neosnippet.vim')
-  call dein#add('Shougo/neosnippet-snippets')
-  call dein#add('tpope/vim-fugitive')
+  "" Add or remove your plugins here:
+  "call dein#add('Shougo/neosnippet.vim')
+  "call dein#add('Shougo/neosnippet-snippets')
+  "call dein#add('tpope/vim-fugitive')
 
-  call dein#add('scrooloose/nerdtree.git')
-  call dein#add('scrooloose/nerdcommenter.git')
-  call dein#add('tpope/vim-markdown.git')
-  call dein#add('tpope/vim-surround.git')
-  call dein#add('tpope/vim-repeat.git')
-  call dein#add('vim-ruby/vim-ruby.git')
-  call dein#add('tpope/vim-cucumber.git')
-  call dein#add('leoluz/xmledit.git')
-  call dein#add('kien/ctrlp.vim.git')
-  call dein#add('jistr/vim-nerdtree-tabs')
-  call dein#add('vim-airline/vim-airline')
-  call dein#add('vim-airline/vim-airline-themes')
-  call dein#add('tfnico/vim-gradle')
-  call dein#add('fatih/vim-go')
-  call dein#add('majutsushi/tagbar')
-  call dein#add('martinda/Jenkinsfile-vim-syntax')
-  call dein#add('qpkorr/vim-bufkill')
-  call dein#add('tomasr/molokai')
-  call dein#add('Shougo/echodoc.vim')
-  call dein#add('Shougo/deoplete.nvim')
-  call dein#add('deoplete-plugins/deoplete-go', {'build': 'make'})
-  call dein#add('zeis/vim-kolor')
-  call dein#add('nightsense/wonka')
-  "call dein#add('jiangmiao/auto-pairs.git')
-  call dein#add('cohama/lexima.vim')
-  call dein#add('sebdah/vim-delve')
-  call dein#add('hashivim/vim-terraform')
-  call dein#add('stephpy/vim-yaml')
-  call dein#add('w0rp/ale')
+  "call dein#add('scrooloose/nerdtree.git')
+  "call dein#add('scrooloose/nerdcommenter.git')
+  "call dein#add('tpope/vim-markdown.git')
+  "call dein#add('tpope/vim-surround.git')
+  "call dein#add('tpope/vim-repeat.git')
+  "call dein#add('vim-ruby/vim-ruby.git')
+  "call dein#add('tpope/vim-cucumber.git')
+  "call dein#add('leoluz/xmledit.git')
+  "call dein#add('kien/ctrlp.vim.git')
+  "call dein#add('vim-airline/vim-airline')
+  "call dein#add('vim-airline/vim-airline-themes')
+  "call dein#add('tfnico/vim-gradle')
+  "call dein#add('fatih/vim-go')
+  "call dein#add('majutsushi/tagbar')
+  "call dein#add('martinda/Jenkinsfile-vim-syntax')
+  "call dein#add('qpkorr/vim-bufkill')
+  "call dein#add('tomasr/molokai')
+  "call dein#add('Shougo/echodoc.vim')
+  "call dein#add('Shougo/deoplete.nvim')
+  "call dein#add('deoplete-plugins/deoplete-go', {'build': 'make'})
+  "call dein#add('zeis/vim-kolor')
+  "call dein#add('nightsense/wonka')
+  ""call dein#add('jiangmiao/auto-pairs.git')
+  "call dein#add('cohama/lexima.vim')
+  "call dein#add('sebdah/vim-delve')
+  "call dein#add('hashivim/vim-terraform')
+  "call dein#add('stephpy/vim-yaml')
+  "call dein#add('w0rp/ale')
 
-  call dein#add('endel/vim-github-colorscheme')
+  "call dein#add('endel/vim-github-colorscheme')
 
-  "call dein#add('autozimu/LanguageClient-neovim', {
-    "\ 'rev': 'next',
-    "\ 'build': 'bash install.sh',
-    "\ })
+  ""call dein#add('autozimu/LanguageClient-neovim', {
+    ""\ 'rev': 'next',
+    ""\ 'build': 'bash install.sh',
+    ""\ })
 
-  " Typescript plugins
-  call dein#add('HerringtonDarkholme/yats.vim')
-  call dein#add('mhartington/nvim-typescript', {'build': './install.sh'})
+  "" Typescript plugins
+  "call dein#add('HerringtonDarkholme/yats.vim')
+  "call dein#add('mhartington/nvim-typescript', {'build': './install.sh'})
 
-  " Required:
-  call dein#end()
-  call dein#save_state()
-endif
+  "" Required:
+  "call dein#end()
+  "call dein#save_state()
+"endif
 
-" Required:
-filetype plugin indent on
-syntax enable
+ ""Required:
+"filetype plugin indent on
+"syntax enable
 
-" If you want to install not installed plugins on startup.
-if dein#check_install()
-  call dein#install()
-endif
+"" If you want to install not installed plugins on startup.
+"if dein#check_install()
+  "call dein#install()
+"endif
+
+
+" Specify a directory for plugins
+" - For Neovim: ~/.local/share/nvim/plugged
+" - Avoid using standard Vim directory names like 'plugin'
+call plug#begin('~/.local/share/nvim/plugged')
+
+" Make sure you use single quotes
+Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
+Plug 'fatih/vim-go', { 'tag': '*' }
+Plug 'Shougo/neosnippet.vim'
+Plug 'Shougo/neosnippet-snippets'
+Plug 'tpope/vim-fugitive'
+Plug 'scrooloose/nerdcommenter'
+Plug 'tpope/vim-markdown'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-repeat'
+Plug 'vim-ruby/vim-ruby'
+Plug 'tpope/vim-cucumber'
+Plug 'leoluz/xmledit'
+Plug 'kien/ctrlp.vim'
+Plug 'jistr/vim-nerdtree-tabs'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'tfnico/vim-gradle'
+Plug 'fatih/vim-go'
+Plug 'majutsushi/tagbar'
+Plug 'martinda/Jenkinsfile-vim-syntax'
+Plug 'qpkorr/vim-bufkill'
+Plug 'tomasr/molokai'
+Plug 'Shougo/echodoc.vim'
+Plug 'Shougo/deoplete.nvim'
+Plug 'deoplete-plugins/deoplete-go', {'do': 'make'}
+Plug 'zeis/vim-kolor'
+Plug 'nightsense/wonka'
+Plug 'cohama/lexima.vim'
+Plug 'sebdah/vim-delve'
+Plug 'hashivim/vim-terraform'
+Plug 'stephpy/vim-yaml'
+Plug 'w0rp/ale'
+Plug 'neoclide/coc.nvim', {'tag': '*', 'do': './install.sh'}
+
+" Initialize plugin system
+call plug#end()
 
 " ****************
 " script section *
@@ -345,7 +388,7 @@ vmap <leader>/ <plug>NERDCommenterToggle
 nnoremap <leader>w :TagbarToggle<CR>
 
 "" NERDTree maps
-nnoremap <silent><leader>q :NERDTreeTabsToggle<CR>
+nnoremap <silent><leader>q :NERDTreeToggle<CR>
 
 "" Format JSON
 nnoremap <silent><leader>fj :%!python -m json.tool<CR>

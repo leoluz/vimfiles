@@ -20,13 +20,20 @@ function! dein#parse#_add(repo, options) abort
     return {}
   endif
 
-  if plugin.lazy
+  if plugin.lazy && plugin.rtp !=# ''
     call s:parse_lazy(plugin)
   endif
 
+  if has_key(g:dein#_plugins, plugin.name)
+        \ && g:dein#_plugins[plugin.name].sourced
+    let plugin.sourced = 1
+  endif
   let g:dein#_plugins[plugin.name] = plugin
   if has_key(plugin, 'hook_add')
     call dein#util#_execute_hook(plugin, plugin.hook_add)
+  endif
+  if has_key(plugin, 'ftplugin')
+    call s:merge_ftplugin(plugin.ftplugin)
   endif
   return plugin
 endfunction
@@ -72,7 +79,11 @@ function! dein#parse#_dict(plugin) abort
           \ plugin.repo : dein#util#_get_base_path().'/repos/'.plugin.name
   endif
 
-  let plugin.path = dein#util#_chomp(plugin.path)
+  let plugin.path = dein#util#_chomp(dein#util#_expand(plugin.path))
+  if get(plugin, 'rev', '') !=# ''
+    " Add revision path
+    let plugin.path .= '_' . plugin.rev
+  endif
 
   " Check relative path
   if (!has_key(a:plugin, 'rtp') || a:plugin.rtp !=# '')
@@ -83,13 +94,16 @@ function! dein#parse#_dict(plugin) abort
     let plugin.rtp = dein#util#_expand(plugin.rtp)
   endif
   let plugin.rtp = dein#util#_chomp(plugin.rtp)
+  if g:dein#_is_sudo && !get(plugin, 'trusted', 0)
+    let plugin.rtp = ''
+  endif
 
   if has_key(plugin, 'script_type')
     " Add script_type.
     let plugin.path .= '/' . plugin.script_type
   endif
 
-  if has_key(plugin, 'depends') && type(plugin.depends) != type([])
+  if has_key(plugin, 'depends') && type(plugin.depends) != v:t_list
     let plugin.depends = [plugin.depends]
   endif
 
@@ -99,7 +113,7 @@ function! dein#parse#_dict(plugin) abort
     call dein#util#_error(string(key) . ' is deprecated.')
   endfor
 
-  if !has_key(a:plugin, 'lazy')
+  if !has_key(plugin, 'lazy')
     let plugin.lazy =
           \    has_key(plugin, 'on_i')
           \ || has_key(plugin, 'on_idle')
@@ -118,11 +132,11 @@ function! dein#parse#_dict(plugin) abort
           \ && plugin.normalized_name !=# 'dein'
           \ && !has_key(plugin, 'local')
           \ && !has_key(plugin, 'build')
-          \ && !has_key(a:plugin, 'if')
+          \ && !has_key(plugin, 'if')
           \ && stridx(plugin.rtp, dein#util#_get_base_path()) == 0
   endif
 
-  if has_key(a:plugin, 'if') && type(a:plugin.if) == type('')
+  if has_key(plugin, 'if') && type(plugin.if) == v:t_string
     let plugin.if = eval(a:plugin.if)
   endif
 
@@ -130,7 +144,7 @@ function! dein#parse#_dict(plugin) abort
   for hook in filter([
         \ 'hook_add', 'hook_source',
         \ 'hook_post_source', 'hook_post_update',
-        \ ], "has_key(plugin, v:val) && type(plugin[v:val]) == type('')")
+        \ ], "has_key(plugin, v:val) && type(plugin[v:val]) == v:t_string")
     let plugin[hook] = substitute(plugin[hook],
           \ '\n\s*\\\|\%(^\|\n\)\s*"[^\n]*', '', 'g')
   endfor
@@ -140,25 +154,24 @@ endfunction
 function! dein#parse#_load_toml(filename, default) abort
   try
     let toml = dein#toml#parse_file(dein#util#_expand(a:filename))
-  catch /vital: Text.TOML:/
+  catch /Text.TOML:/
     call dein#util#_error('Invalid toml format: ' . a:filename)
     call dein#util#_error(v:exception)
     return 1
   endtry
-  if type(toml) != type({})
+  if type(toml) != v:t_dict
     call dein#util#_error('Invalid toml file: ' . a:filename)
     return 1
   endif
 
   " Parse.
-  let pattern = '\n\s*\\\|\%(^\|\n\)\s*"[^\n]*'
   if has_key(toml, 'hook_add')
+    let pattern = '\n\s*\\\|\%(^\|\n\)\s*"[^\n]*'
     let g:dein#_hook_add .= "\n" . substitute(
           \ toml.hook_add, pattern, '', 'g')
   endif
   if has_key(toml, 'ftplugin')
-    call extend(g:dein#_ftplugin, toml.ftplugin)
-    call map(g:dein#_ftplugin, "substitute(v:val, pattern, '', 'g')")
+    call s:merge_ftplugin(toml.ftplugin)
   endif
 
   if has_key(toml, 'plugins')
@@ -212,9 +225,9 @@ function! dein#parse#_plugins2toml(plugins) abort
           \ 'repo = ' . string(plugin.repo)]
 
     for key in filter(sort(keys(default)),
-          \ '!has_key(skip_default, v:val)
-          \      && has_key(plugin, v:val)
-          \      && plugin[v:val] !=# default[v:val]')
+          \ '!has_key(skip_default, v:val) && has_key(plugin, v:val)
+          \  && (type(plugin[v:val]) !=# type(default[v:val])
+          \      || plugin[v:val] !=# default[v:val])')
       let val = plugin[key]
       if key =~# '^hook_'
         call add(toml, key . " = '''")
@@ -222,7 +235,7 @@ function! dein#parse#_plugins2toml(plugins) abort
         call add(toml, "'''")
       else
         call add(toml, key . ' = ' . string(
-              \ (type(val) == type([]) && len(val) == 1) ? val[0] : val))
+              \ (type(val) == v:t_list && len(val) == 1) ? val[0] : val))
       endif
       unlet! val
     endfor
@@ -266,8 +279,8 @@ function! s:parse_lazy(plugin) abort
         \ 'on_ft', 'on_path', 'on_cmd', 'on_func', 'on_map',
         \ 'on_source', 'on_event',
         \ ], 'has_key(a:plugin, v:val)
-        \     && type(a:plugin[v:val]) != type([])
-        \     && type(a:plugin[v:val]) != type({})
+        \     && type(a:plugin[v:val]) != v:t_list
+        \     && type(a:plugin[v:val]) != v:t_dict
         \')
     let a:plugin[key] = [a:plugin[key]]
   endfor
@@ -314,11 +327,11 @@ function! s:generate_dummy_commands(plugin) abort
 endfunction
 function! s:generate_dummy_mappings(plugin) abort
   let a:plugin.dummy_mappings = []
-  let items = type(a:plugin.on_map) == type({}) ?
+  let items = type(a:plugin.on_map) == v:t_dict ?
         \ map(items(a:plugin.on_map),
         \   "[split(v:val[0], '\\zs'), dein#util#_convert2list(v:val[1])]") :
         \ map(copy(a:plugin.on_map),
-        \  "type(v:val) == type([]) ?
+        \  "type(v:val) == v:t_list ?
         \     [split(v:val[0], '\\zs'), v:val[1:]] :
         \     [['n', 'x'], [v:val]]")
   for [modes, mappings] in items
@@ -347,6 +360,17 @@ function! s:generate_dummy_mappings(plugin) abort
       endfor
     endfor
   endfor
+endfunction
+function! s:merge_ftplugin(ftplugin) abort
+  let pattern = '\n\s*\\\|\%(^\|\n\)\s*"[^\n]*'
+  for [ft, val] in items(a:ftplugin)
+    if !has_key(g:dein#_ftplugin, ft)
+      let g:dein#_ftplugin[ft] = val
+    else
+      let g:dein#_ftplugin[ft] .= "\n" . val
+    endif
+  endfor
+  call map(g:dein#_ftplugin, "substitute(v:val, pattern, '', 'g')")
 endfunction
 
 function! dein#parse#_get_types() abort

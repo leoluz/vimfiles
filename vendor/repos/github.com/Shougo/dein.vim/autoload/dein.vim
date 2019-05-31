@@ -5,7 +5,9 @@
 "=============================================================================
 
 function! dein#_init() abort
-  let g:dein#_cache_version = 100
+  let g:dein#_cache_version = 150
+  let g:dein#_merged_format =
+        \ "{'repo': v:val.repo, 'rev': get(v:val, 'rev', '')}"
   let g:dein#name = ''
   let g:dein#plugin = {}
   let g:dein#_plugins = {}
@@ -19,11 +21,17 @@ function! dein#_init() abort
   let g:dein#_vimrcs = []
   let g:dein#_block_level = 0
   let g:dein#_event_plugins = {}
+  let g:dein#_is_sudo = $SUDO_USER !=# '' && $USER !=# $SUDO_USER
+        \ && $HOME !=# expand('~'.$USER)
+        \ && $HOME ==# expand('~'.$SUDO_USER)
+  let g:dein#_progname = fnamemodify(v:progname, ':r')
+  let g:dein#_init_runtimepath = &runtimepath
 
   augroup dein
+    autocmd!
     autocmd FuncUndefined * call dein#autoload#_on_func(expand('<afile>'))
     autocmd BufRead *? call dein#autoload#_on_default_event('BufRead')
-    autocmd BufNewFile *? call dein#autoload#_on_default_event('BufNewFile')
+    autocmd BufNew,BufNewFile *? call dein#autoload#_on_default_event('BufNew')
     autocmd VimEnter *? call dein#autoload#_on_default_event('VimEnter')
     autocmd FileType *? call dein#autoload#_on_default_event('FileType')
     autocmd BufWritePost *.vim,*.toml,vimrc,.vimrc
@@ -38,7 +46,7 @@ endfunction
 function! dein#load_cache_raw(vimrcs) abort
   let g:dein#_vimrcs = a:vimrcs
   let cache = get(g:, 'dein#cache_directory', g:dein#_base_path)
-        \ .'/cache_'.fnamemodify(v:progname, ':r')
+        \ .'/cache_' . g:dein#_progname
   let time = getftime(cache)
   if !empty(filter(map(copy(g:dein#_vimrcs),
         \ 'getftime(expand(v:val))'), 'time < v:val'))
@@ -48,24 +56,19 @@ function! dein#load_cache_raw(vimrcs) abort
   if len(list) != 3 || string(g:dein#_vimrcs) !=# list[0]
     return [{}, {}]
   endif
-  return [dein#_json2vim(list[1]), dein#_json2vim(list[2])]
-endfunction
-function! dein#_vim2json(expr) abort
-  return  (has('nvim') || has('patch-7.4.1498')) ?
-        \ json_encode(a:expr) : string(a:expr)
-endfunction
-function! dein#_json2vim(expr) abort
-  sandbox return (has('nvim') || has('patch-7.4.1498')) ?
-        \ json_decode(a:expr) : eval(a:expr)
+  return [json_decode(list[1]), json_decode(list[2])]
 endfunction
 function! dein#load_state(path, ...) abort
-  if !(a:0 > 0 ? a:1 : has('vim_starting')) | return 1 | endif
-
-  call dein#_init()
+  if !exists('#dein')
+    call dein#_init()
+  endif
+  let sourced = a:0 > 0 ? a:1 : has('vim_starting') &&
+        \  (!exists('&loadplugins') || &loadplugins)
+  if (g:dein#_is_sudo || !sourced) | return 1 | endif
   let g:dein#_base_path = expand(a:path)
 
   let state = get(g:, 'dein#cache_directory', g:dein#_base_path)
-        \ .'/state_' .fnamemodify(v:progname, ':r').'.vim'
+        \ . '/state_' . g:dein#_progname . '.vim'
   if !filereadable(state) | return 1 | endif
   try
     execute 'source' fnameescape(state)
@@ -179,12 +182,12 @@ function! dein#disable(names) abort
   return dein#util#_disable(a:names)
 endfunction
 function! dein#config(arg, ...) abort
-  return type(a:arg) != type([]) ?
+  return type(a:arg) != v:t_list ?
         \ dein#util#_config(a:arg, get(a:000, 0, {})) :
         \ map(copy(a:arg), 'dein#util#_config(v:val, a:1)')
 endfunction
-function! dein#set_hook(name, hook_name, hook) abort
-  return dein#util#_set_hook(a:name, a:hook_name, a:hook)
+function! dein#set_hook(plugins, hook_name, hook) abort
+  return dein#util#_set_hook(a:plugins, a:hook_name, a:hook)
 endfunction
 function! dein#save_state() abort
   return dein#util#_save_state(has('vim_starting'))

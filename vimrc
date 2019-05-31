@@ -68,14 +68,17 @@ if dein#load_state(deinhome)
   call dein#add('tomasr/molokai')
   call dein#add('Shougo/echodoc.vim')
   call dein#add('Shougo/deoplete.nvim')
-  call dein#add('zchee/deoplete-go', {'build': 'make'})
+  call dein#add('deoplete-plugins/deoplete-go', {'build': 'make'})
   call dein#add('zeis/vim-kolor')
   call dein#add('nightsense/wonka')
-  call dein#add('jiangmiao/auto-pairs.git')
+  "call dein#add('jiangmiao/auto-pairs.git')
+  call dein#add('cohama/lexima.vim')
   call dein#add('sebdah/vim-delve')
   call dein#add('hashivim/vim-terraform')
   call dein#add('stephpy/vim-yaml')
   call dein#add('w0rp/ale')
+
+  call dein#add('endel/vim-github-colorscheme')
 
   "call dein#add('autozimu/LanguageClient-neovim', {
     "\ 'rev': 'next',
@@ -226,7 +229,7 @@ let g:tagbar_autoclose = 1
 set noshowmode
 
 " DeoComplete configuration
-let g:deoplete#enable_at_startup = 1
+let g:deoplete#enable_at_startup = 0
 "let g:deoplete#async_timeout = 2000
 let g:deoplete#auto_complete_delay = 50
 set completeopt+=noinsert
@@ -241,7 +244,7 @@ function! s:my_cr_function()
     endif
 endfunction
 
-let g:deoplete#sources#go#gocode_binary = $GOPATH.'/bin/gocode'
+let g:deoplete#sources#go#gocode_binary = $GOPATH.'/bin/gocode_visualfc'
 
 " Nvim-typescript configuration
 let g:nvim_typescript#default_mappings = 1
@@ -270,7 +273,10 @@ let g:go_highlight_functions = 1
 let g:go_highlight_methods = 1
 let g:go_highlight_structs = 1
 let g:go_auto_sameids = 1
-let g:go_info_mode = 'gocode'
+"let g:go_info_mode = 'gocode'
+"let g:go_def_mode = 'godef'
+let g:go_def_mode = 'gopls'
+let g:go_info_mode = 'gopls'
 let g:go_snippet_engine = "neosnippet"
 let g:go_fmt_command = "goimports"
 autocmd Filetype go command! -bang A call go#alternate#Switch(<bang>0, 'edit')
@@ -344,11 +350,23 @@ nnoremap <silent><leader>q :NERDTreeTabsToggle<CR>
 "" Format JSON
 nnoremap <silent><leader>fj :%!python -m json.tool<CR>
 
-"" Misc maps
-noremap <F5> :setlocal spell! spelllang=en_us<CR>
-
 "" CtrlP buffer
 nnoremap <C-i> :CtrlPBuffer<CR>
+
+" Diff mode colorscheme toggle
+function! s:ToggleDiffMode()
+    if exists('g:colors_name')
+        if g:colors_name == 'kolor'
+            syntax off
+            colorscheme github
+        else
+            syntax on
+            colorscheme kolor
+        endif
+    endif
+endfunction
+map <silent> <F6> :call <SID>ToggleDiffMode()<CR>
+
 
 inoremap <C-s> <ESC>:w<CR>
 inoremap <C-Space> <C-x><C-o>
@@ -370,6 +388,7 @@ nnoremap <leader>s z=
 nnoremap - :BD<CR>
 nnoremap <C-_> :q!<CR>
 nnoremap <silent> <leader>v :e $MYVIMRC<CR>
+nnoremap <silent> <leader>z :e $HOME/.zshrc<CR>
 nnoremap <silent> <leader>r :source $MYVIMRC<CR>:echo 'Vim configs reloaded!' <CR>
 nnoremap <silent><leader>a ggvG$
 

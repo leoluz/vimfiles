@@ -14,7 +14,7 @@ endfunction
 
 function! dein#toml#parse_file(filename) abort
   if !filereadable(a:filename)
-    throw printf("vital: Text.TOML: No such file `%s'.", a:filename)
+    throw printf("Text.TOML: No such file `%s'.", a:filename)
   endif
 
   let text = join(readfile(a:filename), "\n")
@@ -74,7 +74,7 @@ function! s:_error(input) abort
     let offset += 1
   endwhile
 
-  throw printf("vital: Text.TOML: Illegal toml format at L%d:`%s':%d.",
+  throw printf("Text.TOML: Illegal toml format at L%d:`%s':%d.",
       \ len(split(a:input.text[: a:input.p], "\n", 1)),
       \ join(buf, ''), a:input.p)
 endfunction
@@ -325,9 +325,9 @@ function! s:_put_dict(dict, key, value) abort
 
   let ref = a:dict
   for key in keys[ : -2]
-    if has_key(ref, key) && type(ref[key]) == type({})
+    if has_key(ref, key) && type(ref[key]) == v:t_dict
       let ref = ref[key]
-    elseif has_key(ref, key) && type(ref[key]) == type([])
+    elseif has_key(ref, key) && type(ref[key]) == v:t_list
       let ref = ref[key][-1]
     else
       let ref[key] = {}
@@ -345,7 +345,7 @@ function! s:_put_array(dict, key, value) abort
   for key in keys[ : -2]
     let ref[key] = get(ref, key, {})
 
-    if type(ref[key]) == type([])
+    if type(ref[key]) == v:t_list
       let ref = ref[key][-1]
     else
       let ref = ref[key]

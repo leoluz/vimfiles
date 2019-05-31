@@ -11,7 +11,7 @@ function! dein#autoload#_source(...) abort
     return
   endif
 
-  if type(plugins[0]) != type({})
+  if type(plugins[0]) != v:t_dict
     let plugins = map(dein#util#_convert2list(a:1),
         \       'get(g:dein#_plugins, v:val, {})')
   endif
@@ -25,9 +25,7 @@ function! dein#autoload#_source(...) abort
   let sourced = []
   for plugin in filter(plugins,
         \ "!empty(v:val) && !v:val.sourced && v:val.rtp !=# ''")
-    if s:source_plugin(rtps, index, plugin, sourced)
-      return 1
-    endif
+    call s:source_plugin(rtps, index, plugin, sourced)
   endfor
 
   let filetype_before = dein#util#_redir('autocmd FileType')
@@ -66,7 +64,7 @@ function! dein#autoload#_source(...) abort
     call s:reset_ftplugin()
   endif
 
-  if is_reset || filetype_before !=# filetype_after
+  if (is_reset || filetype_before !=# filetype_after) && &filetype !=# ''
     " Recall FileType autocmd
     let &filetype = &filetype
   endif
@@ -118,14 +116,26 @@ function! s:source_events(event, plugins) abort
     return
   endif
 
+  let prev_autocmd = execute('autocmd ' . a:event)
+
   call dein#autoload#_source(a:plugins)
+
+  let new_autocmd = execute('autocmd ' . a:event)
 
   if a:event ==# 'InsertCharPre'
     " Queue this key again
     call feedkeys(v:char)
     let v:char = ''
   else
-    execute 'doautocmd <nomodeline>' a:event
+    if a:event ==# 'BufNew'
+      " For BufReadCmd plugins
+      doautocmd <nomodeline> BufReadCmd
+    endif
+    if exists('#' . a:event) && prev_autocmd !=# new_autocmd
+      execute 'doautocmd <nomodeline>' a:event
+    elseif exists('#User#' . a:event)
+      execute 'doautocmd <nomodeline> User' a:event
+    endif
   endif
 endfunction
 
@@ -155,7 +165,7 @@ endfunction
 function! dein#autoload#_on_cmd(command, name, args, bang, line1, line2) abort
   call dein#source(a:name)
 
-  if !exists(':' . a:command)
+  if exists(':' . a:command) != 2
     call dein#util#_error(printf('command %s is not found.', a:command))
     return
   endif
@@ -213,7 +223,7 @@ endfunction
 
 function! dein#autoload#_dummy_complete(arglead, cmdline, cursorpos) abort
   let command = matchstr(a:cmdline, '\h\w*')
-  if exists(':'.command)
+  if exists(':'.command) == 2
     " Remove the dummy command.
     silent! execute 'delcommand' command
   endif
@@ -221,7 +231,7 @@ function! dein#autoload#_dummy_complete(arglead, cmdline, cursorpos) abort
   " Load plugins
   call dein#autoload#_on_pre_cmd(tolower(command))
 
-  if exists(':'.command)
+  if exists(':'.command) == 2
     " Print the candidates
     call feedkeys("\<C-d>", 'n')
   endif
@@ -236,23 +246,25 @@ function! s:source_plugin(rtps, index, plugin, sourced) abort
 
   call add(a:sourced, a:plugin)
 
+  let index = a:index
+
   " Load dependencies
   for name in get(a:plugin, 'depends', [])
     if !has_key(g:dein#_plugins, name)
       call dein#util#_error(printf(
             \ 'Plugin name "%s" is not found.', name))
-      return 1
+      continue
     endif
 
     if !a:plugin.lazy && g:dein#_plugins[name].lazy
       call dein#util#_error(printf(
             \ 'Not lazy plugin "%s" depends lazy "%s" plugin.',
             \ a:plugin.name, name))
-      return 1
+      continue
     endif
 
-    if s:source_plugin(a:rtps, a:index, g:dein#_plugins[name], a:sourced)
-      return 1
+    if s:source_plugin(a:rtps, index, g:dein#_plugins[name], a:sourced)
+      let index += 1
     endif
   endfor
 
@@ -260,8 +272,8 @@ function! s:source_plugin(rtps, index, plugin, sourced) abort
 
   for on_source in filter(dein#util#_get_lazy_plugins(),
         \ "index(get(v:val, 'on_source', []), a:plugin.name) >= 0")
-    if s:source_plugin(a:rtps, a:index, on_source, a:sourced)
-      return 1
+    if s:source_plugin(a:rtps, index, on_source, a:sourced)
+      let index += 1
     endif
   endfor
 
@@ -280,7 +292,7 @@ function! s:source_plugin(rtps, index, plugin, sourced) abort
   endif
 
   if !a:plugin.merged || get(a:plugin, 'local', 0)
-    call insert(a:rtps, a:plugin.rtp, a:index)
+    call insert(a:rtps, a:plugin.rtp, index)
     if isdirectory(a:plugin.rtp.'/after')
       call dein#util#_add_after(a:rtps, a:plugin.rtp.'/after')
     endif
@@ -307,10 +319,9 @@ function! s:get_input() abort
 
   call feedkeys(termstr, 'n')
 
-  let type_num = type(0)
   while 1
     let char = getchar()
-    let input .= (type(char) == type_num) ? nr2char(char) : char
+    let input .= (type(char) == v:t_number) ? nr2char(char) : char
 
     let idx = stridx(input, termstr)
     if idx >= 1

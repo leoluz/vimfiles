@@ -35,82 +35,12 @@ end
 " Plugin Section *
 " ****************
 "
-"let deinhome = vimhome."/vendor"
-"let deinrepo = deinhome."/repos/github.com/Shougo/dein.vim"
-"let &rtp.=",".deinrepo
-
-"if dein#load_state(deinhome)
-  "call dein#begin(deinhome)
-  "call dein#add(deinrepo)
-
-  "" Add or remove your plugins here:
-  "call dein#add('Shougo/neosnippet.vim')
-  "call dein#add('Shougo/neosnippet-snippets')
-  "call dein#add('tpope/vim-fugitive')
-
-  "call dein#add('scrooloose/nerdtree.git')
-  "call dein#add('scrooloose/nerdcommenter.git')
-  "call dein#add('tpope/vim-markdown.git')
-  "call dein#add('tpope/vim-surround.git')
-  "call dein#add('tpope/vim-repeat.git')
-  "call dein#add('vim-ruby/vim-ruby.git')
-  "call dein#add('tpope/vim-cucumber.git')
-  "call dein#add('leoluz/xmledit.git')
-  "call dein#add('kien/ctrlp.vim.git')
-  "call dein#add('vim-airline/vim-airline')
-  "call dein#add('vim-airline/vim-airline-themes')
-  "call dein#add('tfnico/vim-gradle')
-  "call dein#add('fatih/vim-go')
-  "call dein#add('majutsushi/tagbar')
-  "call dein#add('martinda/Jenkinsfile-vim-syntax')
-  "call dein#add('qpkorr/vim-bufkill')
-  "call dein#add('tomasr/molokai')
-  "call dein#add('Shougo/echodoc.vim')
-  "call dein#add('Shougo/deoplete.nvim')
-  "call dein#add('deoplete-plugins/deoplete-go', {'build': 'make'})
-  "call dein#add('zeis/vim-kolor')
-  "call dein#add('nightsense/wonka')
-  ""call dein#add('jiangmiao/auto-pairs.git')
-  "call dein#add('cohama/lexima.vim')
-  "call dein#add('sebdah/vim-delve')
-  "call dein#add('hashivim/vim-terraform')
-  "call dein#add('stephpy/vim-yaml')
-  "call dein#add('w0rp/ale')
-
-  "call dein#add('endel/vim-github-colorscheme')
-
-  ""call dein#add('autozimu/LanguageClient-neovim', {
-    ""\ 'rev': 'next',
-    ""\ 'build': 'bash install.sh',
-    ""\ })
-
-  "" Typescript plugins
-  "call dein#add('HerringtonDarkholme/yats.vim')
-  "call dein#add('mhartington/nvim-typescript', {'build': './install.sh'})
-
-  "" Required:
-  "call dein#end()
-  "call dein#save_state()
-"endif
-
- ""Required:
-"filetype plugin indent on
-"syntax enable
-
-"" If you want to install not installed plugins on startup.
-"if dein#check_install()
-  "call dein#install()
-"endif
-
-
 " Specify a directory for plugins
-" - For Neovim: ~/.local/share/nvim/plugged
-" - Avoid using standard Vim directory names like 'plugin'
 call plug#begin('~/.local/share/nvim/plugged')
 
 " Make sure you use single quotes
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
-Plug 'fatih/vim-go', { 'tag': '*' }
+Plug 'fatih/vim-go', { 'tag': '*', 'do': ':GoUpdateBinaries', 'for': 'go' }
 Plug 'Shougo/neosnippet.vim'
 Plug 'Shougo/neosnippet-snippets'
 Plug 'tpope/vim-fugitive'
@@ -130,18 +60,23 @@ Plug 'fatih/vim-go'
 Plug 'majutsushi/tagbar'
 Plug 'martinda/Jenkinsfile-vim-syntax'
 Plug 'qpkorr/vim-bufkill'
-Plug 'tomasr/molokai'
 Plug 'Shougo/echodoc.vim'
-Plug 'Shougo/deoplete.nvim'
-Plug 'deoplete-plugins/deoplete-go', {'do': 'make'}
-Plug 'zeis/vim-kolor'
-Plug 'nightsense/wonka'
+"Plug 'Shougo/deoplete.nvim'
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+"Plug 'deoplete-plugins/deoplete-go', {'do': 'make'}
 Plug 'cohama/lexima.vim'
 Plug 'sebdah/vim-delve'
 Plug 'hashivim/vim-terraform'
 Plug 'stephpy/vim-yaml'
 Plug 'w0rp/ale'
-Plug 'neoclide/coc.nvim', {'tag': '*', 'do': './install.sh'}
+
+"Themes
+Plug 'tomasr/molokai'
+Plug 'zeis/vim-kolor'
+Plug 'nightsense/wonka'
+
+Plug 'tsandall/vim-rego'
+Plug 'Chiel92/vim-autoformat'
 
 " Initialize plugin system
 call plug#end()
@@ -170,6 +105,7 @@ endif
 
 "colorscheme molokai " Other nice colorschemes to try: molokai, fruity 
 colorscheme kolor
+
 let g:kolor_italic=1
 let g:kolor_bold=1
 let g:kolor_underlined=0
@@ -219,6 +155,9 @@ set splitright
 set smartcase       " Do smart case matching
 "set virtualedit=all
 compiler ruby
+
+" Set working directory to the current file
+autocmd BufEnter * silent! lcd %:p:h
 
 " ****************
 " Plugin configs *
@@ -272,9 +211,10 @@ let g:tagbar_autoclose = 1
 set noshowmode
 
 " DeoComplete configuration
-let g:deoplete#enable_at_startup = 0
+let g:deoplete#enable_at_startup = 1
 "let g:deoplete#async_timeout = 2000
-let g:deoplete#auto_complete_delay = 50
+"let g:deoplete#auto_complete_delay = 50
+"let g:deoplete#sources#go#gocode_binary = $GOPATH.'/bin/gocode_visualfc'
 set completeopt+=noinsert
 set completeopt-=preview
 autocmd CompleteDone * silent! pclose!
@@ -286,8 +226,8 @@ function! s:my_cr_function()
         return "\<CR>"
     endif
 endfunction
-
-let g:deoplete#sources#go#gocode_binary = $GOPATH.'/bin/gocode_visualfc'
+" configure deoplete to work with omnifunction for go
+call deoplete#custom#option('omni_patterns', { 'go': '[^. *\t]\.\w*' })
 
 " Nvim-typescript configuration
 let g:nvim_typescript#default_mappings = 1
@@ -316,7 +256,6 @@ let g:go_highlight_functions = 1
 let g:go_highlight_methods = 1
 let g:go_highlight_structs = 1
 let g:go_auto_sameids = 1
-"let g:go_info_mode = 'gocode'
 "let g:go_def_mode = 'godef'
 let g:go_def_mode = 'gopls'
 let g:go_info_mode = 'gopls'
@@ -345,8 +284,12 @@ au FileType go nmap <Leader>i <Plug>(go-info)
 let g:terraform_fmt_on_save=1
 let g:terraform_align=1
 
-" Set working directory to the current file
-autocmd BufEnter * silent! lcd %:p:h
+" Rego configuration
+let g:formatdef_rego = '"opa fmt"'
+let g:formatters_rego = ['rego']
+let g:autoformat_autoindent = 0
+let g:autoformat_retab = 0
+au BufWritePre *.rego Autoformat
 
 " *****************
 " Mapping section *

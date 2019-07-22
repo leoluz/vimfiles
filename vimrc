@@ -62,13 +62,14 @@ Plug 'martinda/Jenkinsfile-vim-syntax'
 Plug 'qpkorr/vim-bufkill'
 Plug 'Shougo/echodoc.vim'
 "Plug 'Shougo/deoplete.nvim'
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+"Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 "Plug 'deoplete-plugins/deoplete-go', {'do': 'make'}
 Plug 'cohama/lexima.vim'
 Plug 'sebdah/vim-delve'
 Plug 'hashivim/vim-terraform'
 Plug 'stephpy/vim-yaml'
 Plug 'w0rp/ale'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 "Themes
 Plug 'tomasr/molokai'
@@ -119,6 +120,7 @@ set fillchars+=vert:\
 let mapleader=" "
 set nohlsearch
 set laststatus=2
+set cmdheight=2
 set wildignore+=*.bak,*.pyc,*.py~,*.pdf,*.so,*.gif,*.jpg,*.flv,*.class,*.jar,*.png,*/tools/*,*/docs/*,*.swp,*/.svn/*,*/.git/*
 set wildmode=list:longest
 set wildmenu
@@ -190,6 +192,7 @@ let g:netrw_winsize = 25
 " NERDTree configuration
 let g:NERDTreeShowBookmarks=1
 let g:nerdtree_tabs_open_on_gui_startup = 0
+let g:NERDTreeQuitOnOpen=1
 
 " CtrlP configuration
 let g:ctrlp_working_path_mode = 'ra'
@@ -211,23 +214,24 @@ let g:tagbar_autoclose = 1
 set noshowmode
 
 " DeoComplete configuration
-let g:deoplete#enable_at_startup = 1
+"let g:deoplete#enable_at_startup = 1
 "let g:deoplete#async_timeout = 2000
 "let g:deoplete#auto_complete_delay = 50
 "let g:deoplete#sources#go#gocode_binary = $GOPATH.'/bin/gocode_visualfc'
-set completeopt+=noinsert
-set completeopt-=preview
-autocmd CompleteDone * silent! pclose!
-inoremap <silent><CR> <C-R>=<SID>my_cr_function()<CR>
-function! s:my_cr_function()
-    if (pumvisible())
-        return deoplete#close_popup()
-    else
-        return "\<CR>"
-    endif
-endfunction
+"set completeopt+=noinsert
+"set completeopt-=preview
+"autocmd CompleteDone * silent! pclose!
+"inoremap <silent><CR> <C-R>=<SID>my_cr_function()<CR>
+"function! s:my_cr_function()
+    "if (pumvisible())
+        "return deoplete#close_popup()
+    "else
+        "return "\<CR>"
+    "endif
+"endfunction
+
 " configure deoplete to work with omnifunction for go
-call deoplete#custom#option('omni_patterns', { 'go': '[^. *\t]\.\w*' })
+"call deoplete#custom#option('omni_patterns', { 'go': '[^. *\t]\.\w*' })
 
 " Nvim-typescript configuration
 let g:nvim_typescript#default_mappings = 1
@@ -256,9 +260,6 @@ let g:go_highlight_functions = 1
 let g:go_highlight_methods = 1
 let g:go_highlight_structs = 1
 let g:go_auto_sameids = 1
-"let g:go_def_mode = 'godef'
-let g:go_def_mode = 'gopls'
-let g:go_info_mode = 'gopls'
 let g:go_snippet_engine = "neosnippet"
 let g:go_fmt_command = "goimports"
 autocmd Filetype go command! -bang A call go#alternate#Switch(<bang>0, 'edit')
@@ -276,9 +277,38 @@ au FileType go nmap <Leader>dt <Plug>(go-def-tab)
 au FileType go nmap <Leader>e <Plug>(go-def-pop)
 au FileType go nmap <leader>b <Plug>(go-build)
 au FileType go nmap <leader>t <Plug>(go-test)
-au FileType go nmap <leader>c <Plug>(go-coverage)
+au FileType go nmap <leader>c <Plug>(go-coverage-toggle)
 au FileType go nmap <leader>x <Plug>(go-run)
 au FileType go nmap <Leader>i <Plug>(go-info) 
+
+" CoC configuration
+au FileType go nmap <silent> gp <Plug>(coc-diagnostic-prev)
+au FileType go nmap <silent> gn <Plug>(coc-diagnostic-next)
+au FileType go nmap <silent> gy <Plug>(coc-type-definition)
+au FileType go nmap <silent> gi <Plug>(coc-implementation)
+au FileType go nmap <silent> gr <Plug>(coc-references)
+au FileType go nnoremap <silent> U :call <SID>show_documentation()<CR>
+au FileType go nnoremap <leader>rr <Plug>(coc-rename)
+au FileType go nmap <leader>b :<Plug>(coc-fix-current)<CR>
+au FileType go nnoremap <leader>o :<C-u>CocList outline<CR>
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  else
+    call CocAction('doHover')
+  endif
+endfunction
+inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
+			\: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+inoremap <silent><expr> <TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
+"let g:airline#extensions#coc#enabled = 1
+"let airline#extensions#coc#stl_format_err = '%E{[%e(#%fe)]}'
+"let airline#extensions#coc#stl_format_warn = '%W{[%w(#%fw)]}'
+
+" Delve configuration
+au FileType go nnoremap <F8> :DlvTest<CR>
+au FileType go nnoremap <F9> :DlvToggleBreakpoint<CR>
+au FileType go nnoremap <F10> :DlvClearAll<CR>
 
 " Terraform configuration
 let g:terraform_fmt_on_save=1
@@ -312,7 +342,7 @@ noremap <M-t> :tabnew<CR>
 
 "" Omni completion maps
 inoremap <C-Space> <C-x><C-o>
-inoremap <C-j> <C-n>
+"inoremap <C-j> <C-n>
 inoremap <C-k> <C-p>
 
 "" Rails specific mappings
@@ -332,6 +362,7 @@ nnoremap <leader>w :TagbarToggle<CR>
 
 "" NERDTree maps
 nnoremap <silent><leader>q :NERDTreeToggle<CR>
+nnoremap <silent><leader>n :NERDTreeFind<CR>
 
 "" Format JSON
 nnoremap <silent><leader>fj :%!python -m json.tool<CR>
@@ -360,7 +391,7 @@ inoremap <C-@> <C-x><C-o>
 inoremap <C-l> <ESC>A
 
 "" Misc maps
-map <F5> :setlocal spell! spelllang=en_us<CR>
+map <F4> :setlocal spell! spelllang=en_us<CR>
 nnoremap Y y$
 nnoremap j gj
 nnoremap k gk
@@ -385,6 +416,9 @@ inoremap <silent><C-Del> <ESC>dea
 vnoremap <silent><C-s> :sort<CR>
 
 onoremap p i(
+
+"Makes help opening vertically
+cnoreabbrev H vert h
 
 "" Set color almost invisible color for Special Characters
 highlight NonText         guifg=#383838    guibg=#2e2d2b    gui=none

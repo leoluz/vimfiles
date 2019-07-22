@@ -107,18 +107,35 @@ options     head
   case ${1:#:condition}:
     ${2:TARGET}
 
-snippet     funcTest
-alias       ft
-abbr        func Test... (t *testing.T) { ... }
+snippet     ftest
+abbr        func test...(t *testing.t) { ... }
+alias       ftt
 options     head
-  func Test${1} (${2:t *testing.T}) {
-    // Given
-    ${3:TARGET}
+  func Test${1}(t *testing.T) {
+    t.Run("${2}", func(t *testing.T) {
+      // given
+      t.Parallel()
+      ${3:target}
 
-    // When
+      // when
 
-    // Then
+      // then
+    })
   }
+
+snippet     testcase
+abbr        t.run(..., func(t *testing.t) {
+alias       ttc
+options     head
+    t.Run("${2}", func(t *testing.T) {
+      // given
+      t.Parallel()
+      ${3:target}
+
+      // when
+
+      // then
+    })
 
 snippet     funcbench
 abbr        func Benchmark... (b *testing.B) { ... }

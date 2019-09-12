@@ -300,7 +300,7 @@ function! s:show_documentation()
 endfunction
 inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
 			\: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
-inoremap <silent><expr> <TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
+inoremap <silent><expr> <C-j> pumvisible() ? "\<C-n>" : "\<C-j>"
 "let g:airline#extensions#coc#enabled = 1
 "let airline#extensions#coc#stl_format_err = '%E{[%e(#%fe)]}'
 "let airline#extensions#coc#stl_format_warn = '%W{[%w(#%fw)]}'

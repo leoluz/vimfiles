@@ -1,14 +1,18 @@
 {
-  "diagnostic.errorSign": "❌",
-  "diagnostic.warningSign": "⚠️",
-  "diagnostic.infoSign": "⚠️",
-  "diagnostic.hintSign": "⚠️",
+  "diagnostic.enable": false,
   "diagnostic.displayByAle": true,
   "languageserver": {
     "golang": {
       "command": "gopls",
       "rootPatterns": ["go.mod", ".vim/", ".git/", ".hg/"],
-      "filetypes": ["go"]
+      "filetypes": ["go"],
+      "initializationOptions": {
+        "usePlaceholders": true
+      }
     }
-  }
+  },
+  "snippets.ultisnips.directories": [
+    "UltiSnips"
+  ],
+  "snippets.userSnippetsDirectory": "~/.vim/snippets"
 }

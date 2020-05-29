@@ -1,0 +1,30 @@
+# Online reference: https://github.com/SirVer/ultisnips/blob/master/doc/UltiSnips.txt
+snippet tf "test function" b
+func Test${1}(t *testing.T) {
+	t.Run("${2}", func(t *testing.T) {
+		// given
+		t.Parallel()
+		${0}
+
+		// when
+
+		// then
+	})
+}
+endsnippet
+
+snippet tc "test case" b
+t.Run("${1}", func(t *testing.T) {
+	// given
+	t.Parallel()
+	${0}
+
+	// when
+
+	// then
+})
+endsnippet
+
+snippet cfg "config field"
+\`config:"default=${1:value}"\`${0}
+endsnippet

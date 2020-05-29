@@ -40,9 +40,7 @@ call plug#begin('~/.local/share/nvim/plugged')
 
 " Make sure you use single quotes
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
-Plug 'fatih/vim-go', { 'tag': '*', 'do': ':GoUpdateBinaries', 'for': 'go' }
-Plug 'Shougo/neosnippet.vim'
-Plug 'Shougo/neosnippet-snippets'
+Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 Plug 'tpope/vim-fugitive'
 Plug 'scrooloose/nerdcommenter'
 Plug 'tpope/vim-markdown'
@@ -56,28 +54,30 @@ Plug 'jistr/vim-nerdtree-tabs'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'tfnico/vim-gradle'
-Plug 'fatih/vim-go'
 Plug 'majutsushi/tagbar'
 Plug 'martinda/Jenkinsfile-vim-syntax'
 Plug 'qpkorr/vim-bufkill'
 Plug 'Shougo/echodoc.vim'
-"Plug 'Shougo/deoplete.nvim'
-"Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-"Plug 'deoplete-plugins/deoplete-go', {'do': 'make'}
 Plug 'cohama/lexima.vim'
 Plug 'sebdah/vim-delve'
 Plug 'hashivim/vim-terraform'
 Plug 'stephpy/vim-yaml'
-Plug 'w0rp/ale'
+Plug 'dense-analysis/ale'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+" fzf plugin: requires 'brew install the_silver_searcher' for Ag search
+Plug '/usr/local/opt/fzf'
+Plug 'junegunn/fzf.vim'
 
 "Themes
 Plug 'tomasr/molokai'
 Plug 'zeis/vim-kolor'
 Plug 'nightsense/wonka'
+Plug 'romainl/Apprentice'
 
 Plug 'tsandall/vim-rego'
 Plug 'Chiel92/vim-autoformat'
+Plug 'easymotion/vim-easymotion'
+Plug 'honza/vim-snippets'
 
 " Initialize plugin system
 call plug#end()
@@ -104,15 +104,17 @@ endif
 
 " Vim configs
 
-"colorscheme molokai " Other nice colorschemes to try: molokai, fruity 
-colorscheme kolor
-
+" Kolor config
 let g:kolor_italic=1
 let g:kolor_bold=1
 let g:kolor_underlined=0
 let g:kolor_alternative_matchparen=0
 let g:kolor_inverted_matchparen=0
 
+" Other nice colorschemes to try: molokai, fruity 
+colorscheme kolor
+
+set nowrap
 set clipboard=unnamed       " y yy d works with system clipboard
 set cursorline              " highlight current line
 set relativenumber
@@ -158,9 +160,6 @@ set smartcase       " Do smart case matching
 "set virtualedit=all
 compiler ruby
 
-" Set working directory to the current file
-autocmd BufEnter * silent! lcd %:p:h
-
 " ****************
 " Plugin configs *
 " ****************
@@ -193,6 +192,22 @@ let g:netrw_winsize = 25
 let g:NERDTreeShowBookmarks=1
 let g:nerdtree_tabs_open_on_gui_startup = 0
 let g:NERDTreeQuitOnOpen=1
+let g:NERDTreeMinimalUI = 1
+let g:NERDTreeDirArrows = 1
+let g:NERDTreeAutoCenter = 1
+let g:NERDTreeAutoDeleteBuffer = 1
+function! IsNERDTreeOpen()
+  return exists("t:NERDTreeBufName") && (bufwinnr(t:NERDTreeBufName) != -1)
+endfunction
+function! SyncTree()
+  if &modifiable && IsNERDTreeOpen() && strlen(expand('%')) > 0 && !&diff
+    NERDTreeFind
+    wincmd p
+  endif
+endfunction
+autocmd BufRead * call SyncTree()
+nnoremap <silent><leader>q :NERDTreeToggle<CR><C-w>l:call SyncTree()<CR><C-w>h
+nnoremap <silent><leader>n :NERDTreeFind<CR>
 
 " CtrlP configuration
 let g:ctrlp_working_path_mode = 'ra'
@@ -213,44 +228,22 @@ let g:tagbar_autoclose = 1
 " Echodoc configuration
 set noshowmode
 
-" DeoComplete configuration
-"let g:deoplete#enable_at_startup = 1
-"let g:deoplete#async_timeout = 2000
-"let g:deoplete#auto_complete_delay = 50
-"let g:deoplete#sources#go#gocode_binary = $GOPATH.'/bin/gocode_visualfc'
-"set completeopt+=noinsert
-"set completeopt-=preview
-"autocmd CompleteDone * silent! pclose!
-"inoremap <silent><CR> <C-R>=<SID>my_cr_function()<CR>
-"function! s:my_cr_function()
-    "if (pumvisible())
-        "return deoplete#close_popup()
-    "else
-        "return "\<CR>"
-    "endif
-"endfunction
-
-" configure deoplete to work with omnifunction for go
-"call deoplete#custom#option('omni_patterns', { 'go': '[^. *\t]\.\w*' })
-
 " Nvim-typescript configuration
 let g:nvim_typescript#default_mappings = 1
 
-" Neosnippet configuration
-imap <expr><TAB> neosnippet#expandable_or_jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
-smap <expr><TAB> neosnippet#expandable_or_jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
-let g:neosnippet#snippets_directory = vimhome.'/snippets'
-
-" Ale configuration
-let g:ale_set_highlights = 0
-let g:ale_sign_warning = '⚠️'
-let g:ale_sign_error = '❌'
-let g:ale_echo_msg_format = '[%linter%] %s'
-let g:airline#extensions#ale#enabled = 1
+" fzf configuration
+nmap <Leader>f :Ag!<CR>
 
 " vim-go configuration
 au FileType go set noexpandtab
 au FileType go set nowrap
+let g:go_implements_mode = 'gopls'
+let g:go_rename_command = 'gopls'
+"let g:go_imports_autosave = 0 "run goimports on save
+"let g:go_mod_fmt_autosave = 1 "run go_fmt on save
+let g:go_fmt_command = "goimports"
+let g:go_imports_mode = "goimports"
+"let g:go_fmt_command = "gopls"
 let g:go_highlight_build_constraints = 1
 let g:go_highlight_extra_types = 1
 let g:go_highlight_fields = 1
@@ -260,36 +253,49 @@ let g:go_highlight_functions = 1
 let g:go_highlight_methods = 1
 let g:go_highlight_structs = 1
 let g:go_auto_sameids = 1
-let g:go_snippet_engine = "neosnippet"
-let g:go_fmt_command = "goimports"
+let g:go_term_mode = "split"
+let g:go_term_enabled = 0
+let g:go_term_close_on_exit = 0
 autocmd Filetype go command! -bang A call go#alternate#Switch(<bang>0, 'edit')
 autocmd Filetype go command! -bang AV call go#alternate#Switch(<bang>0, 'vsplit')
 autocmd Filetype go command! -bang AS call go#alternate#Switch(<bang>0, 'split')
+au FileType go nmap <Leader>gs :GoImplements<CR>
 au FileType go nmap <Leader>gv <Plug>(go-doc-vertical)
 au FileType go nmap <Leader>gi <Plug>(go-import)
-au FileType go nmap <Leader>gs <Plug>(go-implements)
-au FileType go nmap <Leader>gd <Plug>(go-doc)
-au FileType go nmap <Leader>gr <Plug>(go-rename)
+"au FileType go nmap <Leader>gd <Plug>(go-doc)
+au FileType go nmap <Leader>gd :GoDebugStart getcwd().expand("%")<CR>
+au FileType go nmap <Leader>rn <Plug>(go-rename)
 au FileType go nmap <Leader>gc <Plug>(go-callers)
-au FileType go nmap <Leader>gs <Plug>(go-implements)
-au FileType go nmap <Leader>ds <Plug>(go-def-split)
-au FileType go nmap <Leader>dt <Plug>(go-def-tab)
 au FileType go nmap <Leader>e <Plug>(go-def-pop)
 au FileType go nmap <leader>b <Plug>(go-build)
-au FileType go nmap <leader>t <Plug>(go-test)
 au FileType go nmap <leader>c <Plug>(go-coverage-toggle)
-au FileType go nmap <leader>x <Plug>(go-run)
+au FileType go nmap <leader>t <Plug>(go-test)
+"au FileType go nmap <leader>x <Plug>(go-run)
+au FileType go nmap <leader>x :split term://go run %<CR>:startinsert<CR>
+au FileType go nmap <leader>y :split term://go test ./...<CR>:startinsert<CR>
 au FileType go nmap <Leader>i <Plug>(go-info) 
 
+" Ale configuration
+let g:ale_set_highlights = 0
+let g:ale_sign_warning = '⚠️'
+let g:ale_sign_error = '❌'
+let g:ale_echo_msg_format = '[%linter%] %s'
+let g:airline#extensions#ale#enabled = 1
+au FileType go nmap <silent> gp :ALEPreviousWrap<CR>
+au FileType go nmap <silent> gn :ALENextWrap<CR>
+let g:ale_linters = { 'go': ['golint', 'go vet', 'go build', 'gosimple', 'staticcheck', 'gopls'], }
+
 " CoC configuration
-au FileType go nmap <silent> gp <Plug>(coc-diagnostic-prev)
-au FileType go nmap <silent> gn <Plug>(coc-diagnostic-next)
+let g:coc_config_home = vimhome
+let g:coc_snippet_next = '<tab>'
+vmap <TAB> <Plug>(coc-snippets-select)
 au FileType go nmap <silent> gy <Plug>(coc-type-definition)
 au FileType go nmap <silent> gi <Plug>(coc-implementation)
 au FileType go nmap <silent> gr <Plug>(coc-references)
+"au FileType go nmap <leader>rn <Plug>(coc-rename)
+au FileType go nmap <leader>re <Plug>(coc-refactor)
 au FileType go nnoremap <silent> U :call <SID>show_documentation()<CR>
-au FileType go nnoremap <leader>rr <Plug>(coc-rename)
-au FileType go nmap <leader>b :<Plug>(coc-fix-current)<CR>
+au FileType go nnoremap <leader>b :<Plug>(coc-fix-current)<CR>
 au FileType go nnoremap <leader>o :<C-u>CocList outline<CR>
 function! s:show_documentation()
   if (index(['vim','help'], &filetype) >= 0)
@@ -298,14 +304,20 @@ function! s:show_documentation()
     call CocAction('doHover')
   endif
 endfunction
-inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
-			\: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 inoremap <silent><expr> <C-j> pumvisible() ? "\<C-n>" : "\<C-j>"
-"let g:airline#extensions#coc#enabled = 1
-"let airline#extensions#coc#stl_format_err = '%E{[%e(#%fe)]}'
-"let airline#extensions#coc#stl_format_warn = '%W{[%w(#%fw)]}'
+"inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
+            "\: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+inoremap <silent><expr> <TAB>
+  \ coc#expandableOrJumpable() ? "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>" :
+  \ <SID>check_back_space() ? "\<TAB>" :
+  \ coc#refresh()
 
-" Delve configuration
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+" Delve configuration (debug)
 au FileType go nnoremap <F8> :DlvTest<CR>
 au FileType go nnoremap <F9> :DlvToggleBreakpoint<CR>
 au FileType go nnoremap <F10> :DlvClearAll<CR>
@@ -320,6 +332,12 @@ let g:formatters_rego = ['rego']
 let g:autoformat_autoindent = 0
 let g:autoformat_retab = 0
 au BufWritePre *.rego Autoformat
+
+" Easymotion configuration
+let g:EasyMotion_do_mapping = 0
+let g:EasyMotion_smartcase = 1
+nmap <Leader>s <Plug>(easymotion-overwin-f)
+
 
 " *****************
 " Mapping section *
@@ -342,7 +360,6 @@ noremap <M-t> :tabnew<CR>
 
 "" Omni completion maps
 inoremap <C-Space> <C-x><C-o>
-"inoremap <C-j> <C-n>
 inoremap <C-k> <C-p>
 
 "" Rails specific mappings
@@ -360,30 +377,28 @@ vmap <leader>/ <plug>NERDCommenterToggle
 "" Tagbar maps
 nnoremap <leader>w :TagbarToggle<CR>
 
-"" NERDTree maps
-nnoremap <silent><leader>q :NERDTreeToggle<CR>
-nnoremap <silent><leader>n :NERDTreeFind<CR>
-
 "" Format JSON
-nnoremap <silent><leader>fj :%!python -m json.tool<CR>
+nnoremap <silent><leader>gj :%!python -m json.tool<CR>
 
 "" CtrlP buffer
 nnoremap <C-i> :CtrlPBuffer<CR>
 
 " Diff mode colorscheme toggle
+" The two buffers to be diffed must be in vsplit
 function! s:ToggleDiffMode()
     if exists('g:colors_name')
         if g:colors_name == 'kolor'
             syntax off
-            colorscheme github
+            colorscheme Apprentice
+            windo diffthis
         else
             syntax on
             colorscheme kolor
+            windo diffoff
         endif
     endif
 endfunction
-map <silent> <F6> :call <SID>ToggleDiffMode()<CR>
-
+map <silent> <leader>d :call <SID>ToggleDiffMode()<CR>
 
 inoremap <C-s> <ESC>:w<CR>
 inoremap <C-Space> <C-x><C-o>
@@ -397,11 +412,8 @@ nnoremap j gj
 nnoremap k gk
 nnoremap gb `.
 nnoremap <C-s> :w<CR>
-nnoremap <C-l> :bnext<CR>
-nnoremap <C-h> :bprevious<CR>
-nnoremap <UP> ddkP
-nnoremap <Down> ddp
-nnoremap <leader>s z=
+nnoremap <C-l> :bnext<CR>:call SyncTree()<CR>
+nnoremap <C-h> :bprevious<CR>:call SyncTree()<CR>
 nnoremap - :BD<CR>
 nnoremap <C-_> :q!<CR>
 nnoremap <silent> <leader>v :e $MYVIMRC<CR>
@@ -419,6 +431,13 @@ onoremap p i(
 
 "Makes help opening vertically
 cnoreabbrev H vert h
+
+"Disable F1 help map because of the crappy apple touch bar :/
+nmap <F1> :echo<CR>
+imap <F1> <C-o>:echo<CR>
+
+"Terminal mappings
+tnoremap <Esc> <C-\><C-n>
 
 "" Set color almost invisible color for Special Characters
 highlight NonText         guifg=#383838    guibg=#2e2d2b    gui=none

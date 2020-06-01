@@ -4,7 +4,7 @@ RUN apk update
 # Basic tools
 RUN apk add bash git curl neovim neovim-doc ctags
 # Necessary for running CoC plugin
-RUN apk add nodejs 
+RUN apk add nodejs
 # Necessary for running vim-go
 RUN apk add gcc musl-dev
 # Necessary for fzf Ag functionality

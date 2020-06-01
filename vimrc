@@ -118,6 +118,7 @@ set nowrap
 set clipboard=unnamed       " y yy d works with system clipboard
 set cursorline              " highlight current line
 set relativenumber
+set number
 set fillchars+=vert:\ 
 let mapleader=" "
 set nohlsearch

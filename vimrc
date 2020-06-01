@@ -65,7 +65,7 @@ Plug 'stephpy/vim-yaml'
 Plug 'dense-analysis/ale'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 " fzf plugin: requires 'brew install the_silver_searcher' for Ag search
-Plug '/usr/local/opt/fzf'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 
 "Themes

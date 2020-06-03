@@ -12,9 +12,9 @@ RUN apk add the_silver_searcher
 
 RUN adduser -S -h /home/neovim -D neovim -G root -u 1000
 WORKDIR /home/neovim
-USER neovim
-
 ADD . .vim
+RUN chown neovim: -R .vim
+USER neovim
 
 RUN mkdir -p .config/nvim
 RUN ln -s $HOME/.vim/vimrc $HOME/.config/nvim/init.vim

@@ -4,37 +4,36 @@ LeoLuz Vim configuration files
 About
 -----
 
-This is a project to maintain my NeoVim configuration files.
-It uses [Dein](https://github.com/Shougo/dein.vim) approach to manage Vim plugins.
+This is a project to maintain my Neovim configuration files.
 
-Fill free to hack around and use these files as you wish but IMHO the best
-way to learn is doing it by yourself.
+Fill free to hack around and use these files as you wish but the best way to learn is doing it all by yourself.
 
 Good luck!
 
 Instalation
 -----------
 
-For the first time you start Vim it will automatically install all the needed plugins.
-
 ### Powerline symbols support
 
-Its necessary to install the preferred powerline fonts:
+Its necessary to install the preferred powerline fonts. 
+
+For example:
 
     $ brew cask install homebrew/cask-fonts/font-menlo-for-powerline
 
+You can check [powerline fonts](https://github.com/powerline/fonts) repository for a more complete list of fonts and how to install them.
+
 After installing just select the powerline version of your font in the terminal or nvim gui of choice.
 
-### Golang support
+### Try it not installing anything
 
-To enable go auto-completion please refer to the [vim-go](https://github.com/fatih/vim-go/blob/master/doc/vim-go.txt) documentation.
+If you want to give this setup a try but don't want to install anything in your OS, you can use the provided docker image. In order to do so, make sure you have docker installed and run the provided script:
 
-### Typescript support
+    $ ./docker-run.sh
 
-To enable Typescript support please refer to the [nvim-typescript](https://github.com/mhartington/nvim-typescript#installation) documentation.
+The first time you run the script it will build the docker image and install all Neovim plugins landing you in a bash terminal with Neovim fully configured. Just type `nvim` and give it a try.
 
-That's it! You are ready to go! 
-Enjoy!
+That's it!
 
 Details
 -------

@@ -111,7 +111,7 @@ let g:kolor_underlined=0
 let g:kolor_alternative_matchparen=0
 let g:kolor_inverted_matchparen=0
 
-" Other nice colorschemes to try: molokai, fruity 
+" Other nice colorschemes to try: molokai, fruity
 colorscheme kolor
 
 set nowrap
@@ -119,11 +119,11 @@ set clipboard=unnamed       " y yy d works with system clipboard
 set cursorline              " highlight current line
 set relativenumber
 set number
-set fillchars+=vert:\ 
+set fillchars+=vert:\
 let mapleader=" "
 set nohlsearch
 set laststatus=2
-set cmdheight=2
+"set cmdheight=2
 set wildignore+=*.bak,*.pyc,*.py~,*.pdf,*.so,*.gif,*.jpg,*.flv,*.class,*.jar,*.png,*/tools/*,*/docs/*,*.swp,*/.svn/*,*/.git/*
 set wildmode=list:longest
 set wildmenu
@@ -274,7 +274,7 @@ au FileType go nmap <leader>t <Plug>(go-test)
 "au FileType go nmap <leader>x <Plug>(go-run)
 au FileType go nmap <leader>x :split term://go run %<CR>:startinsert<CR>
 au FileType go nmap <leader>y :split term://go test ./...<CR>:startinsert<CR>
-au FileType go nmap <Leader>i <Plug>(go-info) 
+au FileType go nmap <Leader>i <Plug>(go-info)
 
 " Ale configuration
 let g:ale_set_highlights = 0

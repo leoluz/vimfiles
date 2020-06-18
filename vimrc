@@ -40,8 +40,10 @@ call plug#begin('~/.local/share/nvim/plugged')
 
 " Make sure you use single quotes
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
-Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+"Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+Plug 'fatih/vim-go'
 Plug 'tpope/vim-fugitive'
+Plug 'airblade/vim-gitgutter'
 Plug 'scrooloose/nerdcommenter'
 Plug 'tpope/vim-markdown'
 Plug 'tpope/vim-surround'
@@ -61,23 +63,23 @@ Plug 'Shougo/echodoc.vim'
 Plug 'cohama/lexima.vim'
 Plug 'sebdah/vim-delve'
 Plug 'hashivim/vim-terraform'
-Plug 'stephpy/vim-yaml'
 Plug 'dense-analysis/ale'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 " fzf plugin: requires 'brew install the_silver_searcher' for Ag search
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
-
-"Themes
-Plug 'tomasr/molokai'
-Plug 'zeis/vim-kolor'
-Plug 'nightsense/wonka'
-Plug 'romainl/Apprentice'
-
 Plug 'tsandall/vim-rego'
 Plug 'Chiel92/vim-autoformat'
 Plug 'easymotion/vim-easymotion'
 Plug 'honza/vim-snippets'
+
+"Themes
+Plug 'rakr/vim-one'
+Plug 'tomasr/molokai'
+Plug 'zeis/vim-kolor'
+Plug 'romainl/Apprentice'
+Plug 'drewtempelmeyer/palenight.vim'
+Plug 'joshdick/onedark.vim'
 
 " Initialize plugin system
 call plug#end()
@@ -103,23 +105,47 @@ endif
 " ****************
 
 " Vim configs
+if (has("nvim"))
+  let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+endif
+
+if (has("termguicolors"))
+  set termguicolors
+endif
+
+" Palenight theme config
+let g:palenight_terminal_italics=1
+
+" One theme config
+let g:one_allow_italics=1
 
 " Kolor config
 let g:kolor_italic=1
 let g:kolor_bold=1
 let g:kolor_underlined=0
-let g:kolor_alternative_matchparen=0
-let g:kolor_inverted_matchparen=0
+let g:kolor_alternative_matchparen=1
+let g:kolor_inverted_matchparen=1
 
-" Other nice colorschemes to try: molokai, fruity
-colorscheme kolor
+"colorscheme onedark
+"colorscheme palenight
+"colorscheme kolor
+"colorscheme molokai
+"colorscheme Apprentice
+colorscheme one
+set background=dark
 
+" customize the Search highlight for One colorscheme
+" so it looks like kolor in sameid search
+call one#highlight('Search', 'ff8901', 'none', 'bold')
+highlight Normal guibg=NONE ctermbg=NONE
+set mouse=a
+set updatetime=100          " usefull to update gitgutter faster
+set signcolumn=yes          " always show the gutter
 set nowrap
 set clipboard=unnamed       " y yy d works with system clipboard
 set cursorline              " highlight current line
 set relativenumber
 set number
-set fillchars+=vert:\
 let mapleader=" "
 set nohlsearch
 set laststatus=2
@@ -160,13 +186,18 @@ set splitright
 set smartcase       " Do smart case matching
 "set virtualedit=all
 compiler ruby
+autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab cursorcolumn
 
 " ****************
 " Plugin configs *
 " ****************
 
 " Airline configuration
-let g:airline_theme='deus'
+"let g:airline_theme='deus'
+"let g:airline_theme='minimalist'
+"let g:airline_theme='distinguished'
+let g:airline_theme='palenight'
+
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#tab_nr_type = 1 " show tab number
 let g:airline#extensions#tabline#fnamemod = ':t'
@@ -248,7 +279,7 @@ let g:go_imports_mode = "goimports"
 let g:go_highlight_build_constraints = 1
 let g:go_highlight_extra_types = 1
 let g:go_highlight_fields = 1
-let g:go_highlight_operators = 1
+"let g:go_highlight_operators = 1
 let g:go_highlight_types = 1
 let g:go_highlight_functions = 1
 let g:go_highlight_methods = 1
@@ -277,14 +308,17 @@ au FileType go nmap <leader>y :split term://go test ./...<CR>:startinsert<CR>
 au FileType go nmap <Leader>i <Plug>(go-info)
 
 " Ale configuration
+let g:ale_set_signs = 1
+let g:ale_sign_error = ' ✘'
+let g:ale_sign_warning = ' ⚠'
 let g:ale_set_highlights = 0
-let g:ale_sign_warning = '⚠️'
-let g:ale_sign_error = '❌'
 let g:ale_echo_msg_format = '[%linter%] %s'
 let g:airline#extensions#ale#enabled = 1
-au FileType go nmap <silent> gp :ALEPreviousWrap<CR>
-au FileType go nmap <silent> gn :ALENextWrap<CR>
+au FileType go nmap <silent> gp :ALEPrevious -wrap -error<CR>
+au FileType go nmap <silent> gn :ALENext -wrap -error<CR>
 let g:ale_linters = { 'go': ['golint', 'go vet', 'go build', 'gosimple', 'staticcheck', 'gopls'], }
+highlight ALEErrorSign ctermbg=NONE ctermfg=red
+highlight ALEWarningSign ctermbg=NONE ctermfg=yellow
 
 " CoC configuration
 let g:coc_config_home = vimhome
@@ -338,6 +372,17 @@ au BufWritePre *.rego Autoformat
 let g:EasyMotion_do_mapping = 0
 let g:EasyMotion_smartcase = 1
 nmap <Leader>s <Plug>(easymotion-overwin-f)
+
+" Gitgutter configuration
+let g:gitgutter_highlight_linenrs = 1
+highlight default link GitGutterAddLineNr          DiffAdd
+highlight default link GitGutterChangeLineNr       DiffChange
+highlight default link GitGutterDeleteLineNr       DiffDelete
+highlight default link GitGutterChangeDeleteLineNr DiffChange
+"highlight GitGutterAddLineNr guifg=#009900 guibg=none gui=none
+"highlight GitGutterChangeLineNr guifg=#bbbb00 guibg=none gui=none
+"highlight GitGutterDeleteLineNr guifg=#ff2222 guibg=none gui=none
+"highlight GitGutterChangeDeleteLineNr guifg=#bbbb00 guibg=none gui=none
 
 
 " *****************
@@ -415,7 +460,8 @@ nnoremap gb `.
 nnoremap <C-s> :w<CR>
 nnoremap <C-l> :bnext<CR>:call SyncTree()<CR>
 nnoremap <C-h> :bprevious<CR>:call SyncTree()<CR>
-nnoremap - :BD<CR>
+"nnoremap - :BD<CR>
+nnoremap <BS> :BD<CR>
 nnoremap <C-_> :q!<CR>
 nnoremap <silent> <leader>v :e $MYVIMRC<CR>
 nnoremap <silent> <leader>z :e $HOME/.zshrc<CR>
@@ -439,7 +485,3 @@ imap <F1> <C-o>:echo<CR>
 
 "Terminal mappings
 tnoremap <Esc> <C-\><C-n>
-
-"" Set color almost invisible color for Special Characters
-highlight NonText         guifg=#383838    guibg=#2e2d2b    gui=none
-highlight NonText         ctermfg=237      ctermbg=235      cterm=none

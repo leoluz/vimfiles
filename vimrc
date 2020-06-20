@@ -186,7 +186,11 @@ set splitright
 set smartcase       " Do smart case matching
 "set virtualedit=all
 compiler ruby
-autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab cursorcolumn
+
+augroup yaml
+    autocmd!
+    autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab cursorcolumn
+augroup END
 
 " ****************
 " Plugin configs *
@@ -237,7 +241,10 @@ function! SyncTree()
     wincmd p
   endif
 endfunction
-autocmd BufRead * call SyncTree()
+augroup nerdtree
+    autocmd!
+    autocmd BufRead * call SyncTree()
+augroup END
 nnoremap <silent><leader>q :NERDTreeToggle<CR><C-w>l:call SyncTree()<CR><C-w>h
 nnoremap <silent><leader>n :NERDTreeFind<CR>
 
@@ -267,8 +274,6 @@ let g:nvim_typescript#default_mappings = 1
 nmap <Leader>f :Ag!<CR>
 
 " vim-go configuration
-au FileType go set noexpandtab
-au FileType go set nowrap
 let g:go_implements_mode = 'gopls'
 let g:go_rename_command = 'gopls'
 "let g:go_imports_autosave = 0 "run goimports on save
@@ -288,24 +293,29 @@ let g:go_auto_sameids = 1
 let g:go_term_mode = "split"
 let g:go_term_enabled = 0
 let g:go_term_close_on_exit = 0
-autocmd Filetype go command! -bang A call go#alternate#Switch(<bang>0, 'edit')
-autocmd Filetype go command! -bang AV call go#alternate#Switch(<bang>0, 'vsplit')
-autocmd Filetype go command! -bang AS call go#alternate#Switch(<bang>0, 'split')
-au FileType go nmap <Leader>gs :GoImplements<CR>
-au FileType go nmap <Leader>gv <Plug>(go-doc-vertical)
-au FileType go nmap <Leader>gi <Plug>(go-import)
-"au FileType go nmap <Leader>gd <Plug>(go-doc)
-au FileType go nmap <Leader>gd :GoDebugStart getcwd().expand("%")<CR>
-au FileType go nmap <Leader>rn <Plug>(go-rename)
-au FileType go nmap <Leader>gc <Plug>(go-callers)
-au FileType go nmap <Leader>e <Plug>(go-def-pop)
-au FileType go nmap <leader>b <Plug>(go-build)
-au FileType go nmap <leader>c <Plug>(go-coverage-toggle)
-au FileType go nmap <leader>t <Plug>(go-test)
-"au FileType go nmap <leader>x <Plug>(go-run)
-au FileType go nmap <leader>x :split term://go run %<CR>:startinsert<CR>
-au FileType go nmap <leader>y :split term://go test ./...<CR>:startinsert<CR>
-au FileType go nmap <Leader>i <Plug>(go-info)
+augroup go
+    autocmd!
+    au FileType go set noexpandtab
+    au FileType go set nowrap
+    au Filetype go command! -bang A call go#alternate#Switch(<bang>0, 'edit')
+    au Filetype go command! -bang AV call go#alternate#Switch(<bang>0, 'vsplit')
+    au Filetype go command! -bang AS call go#alternate#Switch(<bang>0, 'split')
+    au FileType go nmap <Leader>gs :GoImplements<CR>
+    au FileType go nmap <Leader>gv <Plug>(go-doc-vertical)
+    au FileType go nmap <Leader>gi <Plug>(go-import)
+    "au FileType go nmap <Leader>gd <Plug>(go-doc)
+    au FileType go nmap <Leader>gd :GoDebugStart getcwd().expand("%")<CR>
+    au FileType go nmap <Leader>rn <Plug>(go-rename)
+    au FileType go nmap <Leader>gc <Plug>(go-callers)
+    au FileType go nmap <Leader>e <Plug>(go-def-pop)
+    au FileType go nmap <leader>b <Plug>(go-build)
+    au FileType go nmap <leader>c <Plug>(go-coverage-toggle)
+    au FileType go nmap <leader>t <Plug>(go-test)
+    "au FileType go nmap <leader>x <Plug>(go-run)
+    au FileType go nmap <leader>x :split term://go run %<CR>:startinsert<CR>
+    au FileType go nmap <leader>y :split term://go test ./...<CR>:startinsert<CR>
+    au FileType go nmap <Leader>i <Plug>(go-info)
+augroup END
 
 " Ale configuration
 let g:ale_set_signs = 1
@@ -314,8 +324,11 @@ let g:ale_sign_warning = ' ⚠'
 let g:ale_set_highlights = 0
 let g:ale_echo_msg_format = '[%linter%] %s'
 let g:airline#extensions#ale#enabled = 1
-au FileType go nmap <silent> gp :ALEPrevious -wrap -error<CR>
-au FileType go nmap <silent> gn :ALENext -wrap -error<CR>
+augroup ale
+    autocmd!
+    au FileType go nmap <silent> gp :ALEPrevious -wrap -error<CR>
+    au FileType go nmap <silent> gn :ALENext -wrap -error<CR>
+augroup END
 let g:ale_linters = { 'go': ['golint', 'go vet', 'go build', 'gosimple', 'staticcheck', 'gopls'], }
 highlight ALEErrorSign ctermbg=NONE ctermfg=red
 highlight ALEWarningSign ctermbg=NONE ctermfg=yellow
@@ -324,14 +337,17 @@ highlight ALEWarningSign ctermbg=NONE ctermfg=yellow
 let g:coc_config_home = vimhome
 let g:coc_snippet_next = '<tab>'
 vmap <TAB> <Plug>(coc-snippets-select)
-au FileType go nmap <silent> gy <Plug>(coc-type-definition)
-au FileType go nmap <silent> gi <Plug>(coc-implementation)
-au FileType go nmap <silent> gr <Plug>(coc-references)
-"au FileType go nmap <leader>rn <Plug>(coc-rename)
-au FileType go nmap <leader>re <Plug>(coc-refactor)
-au FileType go nnoremap <silent> U :call <SID>show_documentation()<CR>
-au FileType go nnoremap <leader>b :<Plug>(coc-fix-current)<CR>
-au FileType go nnoremap <leader>o :<C-u>CocList outline<CR>
+augroup coc
+    autocmd!
+    au FileType go nmap <silent> gy <Plug>(coc-type-definition)
+    au FileType go nmap <silent> gi <Plug>(coc-implementation)
+    au FileType go nmap <silent> gr <Plug>(coc-references)
+    "au FileType go nmap <leader>rn <Plug>(coc-rename)
+    au FileType go nmap <leader>re <Plug>(coc-refactor)
+    au FileType go nnoremap <silent> U :call <SID>show_documentation()<CR>
+    au FileType go nnoremap <leader>b :<Plug>(coc-fix-current)<CR>
+    au FileType go nnoremap <leader>o :<C-u>CocList outline<CR>
+augroup END
 function! s:show_documentation()
   if (index(['vim','help'], &filetype) >= 0)
     execute 'h '.expand('<cword>')
@@ -353,9 +369,12 @@ function! s:check_back_space() abort
 endfunction
 
 " Delve configuration (debug)
-au FileType go nnoremap <F8> :DlvTest<CR>
-au FileType go nnoremap <F9> :DlvToggleBreakpoint<CR>
-au FileType go nnoremap <F10> :DlvClearAll<CR>
+augroup delve
+    autocmd!
+    au FileType go nnoremap <F8> :DlvTest<CR>
+    au FileType go nnoremap <F9> :DlvToggleBreakpoint<CR>
+    au FileType go nnoremap <F10> :DlvClearAll<CR>
+augroup END
 
 " Terraform configuration
 let g:terraform_fmt_on_save=1
@@ -366,7 +385,10 @@ let g:formatdef_rego = '"opa fmt"'
 let g:formatters_rego = ['rego']
 let g:autoformat_autoindent = 0
 let g:autoformat_retab = 0
-au BufWritePre *.rego Autoformat
+augroup rego
+    autocmd!
+    au BufWritePre *.rego Autoformat
+augroup END
 
 " Easymotion configuration
 let g:EasyMotion_do_mapping = 0
@@ -379,11 +401,6 @@ highlight default link GitGutterAddLineNr          DiffAdd
 highlight default link GitGutterChangeLineNr       DiffChange
 highlight default link GitGutterDeleteLineNr       DiffDelete
 highlight default link GitGutterChangeDeleteLineNr DiffChange
-"highlight GitGutterAddLineNr guifg=#009900 guibg=none gui=none
-"highlight GitGutterChangeLineNr guifg=#bbbb00 guibg=none gui=none
-"highlight GitGutterDeleteLineNr guifg=#ff2222 guibg=none gui=none
-"highlight GitGutterChangeDeleteLineNr guifg=#bbbb00 guibg=none gui=none
-
 
 " *****************
 " Mapping section *

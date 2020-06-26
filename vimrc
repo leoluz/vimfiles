@@ -65,13 +65,20 @@ Plug 'sebdah/vim-delve'
 Plug 'hashivim/vim-terraform'
 Plug 'dense-analysis/ale'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-" fzf plugin: requires 'brew install the_silver_searcher' for Ag search
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plug 'junegunn/fzf.vim'
+" fzf-preview requires ripgrep for grep search:
+"   brew install ripgrep
+Plug 'yuki-ycino/fzf-preview.vim'
+"
 Plug 'tsandall/vim-rego'
 Plug 'Chiel92/vim-autoformat'
 Plug 'easymotion/vim-easymotion'
 Plug 'honza/vim-snippets'
+
+" vim-devicons requires nerd-fonts:
+"   brew tap homebrew/cask-fonts
+"   brew cask install font-hack-nerd-font
+Plug 'ryanoasis/vim-devicons'
 
 "Themes
 Plug 'rakr/vim-one'
@@ -157,7 +164,7 @@ set textwidth=0
 set tabstop=4
 set softtabstop=4
 set shiftwidth=4
-set encoding=utf-8
+set encoding=UTF-8
 set expandtab
 set backspace=indent,eol,start
 set smarttab
@@ -270,8 +277,23 @@ set noshowmode
 " Nvim-typescript configuration
 let g:nvim_typescript#default_mappings = 1
 
-" fzf configuration
-nmap <Leader>f :Ag!<CR>
+" fzf-preview configuration
+nmap <Leader>f [fzf-p]
+xmap <Leader>f [fzf-p]
+nnoremap <silent> [fzf-p]p     :<C-u>FzfPreviewProjectFiles<CR>
+nnoremap <silent> [fzf-p]gs    :<C-u>FzfPreviewGitStatus<CR>
+nnoremap <silent> [fzf-p]b     :<C-u>FzfPreviewBuffers<CR>
+nnoremap <silent> [fzf-p]B     :<C-u>FzfPreviewAllBuffers<CR>
+nnoremap <silent> [fzf-p]o     :<C-u>FzfPreviewFromResources buffer project_mru<CR>
+nnoremap <silent> [fzf-p]g;    :<C-u>FzfPreviewChanges<CR>
+nnoremap          [fzf-p]gr    :<C-u>FzfPreviewProjectGrep<Space>
+xnoremap          [fzf-p]gr    "sy:FzfPreviewProjectGrep<Space>-F<Space>"<C-r>=substitute(substitute(@s, '\n', '', 'g'), '/', '\\/', 'g')<CR>"
+nnoremap <silent> [fzf-p]q     :<C-u>FzfPreviewQuickFix<CR>
+nnoremap <silent> [fzf-p]l     :<C-u>FzfPreviewLocationList<CR>
+let g:fzf_preview_use_dev_icons = 1
+"let g:fzf_preview_lines_command = 'bat --color=always --style=grid --theme=one --plain'
+"let g:fzf_preview_command = 'bat --color=always --theme=solarized --style=grid {-1}'
+let g:fzf_preview_command = 'bat --color=always --theme=base16 --style=grid {-1}'
 
 " vim-go configuration
 let g:go_implements_mode = 'gopls'
@@ -319,8 +341,10 @@ augroup END
 
 " Ale configuration
 let g:ale_set_signs = 1
-let g:ale_sign_error = ' ✘'
-let g:ale_sign_warning = ' ⚠'
+"let g:ale_sign_error = ' ✘'
+"let g:ale_sign_warning = ' ⚠'
+let g:ale_sign_error = '•'
+let g:ale_sign_warning = '•'
 let g:ale_set_highlights = 0
 let g:ale_echo_msg_format = '[%linter%] %s'
 let g:airline#extensions#ale#enabled = 1

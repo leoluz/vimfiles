@@ -14,5 +14,8 @@
   "snippets.ultisnips.directories": [
     "UltiSnips"
   ],
-  "snippets.userSnippetsDirectory": "~/.vim/snippets"
+  "snippets.userSnippetsDirectory": "~/.vim/snippets",
+  "yaml.schemas": {
+      "kubernetes": "/*.yaml"
+  }
 }

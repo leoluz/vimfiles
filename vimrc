@@ -199,6 +199,14 @@ augroup yaml
     autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab cursorcolumn
 augroup END
 
+augroup term
+    autocmd!
+    au TermOpen * setlocal listchars= nonumber norelativenumber signcolumn=no
+    au TermOpen * startinsert
+    au BufEnter,BufWinEnter,WinEnter term://* startinsert
+    au BufLeave term://* stopinsert
+augroup END
+
 " ****************
 " Plugin configs *
 " ****************
@@ -339,12 +347,16 @@ augroup go
     au FileType go nmap <Leader>i <Plug>(go-info)
 augroup END
 
+" Lua Configuration
+augroup lua
+    autocmd!
+    au FileType lua nmap <leader>x :split term://lua %<CR>
+augroup END
+
 " Ale configuration
 let g:ale_set_signs = 1
-"let g:ale_sign_error = ' ✘'
-"let g:ale_sign_warning = ' ⚠'
-let g:ale_sign_error = '•'
-let g:ale_sign_warning = '•'
+let g:ale_sign_error = '✖'
+let g:ale_sign_warning = '⚠'
 let g:ale_set_highlights = 0
 let g:ale_echo_msg_format = '[%linter%] %s'
 let g:airline#extensions#ale#enabled = 1
@@ -379,6 +391,8 @@ function! s:show_documentation()
     call CocAction('doHover')
   endif
 endfunction
+
+inoremap <silent><expr> <c-space> coc#refresh()
 inoremap <silent><expr> <C-j> pumvisible() ? "\<C-n>" : "\<C-j>"
 "inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
             "\: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
@@ -391,6 +405,7 @@ function! s:check_back_space() abort
   let col = col('.') - 1
   return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
+
 
 " Delve configuration (debug)
 augroup delve
@@ -437,6 +452,8 @@ nnoremap <leader>h <C-W>h
 nnoremap <leader>l <C-W>l
 nnoremap <leader>m <C-W>_
 nnoremap <leader>= <C-W>=
+nnoremap <leader>- 5<C-W>-
+nnoremap <leader>+ 5<C-W>+
 nnoremap <leader>. 10<C-W>>
 nnoremap <leader>, 10<C-W><
 
@@ -446,7 +463,7 @@ nnoremap H :tabprevious<CR>
 noremap <M-t> :tabnew<CR>
 
 "" Omni completion maps
-inoremap <C-Space> <C-x><C-o>
+"inoremap <C-Space> <C-x><C-o>
 inoremap <C-k> <C-p>
 
 "" Rails specific mappings
@@ -488,7 +505,6 @@ endfunction
 map <silent> <leader>d :call <SID>ToggleDiffMode()<CR>
 
 inoremap <C-s> <ESC>:w<CR>
-inoremap <C-Space> <C-x><C-o>
 inoremap <C-@> <C-x><C-o>
 inoremap <C-l> <ESC>A
 
@@ -507,7 +523,11 @@ nnoremap <C-_> :q!<CR>
 nnoremap <silent> <leader>v :e $MYVIMRC<CR>
 nnoremap <silent> <leader>z :e $HOME/.zshrc<CR>
 nnoremap <silent> <leader>r :source $MYVIMRC<CR>:echo 'Vim configs reloaded!' <CR>
+nnoremap <silent> <C-x> :split term://zsh<CR>
 nnoremap <silent><leader>a ggvG$
+" will indent the whole pasted text
+nnoremap <silent><leader>. >']
+nnoremap <silent><leader>, <']
 
 inoremap <silent><C-Del> <ESC>dea
 inoremap <C-a> <ESC>ggvG$
@@ -525,4 +545,4 @@ nmap <F1> :echo<CR>
 imap <F1> <C-o>:echo<CR>
 
 "Terminal mappings
-tnoremap <Esc> <C-\><C-n>
+tnoremap <C-n> <C-\><C-n>

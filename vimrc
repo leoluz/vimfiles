@@ -525,9 +525,6 @@ nnoremap <silent> <leader>z :e $HOME/.zshrc<CR>
 nnoremap <silent> <leader>r :source $MYVIMRC<CR>:echo 'Vim configs reloaded!' <CR>
 nnoremap <silent> <C-x> :split term://zsh<CR>
 nnoremap <silent><leader>a ggvG$
-" will indent the whole pasted text
-nnoremap <silent><leader>. >']
-nnoremap <silent><leader>, <']
 
 inoremap <silent><C-Del> <ESC>dea
 inoremap <C-a> <ESC>ggvG$

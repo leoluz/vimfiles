@@ -40,8 +40,15 @@ call plug#begin('~/.local/share/nvim/plugged')
 
 " Make sure you use single quotes
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
-"Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
-Plug 'fatih/vim-go'
+
+Plug 'neovim/nvim-lspconfig'
+Plug 'nvim-lua/completion-nvim'
+Plug 'nvim-treesitter/nvim-treesitter'
+Plug 'nvim-treesitter/nvim-treesitter-refactor'
+Plug 'vim-test/vim-test'
+
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
 Plug 'scrooloose/nerdcommenter'
@@ -51,10 +58,8 @@ Plug 'tpope/vim-repeat'
 Plug 'vim-ruby/vim-ruby'
 Plug 'tpope/vim-cucumber'
 Plug 'leoluz/xmledit'
-Plug 'kien/ctrlp.vim'
+Plug 'ctrlpvim/ctrlp.vim'
 Plug 'jistr/vim-nerdtree-tabs'
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
 Plug 'tfnico/vim-gradle'
 Plug 'majutsushi/tagbar'
 Plug 'martinda/Jenkinsfile-vim-syntax'
@@ -63,8 +68,6 @@ Plug 'Shougo/echodoc.vim'
 Plug 'cohama/lexima.vim'
 Plug 'sebdah/vim-delve'
 Plug 'hashivim/vim-terraform'
-Plug 'dense-analysis/ale'
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 " fzf-preview requires ripgrep for grep search:
 "   brew install ripgrep
@@ -73,6 +76,7 @@ Plug 'yuki-ycino/fzf-preview.vim'
 Plug 'tsandall/vim-rego'
 Plug 'Chiel92/vim-autoformat'
 Plug 'easymotion/vim-easymotion'
+Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 
 " vim-devicons requires nerd-fonts:
@@ -106,6 +110,7 @@ for p in sys.path:
         vim.command(r"set path+=%s" % (p.replace(" ", r"\ ")))
 EOF
 endif
+
 
 " ****************
 " Config section *
@@ -191,6 +196,7 @@ set hidden          " Don't autosave buffers
 set splitbelow
 set splitright
 set smartcase       " Do smart case matching
+set completeopt=menuone,noinsert,noselect
 "set virtualedit=all
 compiler ruby
 
@@ -216,6 +222,10 @@ augroup END
 "let g:airline_theme='minimalist'
 "let g:airline_theme='distinguished'
 let g:airline_theme='palenight'
+
+let g:airline#extensions#nvimlsp#enabled = 1
+let airline#extensions#nvimlsp#error_symbol = 'E:'
+let airline#extensions#nvimlsp#warning_symbol = 'W:'
 
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#tab_nr_type = 1 " show tab number
@@ -303,109 +313,11 @@ let g:fzf_preview_use_dev_icons = 1
 "let g:fzf_preview_command = 'bat --color=always --theme=solarized --style=grid {-1}'
 let g:fzf_preview_command = 'bat --color=always --theme=base16 --style=grid {-1}'
 
-" vim-go configuration
-let g:go_implements_mode = 'gopls'
-let g:go_rename_command = 'gopls'
-"let g:go_imports_autosave = 0 "run goimports on save
-"let g:go_mod_fmt_autosave = 1 "run go_fmt on save
-let g:go_fmt_command = "goimports"
-let g:go_imports_mode = "goimports"
-"let g:go_fmt_command = "gopls"
-let g:go_highlight_build_constraints = 1
-let g:go_highlight_extra_types = 1
-let g:go_highlight_fields = 1
-"let g:go_highlight_operators = 1
-let g:go_highlight_types = 1
-let g:go_highlight_functions = 1
-let g:go_highlight_methods = 1
-let g:go_highlight_structs = 1
-let g:go_auto_sameids = 1
-let g:go_term_mode = "split"
-let g:go_term_enabled = 0
-let g:go_term_close_on_exit = 0
-augroup go
-    autocmd!
-    au FileType go set noexpandtab
-    au FileType go set nowrap
-    au Filetype go command! -bang A call go#alternate#Switch(<bang>0, 'edit')
-    au Filetype go command! -bang AV call go#alternate#Switch(<bang>0, 'vsplit')
-    au Filetype go command! -bang AS call go#alternate#Switch(<bang>0, 'split')
-    au FileType go nmap <Leader>gs :GoImplements<CR>
-    au FileType go nmap <Leader>gv <Plug>(go-doc-vertical)
-    au FileType go nmap <Leader>gi <Plug>(go-import)
-    "au FileType go nmap <Leader>gd <Plug>(go-doc)
-    au FileType go nmap <Leader>gd :GoDebugStart getcwd().expand("%")<CR>
-    au FileType go nmap <Leader>rn <Plug>(go-rename)
-    au FileType go nmap <Leader>gc <Plug>(go-callers)
-    au FileType go nmap <Leader>e <Plug>(go-def-pop)
-    au FileType go nmap <leader>b <Plug>(go-build)
-    au FileType go nmap <leader>c <Plug>(go-coverage-toggle)
-    au FileType go nmap <leader>t <Plug>(go-test)
-    "au FileType go nmap <leader>x <Plug>(go-run)
-    au FileType go nmap <leader>x :split term://go run %<CR>:startinsert<CR>
-    au FileType go nmap <leader>y :split term://go test ./...<CR>:startinsert<CR>
-    au FileType go nmap <Leader>i <Plug>(go-info)
-augroup END
-
 " Lua Configuration
 augroup lua
     autocmd!
     au FileType lua nmap <leader>x :split term://lua %<CR>
 augroup END
-
-" Ale configuration
-let g:ale_set_signs = 1
-let g:ale_sign_error = '✖'
-let g:ale_sign_warning = '⚠'
-let g:ale_set_highlights = 0
-let g:ale_echo_msg_format = '[%linter%] %s'
-let g:airline#extensions#ale#enabled = 1
-augroup ale
-    autocmd!
-    au FileType go nmap <silent> gp :ALEPrevious -wrap -error<CR>
-    au FileType go nmap <silent> gn :ALENext -wrap -error<CR>
-augroup END
-let g:ale_linters = { 'go': ['golint', 'go vet', 'go build', 'gosimple', 'staticcheck', 'gopls'], }
-highlight ALEErrorSign ctermbg=NONE ctermfg=red
-highlight ALEWarningSign ctermbg=NONE ctermfg=yellow
-
-" CoC configuration
-let g:coc_config_home = vimhome
-let g:coc_snippet_next = '<tab>'
-vmap <TAB> <Plug>(coc-snippets-select)
-augroup coc
-    autocmd!
-    au FileType go nmap <silent> gy <Plug>(coc-type-definition)
-    au FileType go nmap <silent> gi <Plug>(coc-implementation)
-    au FileType go nmap <silent> gr <Plug>(coc-references)
-    "au FileType go nmap <leader>rn <Plug>(coc-rename)
-    au FileType go nmap <leader>re <Plug>(coc-refactor)
-    au FileType go nnoremap <silent> U :call <SID>show_documentation()<CR>
-    au FileType go nnoremap <leader>b :<Plug>(coc-fix-current)<CR>
-    au FileType go nnoremap <leader>o :<C-u>CocList outline<CR>
-augroup END
-function! s:show_documentation()
-  if (index(['vim','help'], &filetype) >= 0)
-    execute 'h '.expand('<cword>')
-  else
-    call CocAction('doHover')
-  endif
-endfunction
-
-inoremap <silent><expr> <c-space> coc#refresh()
-inoremap <silent><expr> <C-j> pumvisible() ? "\<C-n>" : "\<C-j>"
-"inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
-            "\: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
-inoremap <silent><expr> <TAB>
-  \ coc#expandableOrJumpable() ? "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>" :
-  \ <SID>check_back_space() ? "\<TAB>" :
-  \ coc#refresh()
-
-function! s:check_back_space() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~# '\s'
-endfunction
-
 
 " Delve configuration (debug)
 augroup delve
@@ -435,11 +347,23 @@ let g:EasyMotion_smartcase = 1
 nmap <Leader>s <Plug>(easymotion-overwin-f)
 
 " Gitgutter configuration
+"let g:gitgutter_signs = 0
+let g:gitgutter_sign_priority = 1
 let g:gitgutter_highlight_linenrs = 1
 highlight default link GitGutterAddLineNr          DiffAdd
 highlight default link GitGutterChangeLineNr       DiffChange
 highlight default link GitGutterDeleteLineNr       DiffDelete
 highlight default link GitGutterChangeDeleteLineNr DiffChange
+
+" UltiSnips configuration
+let g:UltiSnipsExpandTrigger="<Tab>"
+let g:UltiSnipsJumpForwardTrigger="<Tab>"
+let g:UltiSnipsSnippetDirectories=[$HOME.'/.vim/UltiSnips', 'UltiSnips']
+
+" VimTest configuration
+let test#strategy='neovim'
+nmap <silent> <leader>t :TestNearest<CR>
+nmap <silent> <leader>T :TestFile<CR>
 
 " *****************
 " Mapping section *
@@ -543,3 +467,56 @@ imap <F1> <C-o>:echo<CR>
 
 "Terminal mappings
 tnoremap <C-n> <C-\><C-n>
+
+lua << EOF
+local completion = require('completion')
+local nvim_lsp = require('nvim_lsp')
+
+local on_attach = function(client, bufnr)
+  completion.on_attach(client, bufnr)
+
+  -- Keybindings for LSPs
+  -- Note these are in on_attach so that they don't override bindings in a non-LSP setting
+  vim.fn.nvim_set_keymap("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", {noremap = true, silent = true})
+  vim.fn.nvim_set_keymap("n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>", {noremap = true, silent = true})
+  vim.fn.nvim_set_keymap("n", "gi", "<cmd>lua vim.lsp.buf.implementation()<CR>", {noremap = true, silent = true})
+  vim.fn.nvim_set_keymap("n", "gt", "<cmd>lua vim.lsp.buf.type_definition()<CR>", {noremap = true, silent = true})
+  vim.fn.nvim_set_keymap("n", "gn", "<cmd>lua vim.lsp.diagnostic.goto_next()<CR>", {noremap = true, silent = true})
+  vim.fn.nvim_set_keymap("n", "gp", "<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>", {noremap = true, silent = true})
+  vim.fn.nvim_set_keymap("n", "<Leader>rn", "<cmd>lua vim.lsp.buf.rename()<CR>", {noremap = true, silent = true})
+  vim.fn.nvim_set_keymap("n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>", {noremap = true, silent = true})
+  vim.fn.nvim_set_keymap("n", "<c-k>", "<cmd>lua vim.lsp.buf.signature_help()<CR>", {noremap = true, silent = true})
+  vim.fn.nvim_set_keymap("n", "g0", "<cmd>lua vim.lsp.buf.document_symbol()<CR>", {noremap = true, silent = true})
+  vim.fn.nvim_set_keymap("n", "gW", "<cmd>lua vim.lsp.buf.workspace_symbol()<CR>", {noremap = true, silent = true})
+end
+
+vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
+  vim.lsp.diagnostic.on_publish_diagnostics, {
+    underline = true,
+    virtual_text = false,
+    signs = true,
+    update_in_insert = false,
+  }
+)
+
+nvim_lsp.gopls.setup{
+  on_attach = on_attach
+}
+
+require'nvim-treesitter.configs'.setup {
+  ensure_installed = "maintained",
+  highlight = {
+    enable = true,
+  },
+  refactor = {
+    highlight_definitions = { enable = true },
+  },
+}
+EOF
+
+sign define LspDiagnosticsSignError text=✖ texthl=LspDiagnosticsSignError linehl= numhl=
+sign define LspDiagnosticsSignWarning text=⚠ texthl=LspDiagnosticsSignWarning linehl= numhl=
+sign define LspDiagnosticsSignInformation text=I texthl=LspDiagnosticsSignInformation linehl= numhl=
+sign define LspDiagnosticsSignHint text=H texthl=LspDiagnosticsSignHint linehl= numhl=
+highlight LspDiagnosticsFloatingError guifg=#E74C3C
+highlight LspDiagnosticsSignError guifg=#E74C3C

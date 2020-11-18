@@ -43,8 +43,10 @@ Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
 
 Plug 'neovim/nvim-lspconfig'
 Plug 'nvim-lua/completion-nvim'
+Plug 'steelsojka/completion-buffers'
 Plug 'nvim-treesitter/nvim-treesitter'
 Plug 'nvim-treesitter/nvim-treesitter-refactor'
+Plug 'nvim-treesitter/completion-treesitter'
 Plug 'vim-test/vim-test'
 
 Plug 'vim-airline/vim-airline'
@@ -58,7 +60,6 @@ Plug 'tpope/vim-repeat'
 Plug 'vim-ruby/vim-ruby'
 Plug 'tpope/vim-cucumber'
 Plug 'leoluz/xmledit'
-Plug 'ctrlpvim/ctrlp.vim'
 Plug 'jistr/vim-nerdtree-tabs'
 Plug 'tfnico/vim-gradle'
 Plug 'majutsushi/tagbar'
@@ -69,9 +70,9 @@ Plug 'cohama/lexima.vim'
 Plug 'sebdah/vim-delve'
 Plug 'hashivim/vim-terraform'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-" fzf-preview requires ripgrep for grep search:
+" fzf Ag requires ripgrep for grep search:
 "   brew install ripgrep
-Plug 'yuki-ycino/fzf-preview.vim'
+Plug 'junegunn/fzf.vim'
 "
 Plug 'tsandall/vim-rego'
 Plug 'Chiel92/vim-autoformat'
@@ -226,7 +227,6 @@ let g:airline_theme='palenight'
 let g:airline#extensions#nvimlsp#enabled = 1
 let airline#extensions#nvimlsp#error_symbol = 'E:'
 let airline#extensions#nvimlsp#warning_symbol = 'W:'
-
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#tab_nr_type = 1 " show tab number
 let g:airline#extensions#tabline#fnamemod = ':t'
@@ -273,12 +273,6 @@ augroup END
 nnoremap <silent><leader>q :NERDTreeToggle<CR><C-w>l:call SyncTree()<CR><C-w>h
 nnoremap <silent><leader>n :NERDTreeFind<CR>
 
-" CtrlP configuration
-let g:ctrlp_working_path_mode = 'ra'
-let g:ctrlp_open_multi = '1'
-let g:ctrlp_arg_map = 1
-let g:ctrlp_max_depth = 50
-
 " Taglist configuration
 let Tlist_Compact_Format = 1
 let Tlist_Use_Right_Window = 1
@@ -295,23 +289,9 @@ set noshowmode
 " Nvim-typescript configuration
 let g:nvim_typescript#default_mappings = 1
 
-" fzf-preview configuration
-nmap <Leader>f [fzf-p]
-xmap <Leader>f [fzf-p]
-nnoremap <silent> [fzf-p]p     :<C-u>FzfPreviewProjectFiles<CR>
-nnoremap <silent> [fzf-p]gs    :<C-u>FzfPreviewGitStatus<CR>
-nnoremap <silent> [fzf-p]b     :<C-u>FzfPreviewBuffers<CR>
-nnoremap <silent> [fzf-p]B     :<C-u>FzfPreviewAllBuffers<CR>
-nnoremap <silent> [fzf-p]o     :<C-u>FzfPreviewFromResources buffer project_mru<CR>
-nnoremap <silent> [fzf-p]g;    :<C-u>FzfPreviewChanges<CR>
-nnoremap          [fzf-p]gr    :<C-u>FzfPreviewProjectGrep<Space>
-xnoremap          [fzf-p]gr    "sy:FzfPreviewProjectGrep<Space>-F<Space>"<C-r>=substitute(substitute(@s, '\n', '', 'g'), '/', '\\/', 'g')<CR>"
-nnoremap <silent> [fzf-p]q     :<C-u>FzfPreviewQuickFix<CR>
-nnoremap <silent> [fzf-p]l     :<C-u>FzfPreviewLocationList<CR>
-let g:fzf_preview_use_dev_icons = 1
-"let g:fzf_preview_lines_command = 'bat --color=always --style=grid --theme=one --plain'
-"let g:fzf_preview_command = 'bat --color=always --theme=solarized --style=grid {-1}'
-let g:fzf_preview_command = 'bat --color=always --theme=base16 --style=grid {-1}'
+" fzf.vim configuration
+nnoremap <leader>f :Rg<CR>
+nnoremap <C-p> :Files<CR>
 
 " Lua Configuration
 augroup lua
@@ -365,6 +345,18 @@ let test#strategy='neovim'
 nmap <silent> <leader>t :TestNearest<CR>
 nmap <silent> <leader>T :TestFile<CR>
 
+" Completion-nvim configuration
+autocmd BufEnter * lua require'completion'.on_attach()
+let g:completion_auto_change_source = 1
+let g:completion_enable_snippet = 'UltiSnips'
+let g:completion_matching_strategy_list = ['exact', 'fuzzy']
+let g:completion_chain_complete_list = [
+    \{'complete_items': ['lsp', 'snippet']},
+    \{'complete_items': ['buffers', 'ts']},
+    \{'mode': '<c-p>'},
+    \{'mode': '<c-n>'}
+\]
+
 " *****************
 " Mapping section *
 " *****************
@@ -387,8 +379,8 @@ nnoremap H :tabprevious<CR>
 noremap <M-t> :tabnew<CR>
 
 "" Omni completion maps
-"inoremap <C-Space> <C-x><C-o>
-inoremap <C-k> <C-p>
+inoremap <silent><expr> <C-k> pumvisible() ? "\<C-p>" : "\<C-k>"
+inoremap <silent><expr> <C-j> pumvisible() ? "\<C-n>" : "\<C-j>"
 
 "" Rails specific mappings
 inoremap <M-=> <%=  %><ESC>hhi
@@ -407,9 +399,6 @@ nnoremap <leader>w :TagbarToggle<CR>
 
 "" Format JSON
 nnoremap <silent><leader>gj :%!python -m json.tool<CR>
-
-"" CtrlP buffer
-nnoremap <C-i> :CtrlPBuffer<CR>
 
 " Diff mode colorscheme toggle
 " The two buffers to be diffed must be in vsplit
@@ -439,9 +428,8 @@ nnoremap j gj
 nnoremap k gk
 nnoremap gb `.
 nnoremap <C-s> :w<CR>
-nnoremap <C-l> :bnext<CR>:call SyncTree()<CR>
-nnoremap <C-h> :bprevious<CR>:call SyncTree()<CR>
-"nnoremap - :BD<CR>
+nnoremap <C-l> :bnext<CR>
+nnoremap <C-h> :bprevious<CR>
 nnoremap <BS> :BD<CR>
 nnoremap <C-_> :q!<CR>
 nnoremap <silent> <leader>v :e $MYVIMRC<CR>
@@ -471,6 +459,7 @@ tnoremap <C-n> <C-\><C-n>
 lua << EOF
 local completion = require('completion')
 local nvim_lsp = require('nvim_lsp')
+local treesitter = require('nvim-treesitter.configs')
 
 local on_attach = function(client, bufnr)
   completion.on_attach(client, bufnr)
@@ -503,7 +492,7 @@ nvim_lsp.gopls.setup{
   on_attach = on_attach
 }
 
-require'nvim-treesitter.configs'.setup {
+treesitter.setup {
   ensure_installed = "maintained",
   highlight = {
     enable = true,

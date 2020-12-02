@@ -48,6 +48,7 @@ Plug 'nvim-treesitter/nvim-treesitter'
 Plug 'nvim-treesitter/nvim-treesitter-refactor'
 Plug 'nvim-treesitter/completion-treesitter'
 Plug 'vim-test/vim-test'
+Plug 'sbdchd/neoformat'
 
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
@@ -92,6 +93,7 @@ Plug 'zeis/vim-kolor'
 Plug 'romainl/Apprentice'
 Plug 'drewtempelmeyer/palenight.vim'
 Plug 'joshdick/onedark.vim'
+Plug 'cormacrelf/vim-colors-github'
 
 " Initialize plugin system
 call plug#end()
@@ -357,6 +359,12 @@ let g:completion_chain_complete_list = [
     \{'mode': '<c-n>'}
 \]
 
+" Neoformat configuration
+augroup fmt
+  autocmd!
+  autocmd BufWritePre * undojoin | Neoformat
+augroup END
+
 " *****************
 " Mapping section *
 " *****************
@@ -400,19 +408,13 @@ nnoremap <leader>w :TagbarToggle<CR>
 "" Format JSON
 nnoremap <silent><leader>gj :%!python -m json.tool<CR>
 
-" Diff mode colorscheme toggle
-" The two buffers to be diffed must be in vsplit
 function! s:ToggleDiffMode()
-    if exists('g:colors_name')
-        if g:colors_name == 'kolor'
-            syntax off
-            colorscheme Apprentice
-            windo diffthis
-        else
-            syntax on
-            colorscheme kolor
-            windo diffoff
-        endif
+    if &diff
+        syntax on
+        windo diffoff
+    else
+        syntax off
+        windo diffthis
     endif
 endfunction
 map <silent> <leader>d :call <SID>ToggleDiffMode()<CR>
@@ -436,7 +438,7 @@ nnoremap <silent> <leader>v :e $MYVIMRC<CR>
 nnoremap <silent> <leader>z :e $HOME/.zshrc<CR>
 nnoremap <silent> <leader>r :source $MYVIMRC<CR>:echo 'Vim configs reloaded!' <CR>
 nnoremap <silent> <C-x> :split term://zsh<CR>
-nnoremap <silent><leader>a ggvG$
+nnoremap <silent><leader>a ggVG$
 
 inoremap <silent><C-Del> <ESC>dea
 inoremap <C-a> <ESC>ggvG$
@@ -458,7 +460,7 @@ tnoremap <C-n> <C-\><C-n>
 
 lua << EOF
 local completion = require('completion')
-local nvim_lsp = require('nvim_lsp')
+local nvim_lsp = require('lspconfig')
 local treesitter = require('nvim-treesitter.configs')
 
 local on_attach = function(client, bufnr)

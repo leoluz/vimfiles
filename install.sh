@@ -7,5 +7,6 @@ curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
 mkdir $HOME/.config/nvim
 
 ln -s $script_dir/vimrc $HOME/.config/nvim/init.vim
+ln -s $script_dir/lua $HOME/.config/nvim/lua
 
-nvim -c "PlugUpdate | exit | exit"
+nvim --headless -c "PlugUpdate | exit | exit"

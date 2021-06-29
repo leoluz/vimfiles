@@ -42,13 +42,11 @@ call plug#begin('~/.local/share/nvim/plugged')
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
 
 Plug 'neovim/nvim-lspconfig'
-Plug 'nvim-lua/completion-nvim'
-Plug 'steelsojka/completion-buffers'
+Plug 'hrsh7th/nvim-compe'
 Plug 'nvim-treesitter/nvim-treesitter'
 Plug 'nvim-treesitter/nvim-treesitter-refactor'
-Plug 'nvim-treesitter/completion-treesitter'
-Plug 'vim-test/vim-test'
-Plug 'sbdchd/neoformat'
+Plug 'nvim-treesitter/playground'
+Plug 'leoluz/dev2one.nvim'
 
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
@@ -67,7 +65,7 @@ Plug 'majutsushi/tagbar'
 Plug 'martinda/Jenkinsfile-vim-syntax'
 Plug 'qpkorr/vim-bufkill'
 Plug 'Shougo/echodoc.vim'
-Plug 'cohama/lexima.vim'
+Plug 'cohama/lexima.vim' " auto close stuff
 Plug 'sebdah/vim-delve'
 Plug 'hashivim/vim-terraform'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
@@ -76,7 +74,6 @@ Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 "
 Plug 'tsandall/vim-rego'
-Plug 'Chiel92/vim-autoformat'
 Plug 'easymotion/vim-easymotion'
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
@@ -141,11 +138,6 @@ let g:kolor_underlined=0
 let g:kolor_alternative_matchparen=1
 let g:kolor_inverted_matchparen=1
 
-"colorscheme onedark
-"colorscheme palenight
-"colorscheme kolor
-"colorscheme molokai
-"colorscheme Apprentice
 colorscheme one
 set background=dark
 
@@ -155,7 +147,7 @@ call one#highlight('Search', 'ff8901', 'none', 'bold')
 highlight Normal guibg=NONE ctermbg=NONE
 set mouse=a
 set updatetime=100          " usefull to update gitgutter faster
-set signcolumn=yes          " always show the gutter
+set signcolumn="yes:3"          " always show the gutter
 set nowrap
 set clipboard=unnamed       " y yy d works with system clipboard
 set cursorline              " highlight current line
@@ -164,7 +156,6 @@ set number
 let mapleader=" "
 set nohlsearch
 set laststatus=2
-"set cmdheight=2
 set wildignore+=*.bak,*.pyc,*.py~,*.pdf,*.so,*.gif,*.jpg,*.flv,*.class,*.jar,*.png,*/tools/*,*/docs/*,*.swp,*/.svn/*,*/.git/*
 set wildmode=list:longest
 set wildmenu
@@ -183,7 +174,7 @@ set showmatch       " show matching brackets.
 set autowrite       " Automatically save before commands like :next and :make
 set ignorecase      " Do case insensitive matching
 set incsearch       " Incremental search
-set wmh=0           " set winminheight to 0
+"set wmh=0           " set winminheight to 0
 set ruler
 set linebreak
 set guioptions-=T   " Turn toolbar off
@@ -200,7 +191,6 @@ set splitbelow
 set splitright
 set smartcase       " Do smart case matching
 set completeopt=menuone,noinsert,noselect
-"set virtualedit=all
 compiler ruby
 
 augroup yaml
@@ -293,12 +283,19 @@ let g:nvim_typescript#default_mappings = 1
 
 " fzf.vim configuration
 nnoremap <leader>f :Rg<CR>
+nnoremap <leader>ht :Helptags<CR>
 nnoremap <C-p> :Files<CR>
 
 " Lua Configuration
 augroup lua
     autocmd!
-    au FileType lua nmap <leader>x :split term://lua %<CR>
+    au FileType lua setlocal tabstop=2 shiftwidth=2 softtabstop=2
+augroup END
+
+" Go Configuration
+augroup golang
+    autocmd!
+    au FileType go setlocal tabstop=4 shiftwidth=4 softtabstop=4 noexpandtab
 augroup END
 
 " Delve configuration (debug)
@@ -342,28 +339,25 @@ let g:UltiSnipsExpandTrigger="<Tab>"
 let g:UltiSnipsJumpForwardTrigger="<Tab>"
 let g:UltiSnipsSnippetDirectories=[$HOME.'/.vim/UltiSnips', 'UltiSnips']
 
-" VimTest configuration
-let test#strategy='neovim'
-nmap <silent> <leader>t :TestNearest<CR>
-nmap <silent> <leader>T :TestFile<CR>
+
+" Compe configuration
+inoremap <silent><expr> <CR> compe#confirm(lexima#expand('<LT>CR>', 'i'))
 
 " Completion-nvim configuration
-autocmd BufEnter * lua require'completion'.on_attach()
-let g:completion_auto_change_source = 1
-let g:completion_enable_snippet = 'UltiSnips'
-let g:completion_matching_strategy_list = ['exact', 'fuzzy']
-let g:completion_chain_complete_list = [
-    \{'complete_items': ['lsp', 'snippet']},
-    \{'complete_items': ['buffers', 'ts']},
-    \{'mode': '<c-p>'},
-    \{'mode': '<c-n>'}
-\]
-
-" Neoformat configuration
-augroup fmt
-  autocmd!
-  autocmd BufWritePre * undojoin | Neoformat
-augroup END
+"autocmd BufEnter * lua require'completion'.on_attach()
+"let g:completion_matching_ignore_case = 1
+"let g:completion_auto_change_source = 1
+"let g:completion_enable_snippet = 'UltiSnips'
+"let g:completion_matching_strategy_list = ['exact', 'fuzzy']
+"let g:completion_chain_complete_list = [
+"    \{'complete_items': ['lsp', 'snippet']},
+"    \{'complete_items': ['buffers', 'ts']},
+"    \{'mode': '<c-p>'},
+"    \{'mode': '<c-n>'}
+"\]
+"let g:completion_confirm_key = "" "don't mess up with auto-close plugings
+"imap <expr> <cr>  pumvisible() ? complete_info()["selected"] != "-1" ?
+"                 \ "\<Plug>(completion_confirm_completion)"  : "\<c-e>\<CR>" :  "\<CR>"
 
 " *****************
 " Mapping section *
@@ -380,6 +374,8 @@ nnoremap <leader>- 5<C-W>-
 nnoremap <leader>+ 5<C-W>+
 nnoremap <leader>. 10<C-W>>
 nnoremap <leader>, 10<C-W><
+"close quickfix window
+nnoremap <leader>x :ccl<CR>
 
 "" Maps for tabs specific funcionalities
 nnoremap L :tabnext<CR>
@@ -389,14 +385,6 @@ noremap <M-t> :tabnew<CR>
 "" Omni completion maps
 inoremap <silent><expr> <C-k> pumvisible() ? "\<C-p>" : "\<C-k>"
 inoremap <silent><expr> <C-j> pumvisible() ? "\<C-n>" : "\<C-j>"
-
-"" Rails specific mappings
-inoremap <M-=> <%=  %><ESC>hhi
-inoremap <M--> <%  -%><ESC>hhhi
-nnoremap gr  :R<CR>
-nnoremap grt :RT<CR>
-nnoremap ga  :A<CR>
-nnoremap gat :AT<CR>
 
 "" NerdCommenter maps
 nmap <silent><leader>/ <plug>NERDCommenterToggle
@@ -458,52 +446,15 @@ imap <F1> <C-o>:echo<CR>
 "Terminal mappings
 tnoremap <C-n> <C-\><C-n>
 
-lua << EOF
-local completion = require('completion')
-local nvim_lsp = require('lspconfig')
-local treesitter = require('nvim-treesitter.configs')
+" load Lua modules
+lua require('leoluz.configs')
+lua require('dev2one')
+nmap <silent> <leader>t :GoTestNear<CR>
 
-local on_attach = function(client, bufnr)
-  completion.on_attach(client, bufnr)
-
-  -- Keybindings for LSPs
-  -- Note these are in on_attach so that they don't override bindings in a non-LSP setting
-  vim.fn.nvim_set_keymap("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", {noremap = true, silent = true})
-  vim.fn.nvim_set_keymap("n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>", {noremap = true, silent = true})
-  vim.fn.nvim_set_keymap("n", "gi", "<cmd>lua vim.lsp.buf.implementation()<CR>", {noremap = true, silent = true})
-  vim.fn.nvim_set_keymap("n", "gt", "<cmd>lua vim.lsp.buf.type_definition()<CR>", {noremap = true, silent = true})
-  vim.fn.nvim_set_keymap("n", "gn", "<cmd>lua vim.lsp.diagnostic.goto_next()<CR>", {noremap = true, silent = true})
-  vim.fn.nvim_set_keymap("n", "gp", "<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>", {noremap = true, silent = true})
-  vim.fn.nvim_set_keymap("n", "<Leader>rn", "<cmd>lua vim.lsp.buf.rename()<CR>", {noremap = true, silent = true})
-  vim.fn.nvim_set_keymap("n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>", {noremap = true, silent = true})
-  vim.fn.nvim_set_keymap("n", "<c-k>", "<cmd>lua vim.lsp.buf.signature_help()<CR>", {noremap = true, silent = true})
-  vim.fn.nvim_set_keymap("n", "g0", "<cmd>lua vim.lsp.buf.document_symbol()<CR>", {noremap = true, silent = true})
-  vim.fn.nvim_set_keymap("n", "gW", "<cmd>lua vim.lsp.buf.workspace_symbol()<CR>", {noremap = true, silent = true})
-end
-
-vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
-  vim.lsp.diagnostic.on_publish_diagnostics, {
-    underline = true,
-    virtual_text = false,
-    signs = true,
-    update_in_insert = false,
-  }
-)
-
-nvim_lsp.gopls.setup{
-  on_attach = on_attach
-}
-
-treesitter.setup {
-  ensure_installed = "maintained",
-  highlight = {
-    enable = true,
-  },
-  refactor = {
-    highlight_definitions = { enable = true },
-  },
-}
-EOF
+augroup lsp
+  autocmd!
+  autocmd BufWritePre * lua require'leoluz.configs'.auto_format_lsp()
+augroup END
 
 sign define LspDiagnosticsSignError text=✖ texthl=LspDiagnosticsSignError linehl= numhl=
 sign define LspDiagnosticsSignWarning text=⚠ texthl=LspDiagnosticsSignWarning linehl= numhl=
